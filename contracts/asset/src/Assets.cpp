@@ -1,13 +1,13 @@
-#include <SimpleAssets.hpp>
+#include <Assets.hpp>
 
-ACTION SimpleAssets::updatever( string version ) {
+ACTION Assets::updatever( string version ) {
 
 	require_auth( get_self() );
 	Configs configs( _self, _self.value );
 	configs.set( tokenconfigs{ "simpleassets"_n, version }, _self );
 }
 
-ACTION SimpleAssets::regauthor( name author, string data, string stemplate, string imgpriority ) {
+ACTION Assets::regauthor( name author, string data, string stemplate, string imgpriority ) {
 
 	require_auth( author );
 	require_recipient( author );
@@ -27,7 +27,7 @@ ACTION SimpleAssets::regauthor( name author, string data, string stemplate, stri
 	}
 }
 
-ACTION SimpleAssets::authorupdate( name author, string data, string stemplate, string imgpriority ) {
+ACTION Assets::authorupdate( name author, string data, string stemplate, string imgpriority ) {
 
 	require_auth( author );
 	require_recipient( author );
@@ -48,7 +48,7 @@ ACTION SimpleAssets::authorupdate( name author, string data, string stemplate, s
 }
 
 //@TODO dont allow an author run brute force new assetid.
-ACTION SimpleAssets::newasset(name author) {
+ACTION Assets::newasset(name author) {
 	require_auth(author);
 	check( is_account( author ), "author account does not exist." );
 	require_recipient( author );
@@ -69,7 +69,7 @@ ACTION SimpleAssets::newasset(name author) {
 
 }
 
-ACTION SimpleAssets::create(uint64_t assetid, name author, name category, name owner, string idata, string mdata, bool requireclaim ) {
+ACTION Assets::create(uint64_t assetid, name author, name category, name owner, string idata, string mdata, bool requireclaim ) {
 
 	require_auth( author );
 	sassets assets_f( _self, author.value );
@@ -140,17 +140,17 @@ ACTION SimpleAssets::create(uint64_t assetid, name author, name category, name o
 	SEND_INLINE_ACTION( *this, createlog, { {_self, "active"_n} }, { author, category, owner, idata, mdata, assetid, requireclaim } );
 
 }
-ACTION SimpleAssets::newassetlog( name author, uint64_t assetid) {
+ACTION Assets::newassetlog( name author, uint64_t assetid) {
 
 	require_auth(get_self());
 }
 
-ACTION SimpleAssets::createlog( name author, name category, name owner, string idata, string mdata, uint64_t assetid, bool requireclaim ) {
+ACTION Assets::createlog( name author, name category, name owner, string idata, string mdata, uint64_t assetid, bool requireclaim ) {
 
 	require_auth(get_self());
 }
 
-ACTION SimpleAssets::claim( name claimer, std::vector<uint64_t>& assetids ) {
+ACTION Assets::claim( name claimer, std::vector<uint64_t>& assetids ) {
 
 	require_auth( claimer );
 	require_recipient( claimer );
@@ -192,7 +192,7 @@ ACTION SimpleAssets::claim( name claimer, std::vector<uint64_t>& assetids ) {
 	}
 }
 
-ACTION SimpleAssets::transfer( name from, name to, std::vector<uint64_t>& assetids, string memo ) {
+ACTION Assets::transfer( name from, name to, std::vector<uint64_t>& assetids, string memo ) {
 
 	check( from != to, "cannot transfer to yourself" );
 	check( is_account( to ), "TO account does not exist" );
@@ -264,7 +264,7 @@ ACTION SimpleAssets::transfer( name from, name to, std::vector<uint64_t>& asseti
 	}
 }
 
-ACTION SimpleAssets::update( name author, name owner, uint64_t assetid, string mdata ) {
+ACTION Assets::update( name author, name owner, uint64_t assetid, string mdata ) {
 
 	require_auth( author );
 	sassets assets_f( _self, owner.value );
@@ -277,7 +277,7 @@ ACTION SimpleAssets::update( name author, name owner, uint64_t assetid, string m
 	});
 }
 
-ACTION SimpleAssets::offer( name owner, name newowner, std::vector<uint64_t>& assetids, string memo ) {
+ACTION Assets::offer( name owner, name newowner, std::vector<uint64_t>& assetids, string memo ) {
 
 	check( owner != newowner, "cannot offer to yourself" );
 	require_auth( owner );
@@ -303,7 +303,7 @@ ACTION SimpleAssets::offer( name owner, name newowner, std::vector<uint64_t>& as
 	}
 }
 
-ACTION SimpleAssets::canceloffer( name owner, std::vector<uint64_t>& assetids ) {
+ACTION Assets::canceloffer( name owner, std::vector<uint64_t>& assetids ) {
 
 	require_auth( owner );
 	require_recipient( owner );
@@ -317,7 +317,7 @@ ACTION SimpleAssets::canceloffer( name owner, std::vector<uint64_t>& assetids ) 
 	}
 }
 
-ACTION SimpleAssets::burn( name owner, std::vector<uint64_t>& assetids, string memo ) {
+ACTION Assets::burn( name owner, std::vector<uint64_t>& assetids, string memo ) {
 
 	require_auth( owner );
 	sassets assets_f( _self, owner.value );
@@ -345,7 +345,7 @@ ACTION SimpleAssets::burn( name owner, std::vector<uint64_t>& assetids, string m
 	}
 }
 
-ACTION SimpleAssets::delegate( name owner, name to, std::vector<uint64_t>& assetids, uint64_t period, string memo ) {
+ACTION Assets::delegate( name owner, name to, std::vector<uint64_t>& assetids, uint64_t period, string memo ) {
 
 	check(memo.size() <= 64, "Error. Size of memo cannot be bigger 64");
 	check( owner != to, "cannot delegate to yourself" );
@@ -375,7 +375,7 @@ ACTION SimpleAssets::delegate( name owner, name to, std::vector<uint64_t>& asset
 	transfer( owner, to, assetids, "Delegate memo: " + memo );
 }
 
-ACTION SimpleAssets::delegatemore( name owner, uint64_t assetidc, uint64_t period ) {
+ACTION Assets::delegatemore( name owner, uint64_t assetidc, uint64_t period ) {
 
 	require_auth( owner );
 	require_recipient( owner );
@@ -389,7 +389,7 @@ ACTION SimpleAssets::delegatemore( name owner, uint64_t assetidc, uint64_t perio
 	});
 }
 
-ACTION SimpleAssets::undelegate( name owner, name from, std::vector<uint64_t>& assetids ) {
+ACTION Assets::undelegate( name owner, name from, std::vector<uint64_t>& assetids ) {
 
 	require_auth( owner );
 	require_recipient( owner );
@@ -420,7 +420,7 @@ ACTION SimpleAssets::undelegate( name owner, name from, std::vector<uint64_t>& a
 }
 
 
-ACTION SimpleAssets::attach( name owner, uint64_t assetidc, std::vector<uint64_t>& assetids ) {
+ACTION Assets::attach( name owner, uint64_t assetidc, std::vector<uint64_t>& assetids ) {
 
 	sassets assets_f( _self, owner.value );
 	delegates delegatet( _self, _self.value );
@@ -445,7 +445,7 @@ ACTION SimpleAssets::attach( name owner, uint64_t assetidc, std::vector<uint64_t
 	}
 }
 
-ACTION SimpleAssets::detach( name owner, uint64_t assetidc, std::vector<uint64_t>& assetids ) {
+ACTION Assets::detach( name owner, uint64_t assetidc, std::vector<uint64_t>& assetids ) {
 
 	require_auth( owner );
 	require_recipient( owner );
@@ -485,18 +485,18 @@ ACTION SimpleAssets::detach( name owner, uint64_t assetidc, std::vector<uint64_t
 	}
 }
 
-ACTION SimpleAssets::attachf( name owner, name author, asset quantity, uint64_t assetidc ) {
+ACTION Assets::attachf( name owner, name author, asset quantity, uint64_t assetidc ) {
 
 	attachdeatch( owner, author, quantity, assetidc, true );
 }
 
 
-ACTION SimpleAssets::detachf( name owner, name author, asset quantity, uint64_t assetidc ) {
+ACTION Assets::detachf( name owner, name author, asset quantity, uint64_t assetidc ) {
 
 	attachdeatch( owner, author, quantity, assetidc, false );
 }
 
-ACTION SimpleAssets::createf( name author, asset maximum_supply, bool authorctrl, string data ) {
+ACTION Assets::createf( name author, asset maximum_supply, bool authorctrl, string data ) {
 
 	require_auth( author );
 	const auto sym = maximum_supply.symbol;
@@ -517,7 +517,7 @@ ACTION SimpleAssets::createf( name author, asset maximum_supply, bool authorctrl
 	});
 }
 
-ACTION SimpleAssets::updatef( name author, symbol sym, string data ) {
+ACTION Assets::updatef( name author, symbol sym, string data ) {
 
 	require_auth( author );
 	check( sym.is_valid(), "invalid symbol name" );
@@ -530,7 +530,7 @@ ACTION SimpleAssets::updatef( name author, symbol sym, string data ) {
 	});
 }
 
-ACTION SimpleAssets::issuef( name to, name author, asset quantity, string memo ) {
+ACTION Assets::issuef( name to, name author, asset quantity, string memo ) {
 
 	const auto sym = quantity.symbol;
 	check( sym.is_valid(), "invalid symbol name" );
@@ -558,7 +558,7 @@ ACTION SimpleAssets::issuef( name to, name author, asset quantity, string memo )
 	}
 }
 
-ACTION SimpleAssets::transferf( name from, name to, name author, asset quantity, string memo ) {
+ACTION Assets::transferf( name from, name to, name author, asset quantity, string memo ) {
 
 	check( from != to, "cannot transfer to self" );
 	check( is_account( to ), "to account does not exist" );
@@ -587,7 +587,7 @@ ACTION SimpleAssets::transferf( name from, name to, name author, asset quantity,
 	add_balancef( to, author, quantity, payer );
 }
 
-ACTION SimpleAssets::offerf( name owner, name newowner, name author, asset quantity, string memo ) {
+ACTION Assets::offerf( name owner, name newowner, name author, asset quantity, string memo ) {
 
 	require_auth( owner );
 	require_recipient( owner );
@@ -623,7 +623,7 @@ ACTION SimpleAssets::offerf( name owner, name newowner, name author, asset quant
 	sub_balancef( owner, author, quantity );
 }
 
-ACTION SimpleAssets::cancelofferf( name owner, std::vector<uint64_t>& ftofferids ) {
+ACTION Assets::cancelofferf( name owner, std::vector<uint64_t>& ftofferids ) {
 
 	require_auth( owner );
 	require_recipient( owner );
@@ -638,7 +638,7 @@ ACTION SimpleAssets::cancelofferf( name owner, std::vector<uint64_t>& ftofferids
 	}
 }
 
-ACTION SimpleAssets::claimf( name claimer, std::vector<uint64_t>& ftofferids ) {
+ACTION Assets::claimf( name claimer, std::vector<uint64_t>& ftofferids ) {
 
 	require_auth( claimer );
 	require_recipient( claimer );
@@ -654,7 +654,7 @@ ACTION SimpleAssets::claimf( name claimer, std::vector<uint64_t>& ftofferids ) {
 	}
 }
 
-ACTION SimpleAssets::burnf( name from, name author, asset quantity, string memo ) {
+ACTION Assets::burnf( name from, name author, asset quantity, string memo ) {
 
 	auto sym = quantity.symbol;
 	check( sym.is_valid(), "invalid symbol name" );
@@ -676,7 +676,7 @@ ACTION SimpleAssets::burnf( name from, name author, asset quantity, string memo 
 	sub_balancef( from, author, quantity );
 }
 
-ACTION SimpleAssets::openf( name owner, name author, const symbol& symbol, name ram_payer ) {
+ACTION Assets::openf( name owner, name author, const symbol& symbol, name ram_payer ) {
 
 	require_auth( ram_payer );
 	stats statstable( _self, author.value );
@@ -693,7 +693,7 @@ ACTION SimpleAssets::openf( name owner, name author, const symbol& symbol, name 
 	}
 }
 
-ACTION SimpleAssets::closef( name owner, name author, const symbol& symbol ) {
+ACTION Assets::closef( name owner, name author, const symbol& symbol ) {
 
 	require_auth( owner );
 	accounts acnts( _self, owner.value );
@@ -710,7 +710,7 @@ ACTION SimpleAssets::closef( name owner, name author, const symbol& symbol ) {
 	acnts.erase( it );
 }
 
-uint64_t SimpleAssets::getid( string type ) {
+uint64_t Assets::getid( string type ) {
 
 	// getid private action Increment, save and return id for a new asset or new fungible token.
 	conf config( _self, _self.value );
@@ -737,7 +737,7 @@ uint64_t SimpleAssets::getid( string type ) {
 	return resid;
 }
 
-uint64_t SimpleAssets::getFTIndex( name author, symbol symbol ) {
+uint64_t Assets::getFTIndex( name author, symbol symbol ) {
 
 	stats statstable( _self, author.value );
 	const auto existing = statstable.find( symbol.code().raw() );
@@ -745,7 +745,7 @@ uint64_t SimpleAssets::getFTIndex( name author, symbol symbol ) {
 	return existing->id;
 }
 
-void SimpleAssets::attachdeatch( name owner, name author, asset quantity, uint64_t assetidc, bool attach ) {
+void Assets::attachdeatch( name owner, name author, asset quantity, uint64_t assetidc, bool attach ) {
 
 	sassets assets_f( _self, owner.value );
 	delegates delegatet( _self, _self.value );
@@ -816,7 +816,7 @@ void SimpleAssets::attachdeatch( name owner, name author, asset quantity, uint64
 	}
 }
 
-void SimpleAssets::sub_balancef( name owner, name author, asset value ) {
+void Assets::sub_balancef( name owner, name author, asset value ) {
 
 	accounts from_acnts( _self, owner.value );
 	const auto& from = from_acnts.get( getFTIndex( author, value.symbol ), "no balance object found" );
@@ -828,7 +828,7 @@ void SimpleAssets::sub_balancef( name owner, name author, asset value ) {
 	});
 }
 
-void SimpleAssets::add_balancef( name owner, name author, asset value, name ram_payer ) {
+void Assets::add_balancef( name owner, name author, asset value, name ram_payer ) {
 
 	accounts to_acnts( _self, owner.value );
 	auto ftid = getFTIndex( author, value.symbol );
@@ -849,7 +849,7 @@ void SimpleAssets::add_balancef( name owner, name author, asset value, name ram_
 }
 
 template<typename... Args>
-void SimpleAssets::sendEvent( name author, name rampayer, name seaction, const std::tuple<Args...> &adata ) {
+void Assets::sendEvent( name author, name rampayer, name seaction, const std::tuple<Args...> &adata ) {
 
 	transaction sevent{};
 	sevent.actions.emplace_back( permission_level{ _self, "active"_n }, author, seaction, adata );
@@ -857,18 +857,18 @@ void SimpleAssets::sendEvent( name author, name rampayer, name seaction, const s
 	sevent.send( getid("DEFER"), rampayer );
 }
 
-asset SimpleAssets::get_supply( name token_contract_account, name author, symbol_code sym_code ) {
+asset Assets::get_supply( name token_contract_account, name author, symbol_code sym_code ) {
 	stats statstable( token_contract_account, author.value );
 	return statstable.get( sym_code.raw() ).supply;
 }
 
-asset SimpleAssets::get_balance( name token_contract_account, name owner, name author, symbol_code sym_code ) {
+asset Assets::get_balance( name token_contract_account, name owner, name author, symbol_code sym_code ) {
 	stats statstable( token_contract_account, author.value );
 	accounts accountstable( token_contract_account, owner.value );
 	return accountstable.get( statstable.get( sym_code.raw() ).id ).balance;
 }
 
-std::vector<string> SimpleAssets::splitWord(string s, char delimiter) {
+std::vector<string> Assets::splitWord(string s, char delimiter) {
   std::vector<string> tokens;
   string token;
   size_t pos = 0;
@@ -881,7 +881,7 @@ std::vector<string> SimpleAssets::splitWord(string s, char delimiter) {
   return tokens;
 }
 
-string SimpleAssets::join(const std::vector<string> &lst, const string &delim) {
+string Assets::join(const std::vector<string> &lst, const string &delim) {
   string ret;
   for (const auto &s : lst) {
     if (!ret.empty())
@@ -891,7 +891,7 @@ string SimpleAssets::join(const std::vector<string> &lst, const string &delim) {
   return ret;
 }
 
-std::vector<std::vector<string>> SimpleAssets::groupBy(std::vector<string> digest, int size) {
+std::vector<std::vector<string>> Assets::groupBy(std::vector<string> digest, int size) {
   std::vector<std::vector<string>> groupDigest;
   for (int i = 0; i < digest.size() / size; i++) {
     std::vector<string> tmp;
@@ -903,7 +903,7 @@ std::vector<std::vector<string>> SimpleAssets::groupBy(std::vector<string> diges
   return groupDigest;
 }
 
-EOSIO_DISPATCH( SimpleAssets, (newasset)( create )( newassetlog )( createlog )( transfer )( burn )( update )
+EOSIO_DISPATCH( Assets, (newasset)( create )( newassetlog )( createlog )( transfer )( burn )( update )
 ( offer )( canceloffer )( claim )
 ( regauthor )( authorupdate )
 ( delegate )( undelegate )( delegatemore )( attach )( detach )
@@ -911,9 +911,3 @@ EOSIO_DISPATCH( SimpleAssets, (newasset)( create )( newassetlog )( createlog )( 
 ( offerf )( cancelofferf )( claimf )
 ( attachf )( detachf )( openf )( closef )
 ( updatever ) )
-
-
-//============================================================================================================
-//=======================================- SimpleAssets.io -==================================================
-//======================================- by CryptoLions.io -=================================================
-//============================================================================================================

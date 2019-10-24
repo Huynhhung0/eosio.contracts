@@ -7,7 +7,7 @@ endif()
 ExternalProject_Add(
    SimpleAssets_project
    SOURCE_DIR ${CMAKE_SOURCE_DIR}/src
-   BINARY_DIR ${CMAKE_BINARY_DIR}/SimpleAssets
+   BINARY_DIR ${CMAKE_BINARY_DIR}/Assets
    CMAKE_ARGS -DCMAKE_TOOLCHAIN_FILE=${EOSIO_CDT_ROOT}/lib/cmake/eosio.cdt/EosioWasmToolchain.cmake
    UPDATE_COMMAND ""
    PATCH_COMMAND ""

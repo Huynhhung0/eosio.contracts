@@ -1,8 +1,8 @@
-project(SimpleAssets)
+project(Assets)
 
 set(EOSIO_WASM_OLD_BEHAVIOR "Off")
 find_package(eosio.cdt)
 
-add_contract( SimpleAssets SimpleAssets SimpleAssets.cpp )
-target_include_directories( SimpleAssets PUBLIC ${CMAKE_SOURCE_DIR}/../include )
-target_ricardian_directory( SimpleAssets ${CMAKE_SOURCE_DIR}/../ricardian )
+add_contract( Assets Assets Assets.cpp )
+target_include_directories( Assets PUBLIC ${CMAKE_SOURCE_DIR}/../include )
+target_ricardian_directory( Assets ${CMAKE_SOURCE_DIR}/../ricardian )

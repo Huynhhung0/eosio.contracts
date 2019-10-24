@@ -11,16 +11,16 @@
  * Licenses are intended to guarantee your freedom to share and change
  * free software--to make sure the software is free for all its users.
  * GNU LESSER GENERAL PUBLIC LICENSE for more details at
- * https://github.com/CryptoLions/SimpleAssets/blob/master/LICENSE
+ * https://github.com/CryptoLions/Assets/blob/master/LICENSE
  *
  * @section DESCRIPTION
- * SimpleAssets (Digital Assets)
+ * Assets (Digital Assets)
  *
  * A simple standard for digital assets (ie. Fungible and Non-Fungible Tokens - NFTs) for EOSIO blockchains
  *    WebSite:        https://simpleassets.io
- *    GitHub:         https://github.com/CryptoLions/SimpleAssets
+ *    GitHub:         https://github.com/CryptoLions/Assets
  *    Presentation:   https://medium.com/@cryptolions/introducing-simple-assets-b4e17caafaa4
- *    Event Receiver: https://github.com/CryptoLions/SimpleAssets-EventReceiverExample
+ *    Event Receiver: https://github.com/CryptoLions/Assets-EventReceiverExample
  */
 
 #include <eosio/eosio.hpp>
@@ -39,20 +39,20 @@ uint32_t now() {
     return (uint32_t)(current_time_point().sec_since_epoch());
 }
 
-CONTRACT SimpleAssets : public contract{
+CONTRACT Assets : public contract{
 	public:
 		using contract::contract;
 
 		/*
 		* Update version.
 		*
-		* This action update version of this SimpleAssets deployment for 3rd party wallets, marketplaces, etc.
+		* This action update version of this Assets deployment for 3rd party wallets, marketplaces, etc.
 		*
-		* @param version is version number of SimpleAssetst deployment.
+		* @param version is version number of Assetst deployment.
 		* @return no return value.
 		*/
 		ACTION updatever( string version );
-		using updatever_action = action_wrapper< "updatever"_n, &SimpleAssets::updatever >;
+		using updatever_action = action_wrapper< "updatever"_n, &Assets::updatever >;
 
 		/*
 		* New Author registration.
@@ -83,7 +83,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value
 		*/
 		ACTION regauthor( name author, string data, string stemplate, string imgpriority );
-		using regauthor_action = action_wrapper< "regauthor"_n, &SimpleAssets::regauthor >;
+		using regauthor_action = action_wrapper< "regauthor"_n, &Assets::regauthor >;
 
 		/*
 		* Authors info update.
@@ -97,7 +97,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION authorupdate( name author, string data, string stemplate, string imgpriority );
-		using authorupdate_action = action_wrapper< "authorupdate"_n, &SimpleAssets::authorupdate >;
+		using authorupdate_action = action_wrapper< "authorupdate"_n, &Assets::authorupdate >;
 
 		/*
 		* Prepare a new asset.
@@ -108,7 +108,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION newasset(name author);
-		using newasset_action = action_wrapper< "newasset"_n, &SimpleAssets::newasset >;
+		using newasset_action = action_wrapper< "newasset"_n, &Assets::newasset >;
 
 		/*
 		* Create a newasset log.
@@ -121,7 +121,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION newassetlog( name author, uint64_t assetid);
-		using newassetlog_action = action_wrapper< "newassetlog"_n, &SimpleAssets::newassetlog >;
+		using newassetlog_action = action_wrapper< "newassetlog"_n, &Assets::newassetlog >;
 
 		/*
 		* Create a new asset.
@@ -141,7 +141,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION create(uint64_t assetid, name author, name category, name owner, string idata, string mdata, bool requireclaim );
-		using create_action = action_wrapper< "create"_n, &SimpleAssets::create >;
+		using create_action = action_wrapper< "create"_n, &Assets::create >;
 
 		/*
 		* Create a new log.
@@ -162,7 +162,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION createlog( name author, name category, name owner, string idata, string mdata, uint64_t assetid, bool requireclaim );
-		using createlog_action = action_wrapper< "createlog"_n, &SimpleAssets::createlog >;
+		using createlog_action = action_wrapper< "createlog"_n, &Assets::createlog >;
 
 		/*
 		* Claim asset.
@@ -174,7 +174,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION claim( name claimer, std::vector< uint64_t >& assetids );
-		using claim_action = action_wrapper< "claim"_n, &SimpleAssets::claim >;
+		using claim_action = action_wrapper< "claim"_n, &Assets::claim >;
 
 		/*
 		* Transfers an asset.
@@ -190,7 +190,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION transfer( name from, name to, std::vector< uint64_t >& assetids, string memo );
-		using transfer_action = action_wrapper< "transfer"_n, &SimpleAssets::transfer >;
+		using transfer_action = action_wrapper< "transfer"_n, &Assets::transfer >;
 
 		/*
 		* Update assets data.
@@ -204,7 +204,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION update( name author, name owner, uint64_t assetid, string mdata );
-		using update_action = action_wrapper< "update"_n, &SimpleAssets::update >;
+		using update_action = action_wrapper< "update"_n, &Assets::update >;
 
 		/*
 		* Offer asset for claim.
@@ -221,7 +221,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION offer( name owner, name newowner, std::vector< uint64_t >& assetids, string memo );
-		using offer_action = action_wrapper< "offer"_n, &SimpleAssets::offer >;
+		using offer_action = action_wrapper< "offer"_n, &Assets::offer >;
 
 		/*
 		* Cancel offer.
@@ -233,7 +233,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION canceloffer( name owner, std::vector<uint64_t>& assetids );
-		using canceloffer_action = action_wrapper< "canceloffer"_n, &SimpleAssets::canceloffer >;
+		using canceloffer_action = action_wrapper< "canceloffer"_n, &Assets::canceloffer >;
 
 		/*
 		* Burn asset.
@@ -247,7 +247,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION burn( name owner, std::vector< uint64_t >& assetids, string memo );
-		using burn_action = action_wrapper< "burn"_n, &SimpleAssets::burn >;
+		using burn_action = action_wrapper< "burn"_n, &Assets::burn >;
 
 		/*
 		* Burn asset.
@@ -265,7 +265,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION delegate( name owner, name to, std::vector< uint64_t >& assetids, uint64_t period, string memo );
-		using delegate_action = action_wrapper< "delegate"_n, &SimpleAssets::delegate >;
+		using delegate_action = action_wrapper< "delegate"_n, &Assets::delegate >;
 
 		/*
 		* Undelegates an asset.
@@ -279,7 +279,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION undelegate( name owner, name from, std::vector< uint64_t >& assetids );
-		using undelegate_action = action_wrapper< "undelegate"_n, &SimpleAssets::undelegate >;
+		using undelegate_action = action_wrapper< "undelegate"_n, &Assets::undelegate >;
 
 		/*
 		* Attach non-fungible token.
@@ -295,7 +295,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION attach( name owner, uint64_t assetidc, std::vector< uint64_t >& assetids );
-		using attach_action = action_wrapper< "attach"_n, &SimpleAssets::attach >;
+		using attach_action = action_wrapper< "attach"_n, &Assets::attach >;
 
 		/*
 		* Detach detach non-fungible token.
@@ -308,7 +308,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION detach( name owner, uint64_t assetidc, std::vector< uint64_t >& assetids );
-		using detach_t_action = action_wrapper< "detach"_n, &SimpleAssets::detach >;
+		using detach_t_action = action_wrapper< "detach"_n, &Assets::detach >;
 
 		/*
 		* Extend period of delegated asset.
@@ -321,7 +321,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION delegatemore( name owner, uint64_t assetidc, uint64_t period );
-		using delegatemore_action = action_wrapper< "delegatemore"_n, &SimpleAssets::delegatemore >;
+		using delegatemore_action = action_wrapper< "delegatemore"_n, &Assets::delegatemore >;
 
 		/*
 		* Attach fungible token.
@@ -338,7 +338,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION attachf( name owner, name author, asset quantity, uint64_t assetidc );
-		using attachf_t_action = action_wrapper< "attachf"_n, &SimpleAssets::attachf >;
+		using attachf_t_action = action_wrapper< "attachf"_n, &Assets::attachf >;
 
 		/*
 		* Detach fungible token or tokens.
@@ -352,7 +352,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION detachf( name owner, name author, asset quantity, uint64_t assetidc );
-		using detachf_t_action = action_wrapper< "detachf"_n, &SimpleAssets::detachf >;
+		using detachf_t_action = action_wrapper< "detachf"_n, &Assets::detachf >;
 
 		/*
 		* Creates fungible token.
@@ -368,7 +368,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION createf( name author, asset maximum_supply, bool authorctrl, string data );
-		using createf_action = action_wrapper< "createf"_n, &SimpleAssets::createf >;
+		using createf_action = action_wrapper< "createf"_n, &Assets::createf >;
 
 		/*
 		* Update fungible token.
@@ -381,7 +381,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION updatef( name author, symbol sym, string data );
-		using updatef_action = action_wrapper< "updatef"_n, &SimpleAssets::updatef >;
+		using updatef_action = action_wrapper< "updatef"_n, &Assets::updatef >;
 
 		/*
 		* Issue fungible token.
@@ -395,7 +395,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION issuef( name to, name author, asset quantity, string memo );
-		using issuef_action = action_wrapper< "issuef"_n, &SimpleAssets::issuef >;
+		using issuef_action = action_wrapper< "issuef"_n, &Assets::issuef >;
 
 		/*
 		* Transfer fungible token.
@@ -410,7 +410,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION transferf( name from, name to, name author, asset quantity, string memo );
-		using transferf_action = action_wrapper< "transferf"_n, &SimpleAssets::transferf >;
+		using transferf_action = action_wrapper< "transferf"_n, &Assets::transferf >;
 
 		/*
 		* Offer fungible tokens.
@@ -429,7 +429,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION offerf( name owner, name newowner, name author, asset quantity, string memo );
-		using offerf_action = action_wrapper< "offerf"_n, &SimpleAssets::offerf >;
+		using offerf_action = action_wrapper< "offerf"_n, &Assets::offerf >;
 
 		/*
 		* Cancel offer of fungible tokens.
@@ -441,7 +441,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION cancelofferf( name owner, std::vector< uint64_t >& ftofferids );
-		using cancelofferf_action = action_wrapper< "cancelofferf"_n, &SimpleAssets::cancelofferf >;
+		using cancelofferf_action = action_wrapper< "cancelofferf"_n, &Assets::cancelofferf >;
 
 		/*
 		* Claim fungible tokens.
@@ -453,7 +453,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION claimf( name claimer, std::vector< uint64_t >& ftofferids );
-		using claimf_action = action_wrapper< "claimf"_n, &SimpleAssets::claimf >;
+		using claimf_action = action_wrapper< "claimf"_n, &Assets::claimf >;
 
 		/*
 		* Burn fungible tokens
@@ -468,7 +468,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION burnf( name from, name author, asset quantity, string memo );
-		using burnf_action = action_wrapper< "burnf"_n, &SimpleAssets::burnf >;
+		using burnf_action = action_wrapper< "burnf"_n, &Assets::burnf >;
 
 		/*
 		* Open accoutns table.
@@ -482,7 +482,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION openf( name owner, name author, const symbol& symbol, name ram_payer );
-		using openf_action = action_wrapper< "openf"_n, &SimpleAssets::openf >;
+		using openf_action = action_wrapper< "openf"_n, &Assets::openf >;
 
 		/*
 		* Close accounts table.
@@ -496,7 +496,7 @@ CONTRACT SimpleAssets : public contract{
 		* @return no return value.
 		*/
 		ACTION closef( name owner, name author, const symbol& symbol );
-		using closef_action = action_wrapper< "closef"_n, &SimpleAssets::closef >;
+		using closef_action = action_wrapper< "closef"_n, &Assets::closef >;
 
 		/*
 		* Return current token supply.
