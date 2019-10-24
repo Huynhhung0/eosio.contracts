@@ -15,8 +15,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
-
 
 <h1 class="contract"> authorupdate </h1>
 	## ACTION NAME: authorupdate
@@ -36,7 +34,18 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
+
+<h1 class="contract"> newasset </h1>
+	## ACTION NAME: newasset 
+
+	### INTENT
+	Сreate a new asset id.
+
+	### Input parameters:
+	`author`         - asset's author, who will able to updated asset's mdata;
+
+	### TERM
+	This Contract expires at the conclusion of code execution.
 
 
 <h1 class="contract"> create </h1>
@@ -59,7 +68,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> claim </h1>
@@ -75,7 +83,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> transfer </h1>
@@ -95,8 +102,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
-
 
 <h1 class="contract"> update </h1>
 	## ACTION NAME: update
@@ -113,7 +118,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> offer </h1>
@@ -134,7 +138,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> canceloffer </h1>
@@ -149,8 +152,6 @@
 
 	### TERM
 	This Contract expires at the conclusion of code execution.
-
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> burn </h1>
@@ -168,7 +169,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> delegatemore </h1>
@@ -186,7 +186,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> delegate </h1>
@@ -208,7 +207,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> undelegate </h1>
@@ -226,7 +224,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> createf </h1>
@@ -244,7 +241,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> issuef </h1>
@@ -262,7 +258,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 	<h1 class="contract"> transferf </h1>
@@ -282,7 +277,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> burnf </h1>
@@ -301,7 +295,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> openf </h1>
@@ -319,7 +312,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> closef </h1>
@@ -337,7 +329,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 	
 <h1 class="contract"> attach </h1>		
@@ -358,7 +349,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> detach </h1>		
@@ -375,7 +365,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> attachf </h1>		
@@ -396,7 +385,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> detachf </h1>		
@@ -414,7 +402,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> updatef </h1>		
@@ -431,7 +418,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> offerf </h1>		
@@ -454,7 +440,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> cancelofferf </h1>		
@@ -470,7 +455,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 
 <h1 class="contract"> claimf </h1>		
@@ -486,7 +470,6 @@
 	### TERM
 	This Contract expires at the conclusion of code execution.
 
-	by CryptoLions [ https://cryptolions.io ]
 
 	
 <h1 class="contract"> updatever </h1>
@@ -494,6 +477,9 @@
 
 <h1 class="contract"> createlog </h1>		
 ## ACTION NAME: createlog (internal)
+
+<h1 class="contract"> newassetlog </h1>		
+## ACTION NAME: newassetlog (internal)
 		
 <h1 class="contract"> test </h1>		
 ## ACTION NAME: 
