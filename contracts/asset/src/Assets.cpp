@@ -83,7 +83,7 @@ ACTION Assets::newasset(name author) {
 
 }
 
-ACTION Assets::create(uint64_t assetid, name author, name category, name owner, string idata, string mdata, bool requireclaim ) {
+ACTION Assets::create(uint64_t assetid, name author, name owner, string idata, string mdata, bool requireclaim ) {
 
 	require_auth( author );
 	sassets assets_f( _self, author.value );
@@ -150,14 +150,13 @@ ACTION Assets::create(uint64_t assetid, name author, name category, name owner, 
 	}
 	assets_f.modify( itrAsset, author, [&]( auto& a ) {
 		a.owner = owner;
-		a.category = category;
 		a.mdata = mdata; // mutable data
 		a.idata = idata; // immutable data
 	});
 
 	//Events
 	sendEvent( author, author, "saecreate"_n, std::make_tuple( owner, assetid) );
-	SEND_INLINE_ACTION( *this, createlog, { {_self, "active"_n} }, { author, category, owner, idata, mdata, assetid, requireclaim } );
+	SEND_INLINE_ACTION( *this, createlog, { {_self, "active"_n} }, { author, owner, idata, mdata, assetid, requireclaim } );
 
 }
 ACTION Assets::newassetlog( name author, uint64_t assetid) {
@@ -165,7 +164,7 @@ ACTION Assets::newassetlog( name author, uint64_t assetid) {
 	require_auth(get_self());
 }
 
-ACTION Assets::createlog( name author, name category, name owner, string idata, string mdata, uint64_t assetid, bool requireclaim ) {
+ACTION Assets::createlog( name author, name owner, string idata, string mdata, uint64_t assetid, bool requireclaim ) {
 
 	require_auth(get_self());
 }
@@ -192,7 +191,6 @@ ACTION Assets::claim( name claimer, std::vector<uint64_t>& assetids ) {
 			s.id = itr->id;
 			s.owner = claimer;
 			s.author = itr->author;
-			s.category = itr->category;
 			s.mdata = itr->mdata; 		// mutable data
 			s.idata = itr->idata; 		// immutable data
 			s.container = itr->container;
@@ -264,7 +262,6 @@ ACTION Assets::transfer( name from, name to, std::vector<uint64_t>& assetids, st
 			s.id = itr->id;
 			s.owner = to;
 			s.author = itr->author;
-			s.category = itr->category;
 			s.idata = itr->idata; 		// immutable data
 			s.mdata = itr->mdata; 		// mutable data
 			s.container = itr->container;
@@ -487,7 +484,6 @@ ACTION Assets::detach( name owner, uint64_t assetidc, std::vector<uint64_t>& ass
 					s.id = acc.id;
 					s.owner = owner;
 					s.author = acc.author;
-					s.category = acc.category;
 					s.idata = acc.idata; 		// immutable data
 					s.mdata = acc.mdata; 		// mutable data
 					s.container = acc.container;

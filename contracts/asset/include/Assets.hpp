@@ -140,7 +140,6 @@ CONTRACT Assets : public contract{
 		*
 		* @param assetid is assetid to create.
 		* @param author	is asset's author, who will able to updated asset's mdata.
-		* @param category is assets category.
 		* @param owner is assets owner.
 		* @param idata is stringified json or just sha256 string with immutable assets data
 		* @param mdata is stringified json or just sha256 string with mutable assets data, can be changed only by author;
@@ -150,7 +149,7 @@ CONTRACT Assets : public contract{
 		*		  the owner field to claim the asset using the account's RAM.
 		* @return no return value.
 		*/
-		ACTION create(uint64_t assetid, name author, name category, name owner, string idata, string mdata, bool requireclaim );
+		ACTION create(uint64_t assetid, name author, name owner, string idata, string mdata, bool requireclaim );
 		using create_action = action_wrapper< "create"_n, &Assets::create >;
 
 		/*
@@ -160,7 +159,6 @@ CONTRACT Assets : public contract{
 		* easily get new asset ids and other information.
 		*
 		* @param author	is asset's author, who will able to updated asset's mdata.
-		* @param category is assets category.
 		* @param owner is assets owner.
 		* @param idata is stringified json or just sha256 string with immutable assets data.
 		* @param mdata is stringified json or just sha256 string with mutable assets data, can be changed only by author.
@@ -171,7 +169,7 @@ CONTRACT Assets : public contract{
 		*		 the owner field to claim the asset using the account's RAM.
 		* @return no return value.
 		*/
-		ACTION createlog( name author, name category, name owner, string idata, string mdata, uint64_t assetid, bool requireclaim );
+		ACTION createlog( name author, name owner, string idata, string mdata, uint64_t assetid, bool requireclaim );
 		using createlog_action = action_wrapper< "createlog"_n, &Assets::createlog >;
 
 		/*
@@ -625,7 +623,6 @@ CONTRACT Assets : public contract{
 			uint64_t                id;
 			name                    owner;
 			name                    author;
-			name                    category;
 			string                  idata; // immutable data
 			string                  mdata; // mutable data
 			std::vector<sasset>     container;
