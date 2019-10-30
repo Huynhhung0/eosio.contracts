@@ -65,13 +65,13 @@ CONTRACT Assets : public contract{
 		using updatever_action = action_wrapper< "updatever"_n, &Assets::updatever >;
 
 		/*
-		* New Author registration.
+		* New Creator registration.
 		*
-		* This action register new author registration. Action is not mandatory.  Markets *may* choose to use information here
-		* to display info about the author, and to follow specifications expressed here for displaying
+		* This action register new creator registration. Action is not mandatory.  Markets *may* choose to use information here
+		* to display info about the creator, and to follow specifications expressed here for displaying
 		* asset fields.
 		*
-		* @param author is authors account who will create assets.
+		* @param creator is creators account who will create assets.
 		* @param data is stringified json. Recommendations to include: game, company, logo, url, desc.
 		* @param stemplate	is stringified json with key:state values, where key is key from mdata or idata and
 		*		 state indicates recommended way of displaying field:
@@ -92,32 +92,32 @@ CONTRACT Assets : public contract{
 		*
 		* @return no return value
 		*/
-		ACTION regauthor( name author, string data, string stemplate, string imgpriority );
-		using regauthor_action = action_wrapper< "regauthor"_n, &Assets::regauthor >;
+		ACTION regcreator( name creator, string data, string stemplate, string imgpriority );
+		using regcreator_action = action_wrapper< "regcreator"_n, &Assets::regcreator >;
 
 		/*
-		* Authors info update.
+		* Creators info update.
 		*
-		* This action update authors info. Used to updated author information, and asset display recommendations created
-		* with the regauthor action. This action replaces the fields data and stemplate.
-		* To remove author entry, call this action with null strings for data and stemplate.
+		* This action update creators info. Used to updated creator information, and asset display recommendations created
+		* with the regcreator action. This action replaces the fields data and stemplate.
+		* To remove creator entry, call this action with null strings for data and stemplate.
 		*
-		* (See regauthor action for parameter info.)
+		* (See regcreator action for parameter info.)
 		*
 		* @return no return value.
 		*/
-		ACTION authorupdate( name author, string data, string stemplate, string imgpriority );
-		using authorupdate_action = action_wrapper< "authorupdate"_n, &Assets::authorupdate >;
+		ACTION creatorupdate( name creator, string data, string stemplate, string imgpriority );
+		using creatorupdate_action = action_wrapper< "creatorupdate"_n, &Assets::creatorupdate >;
 
 		/*
 		* Prepare a new asset.
 		*
 		* This action Prepare a new asset.
 		*
-		* @param author is assets author.
+		* @param creator is assets creator.
 		* @return no return value.
 		*/
-		ACTION newasset(name author);
+		ACTION newasset(name creator);
 		using newasset_action = action_wrapper< "newasset"_n, &Assets::newasset >;
 
 		/*
@@ -126,11 +126,11 @@ CONTRACT Assets : public contract{
 		* This is empty action. Used by create action to log assetid so that third party explorers can
 		* easily get new asset ids and other information.
 		*
-		* @param author is asset's author, who will able to updated asset's mdata.
+		* @param creator is asset's creator, who will able to updated asset's mdata.
 		* @param assetid is id of the asset
 		* @return no return value.
 		*/
-		ACTION newassetlog( name author, uint64_t assetid);
+		ACTION newassetlog( name creator, uint64_t assetid);
 		using newassetlog_action = action_wrapper< "newassetlog"_n, &Assets::newassetlog >;
 
 		/*
@@ -139,17 +139,17 @@ CONTRACT Assets : public contract{
 		* This action create a new asset.
 		*
 		* @param assetid is assetid to create.
-		* @param author	is asset's author, who will able to updated asset's mdata.
+		* @param creator	is asset's creator, who will able to updated asset's mdata.
 		* @param owner is assets owner.
 		* @param idata is stringified json or just sha256 string with immutable assets data
-		* @param mdata is stringified json or just sha256 string with mutable assets data, can be changed only by author;
+		* @param mdata is stringified json or just sha256 string with mutable assets data, can be changed only by creator;
 		* @param requireclaim is true or false. If disabled, upon creation, the asset will be transfered to owner (but
 		*		  but AUTHOR'S memory will be used until the asset is transferred again).  If enabled,
-		*		  author will remain the owner, but an offer will be created for the account specified in
+		*		  creator will remain the owner, but an offer will be created for the account specified in
 		*		  the owner field to claim the asset using the account's RAM.
 		* @return no return value.
 		*/
-		ACTION create(uint64_t assetid, name author, name owner, string idata, string mdata, bool requireclaim );
+		ACTION create(uint64_t assetid, name creator, name owner, string idata, string mdata, bool requireclaim );
 		using create_action = action_wrapper< "create"_n, &Assets::create >;
 
 		/*
@@ -158,18 +158,18 @@ CONTRACT Assets : public contract{
 		* This is empty action. Used by create action to log assetid so that third party explorers can
 		* easily get new asset ids and other information.
 		*
-		* @param author	is asset's author, who will able to updated asset's mdata.
+		* @param creator	is asset's creator, who will able to updated asset's mdata.
 		* @param owner is assets owner.
 		* @param idata is stringified json or just sha256 string with immutable assets data.
-		* @param mdata is stringified json or just sha256 string with mutable assets data, can be changed only by author.
+		* @param mdata is stringified json or just sha256 string with mutable assets data, can be changed only by creator.
 		* @param assetid is id of the asset
 		* @param requireclaim is true or false. If disabled, upon creation, the asset will be transfered to owner (but
 		*		 but AUTHOR'S memory will be used until the asset is transferred again).  If enabled,
-		*		 author will remain the owner, but an offer will be created for the account specified in
+		*		 creator will remain the owner, but an offer will be created for the account specified in
 		*		 the owner field to claim the asset using the account's RAM.
 		* @return no return value.
 		*/
-		ACTION createlog( name author, name owner, string idata, string mdata, uint64_t assetid, bool requireclaim );
+		ACTION createlog( name creator, name owner, string idata, string mdata, uint64_t assetid, bool requireclaim );
 		using createlog_action = action_wrapper< "createlog"_n, &Assets::createlog >;
 
 		/*
@@ -203,15 +203,15 @@ CONTRACT Assets : public contract{
 		/*
 		* Update assets data.
 		*
-		* This action update assets mutable data (mdata) field. Action is available only for authors.
+		* This action update assets mutable data (mdata) field. Action is available only for creators.
 		*
-		* @param author	is authors account.
+		* @param creator	is creators account.
 		* @param owner is current assets owner.
 		* @param assetid is assetid to update.
 		* @param mdata is stringified json with mutable assets data. All mdata will be replaced.
 		* @return no return value.
 		*/
-		ACTION update( name author, name owner, uint64_t assetid, string mdata );
+		ACTION update( name creator, name owner, uint64_t assetid, string mdata );
 		using update_action = action_wrapper< "update"_n, &Assets::update >;
 
 		/*
@@ -293,8 +293,8 @@ CONTRACT Assets : public contract{
 		* Attach non-fungible token.
 		*
 		* This action attach other NFTs to the specified NFT. Restrictions:
-		* 1. Only the Asset Author can do this
-		* 2. All assets must have the same author
+		* 1. Only the Asset Creator can do this
+		* 2. All assets must have the same creator
 		* 3. All assets much have the same owner
 		*
 		* @param owner is owner of NFTs.
@@ -335,17 +335,17 @@ CONTRACT Assets : public contract{
 		* Attach fungible token.
 		*
 		* This action attach FTs to the specified NFT. Restrictions:
-		* 1. Only the Asset Author can do this
-		* 2. All assets must have the same author
+		* 1. Only the Asset Creator can do this
+		* 2. All assets must have the same creator
 		* 3. All assets much have the same owner
 		*
 		* @param owner is owner of assets.
-		* @param author	is author of the assets.
+		* @param creator	is creator of the assets.
 		* @param assetidc is id of container NFT.
 		* @param quantity is quantity to attach and token name (for example: "10 WOOD", "42.00 GOLD").
 		* @return no return value.
 		*/
-		ACTION attachf( name owner, name author, asset quantity, uint64_t assetidc );
+		ACTION attachf( name owner, name creator, asset quantity, uint64_t assetidc );
 		using attachf_t_action = action_wrapper< "attachf"_n, &Assets::attachf >;
 
 		/*
@@ -354,12 +354,12 @@ CONTRACT Assets : public contract{
 		* This action detach FTs from the specified NFT.
 		*
 		* @param owner is owner of NFTs.
-		* @param author	is author of the assets.
+		* @param creator	is creator of the assets.
 		* @param assetidc is id of the container NFT.
 		* @param quantity is quantity to detach and token name (for example: 10 WOOD, 42.00 GOLD).
 		* @return no return value.
 		*/
-		ACTION detachf( name owner, name author, asset quantity, uint64_t assetidc );
+		ACTION detachf( name owner, name creator, asset quantity, uint64_t assetidc );
 		using detachf_t_action = action_wrapper< "detachf"_n, &Assets::detachf >;
 
 		/*
@@ -367,15 +367,15 @@ CONTRACT Assets : public contract{
 		*
 		* This action create fungible token with specified maximum supply; You can not change anything after creation.
 		*
-		* @param author is fungible token author;
+		* @param creator is fungible token creator;
 		* @param maximum_supply is maximum token supply, example "10000000.0000 GOLD", "10000000 SEED", "100000000.00 WOOD".
 		*        Precision is also important here.
-		* @param authorctrl is IMPORTANT! If true(1) allows token author (and not just owner) to burnf and transferf.
+		* @param creatorctrl is IMPORTANT! If true(1) allows token creator (and not just owner) to burnf and transferf.
 		*        Cannot be changed after creation!
 		* @param data is stringify json (recommend including keys `img` and `name` for better displaying by markets).
 		* @return no return value.
 		*/
-		ACTION createf( name author, asset maximum_supply, bool authorctrl, string data );
+		ACTION createf( name creator, asset maximum_supply, bool creatorctrl, string data );
 		using createf_action = action_wrapper< "createf"_n, &Assets::createf >;
 
 		/*
@@ -383,12 +383,12 @@ CONTRACT Assets : public contract{
 		*
 		* Update the data field of a fungible token.
 		*
-		* @param author is fungible token author.
+		* @param creator is fungible token creator.
 		* @param sym is fingible token symbol ("GOLD", "WOOD", etc.).
 		* @param data is stringify json (recommend including keys `img` and `name` for better displaying by markets).
 		* @return no return value.
 		*/
-		ACTION updatef( name author, symbol sym, string data );
+		ACTION updatef( name creator, symbol sym, string data );
 		using updatef_action = action_wrapper< "updatef"_n, &Assets::updatef >;
 
 		/*
@@ -397,12 +397,12 @@ CONTRACT Assets : public contract{
 		* This action issues a fungible token.
 		*
 		* @param to is account receiver.
-		* @param author is fungible token author.
+		* @param creator is fungible token creator.
 		* @param quantity is amount to issue, example "1000.00 WOOD".
 		* @param memo is issue comment.
 		* @return no return value.
 		*/
-		ACTION issuef( name to, name author, asset quantity, string memo );
+		ACTION issuef( name to, name creator, asset quantity, string memo );
 		using issuef_action = action_wrapper< "issuef"_n, &Assets::issuef >;
 
 		/*
@@ -412,12 +412,12 @@ CONTRACT Assets : public contract{
 		*
 		* @param from is account who sends the token.
 		* @param to is account of receiver.
-		* @param author is account of fungible token author.
+		* @param creator is account of fungible token creator.
 		* @param quantity is amount to transfer, example "1.00 WOOD".
 		* @param memo is transfer's comment.
 		* @return no return value.
 		*/
-		ACTION transferf( name from, name to, name author, asset quantity, string memo );
+		ACTION transferf( name from, name to, name creator, asset quantity, string memo );
 		using transferf_action = action_wrapper< "transferf"_n, &Assets::transferf >;
 
 		/*
@@ -431,12 +431,12 @@ CONTRACT Assets : public contract{
 		*
 		* @param owner is original owner of the FT.
 		* @param newowner is account which will be able to claim the offer.
-		* @param author is account of fungible token author.
+		* @param creator is account of fungible token creator.
 		* @param quantity is amount to transfer, example "1.00 WOOD".
 		* @param memo is offer's comment;
 		* @return no return value.
 		*/
-		ACTION offerf( name owner, name newowner, name author, asset quantity, string memo );
+		ACTION offerf( name owner, name newowner, name creator, asset quantity, string memo );
 		using offerf_action = action_wrapper< "offerf"_n, &Assets::offerf >;
 
 		/*
@@ -466,16 +466,16 @@ CONTRACT Assets : public contract{
 		/*
 		* Burn fungible tokens
 		*
-		* This action burn a fungible token. This action is available for the token owner and author. After executing,
+		* This action burn a fungible token. This action is available for the token owner and creator. After executing,
 		* accounts balance and supply in stats table for this token will reduce by the specified quantity.
 		*
 		* @param from is account who burns the token.
-		* @param author is account of fungible token author.
+		* @param creator is account of fungible token creator.
 		* @param quantity is amount to burn, example "1.00 WOOD".
 		* @param memo is memo for burnf action.
 		* @return no return value.
 		*/
-		ACTION burnf( name from, name author, asset quantity, string memo );
+		ACTION burnf( name from, name creator, asset quantity, string memo );
 		using burnf_action = action_wrapper< "burnf"_n, &Assets::burnf >;
 
 		/*
@@ -484,12 +484,12 @@ CONTRACT Assets : public contract{
 		* This action opens accounts table for specified fungible token.
 		*
 		* @param owner is account where create table with fungible token.
-		* @param author is account of fungible token author.
+		* @param creator is account of fungible token creator.
 		* @param symbol is token symbol, example "WOOD", "ROCK", "GOLD".
 		* @param ram_payer is account who will pay for ram used for table creation.
 		* @return no return value.
 		*/
-		ACTION openf( name owner, name author, const symbol& symbol, name ram_payer );
+		ACTION openf( name owner, name creator, const symbol& symbol, name ram_payer );
 		using openf_action = action_wrapper< "openf"_n, &Assets::openf >;
 
 		/*
@@ -499,11 +499,11 @@ CONTRACT Assets : public contract{
 		* Action works only if balance is 0.
 		*
 		* @param owner is account who woud like to close table with fungible token.
-		* @param author is account of fungible token author.
+		* @param creator is account of fungible token creator.
 		* @param symbol is token symbol, example "WOOD", "ROCK", "GOLD".
 		* @return no return value.
 		*/
-		ACTION closef( name owner, name author, const symbol& symbol );
+		ACTION closef( name owner, name creator, const symbol& symbol );
 		using closef_action = action_wrapper< "closef"_n, &Assets::closef >;
 
 		/*
@@ -512,11 +512,11 @@ CONTRACT Assets : public contract{
 		* This function return current token supply.
 		*
 		* @param token_contract_account is contract to check.
-		* @param author is fungible tokens author account.
+		* @param creator is fungible tokens creator account.
 		* @param sym_code is token symbol, example "WOOD", "ROCK", "GOLD".
 		* @return asset
 		*/
-		static asset get_supply( name token_contract_account, name author, symbol_code sym_code );
+		static asset get_supply( name token_contract_account, name creator, symbol_code sym_code );
 
 		/*
 		* Returns token balance for account.
@@ -525,11 +525,11 @@ CONTRACT Assets : public contract{
 		*
 		* @param token_contract_account is contract to check;
 		* @param owner is token holder account;
-		* @param author is fungible tokens author account;
+		* @param creator is fungible tokens creator account;
 		* @param sym_code is token symbol, example "WOOD", "ROCK", "GOLD";
 		* @return asset
 		*/
-		static asset get_balance( name token_contract_account, name owner, name author, symbol_code sym_code );
+		static asset get_balance( name token_contract_account, name owner, name creator, symbol_code sym_code );
 
 	private:
 		/*
@@ -547,50 +547,50 @@ CONTRACT Assets : public contract{
 		*
 		* This function return fungible token index.
 		*
-		* @param author is author name ;
+		* @param creator is creator name ;
 		* @param symbol is symbol;
 		* @return new fungible token index
 		*/
-		uint64_t getFTIndex( name author, symbol symbol );
-		void attachdeatch( name owner, name author, asset quantity, uint64_t assetidc, bool attach );
-		void sub_balancef( name owner, name author, asset value );
-		void add_balancef( name owner, name author, asset value, name ram_payer );
+		uint64_t getFTIndex( name creator, symbol symbol );
+		void attachdeatch( name owner, name creator, asset quantity, uint64_t assetidc, bool attach );
+		void sub_balancef( name owner, name creator, asset value );
+		void add_balancef( name owner, name creator, asset value, name ram_payer );
 
 		template<typename... Args>
-		void sendEvent( name author, name rampayer, name seaction, const std::tuple<Args...> &tup );
+		void sendEvent( name creator, name rampayer, name seaction, const std::tuple<Args...> &tup );
 		std::vector<string> splitWord(string s, char delimiter); 
 		string join(const std::vector<string> &lst, const string &delim); 
 		std::vector<std::vector<string>> groupBy(std::vector<string> digest, int size);
 
 		/*
-		* Authors table. Can be used by asset markets, asset explorers, or wallets for correct asset
+		* Creators table. Can be used by asset markets, asset explorers, or wallets for correct asset
 		* data presentation.
 		* Scope: self
 		*/
-		TABLE sauthor {
-			name			author;
+		TABLE screator {
+			name			creator;
 			string			data;
 			string			stemplate;
 			string			imgpriority;
 
 			auto primary_key() const {
-				return author.value;
+				return creator.value;
 			}
 
 		};
-		typedef eosio::multi_index< "authors"_n, sauthor > authors;
+		typedef eosio::multi_index< "creators"_n, screator > creators;
 
 		/*
-		* Fungible token accounts stats info: Max Supply, Current Supply, issuer (author), token unique id, authorctrl.
-		* authorctrl if true(1) allow token author (and not just owner) to burn and transfer.
-		* Scope: token author
+		* Fungible token accounts stats info: Max Supply, Current Supply, issuer (creator), token unique id, creatorctrl.
+		* creatorctrl if true(1) allow token creator (and not just owner) to burn and transfer.
+		* Scope: token creator
 		*/
 		TABLE currency_stats {
 			asset		supply;
 			asset		max_supply;
 			name		issuer;
 			uint64_t 	id;
-			bool		authorctrl;
+			bool		creatorctrl;
 			string		data;
 
 			uint64_t primary_key()const {
@@ -605,7 +605,7 @@ CONTRACT Assets : public contract{
 		*/
 		TABLE account {
 			uint64_t	id;
-			name		author;
+			name		creator;
 			asset		balance;
 
 			uint64_t primary_key()const {
@@ -622,7 +622,7 @@ CONTRACT Assets : public contract{
 		TABLE sasset {
 			uint64_t                id;
 			name                    owner;
-			name                    author;
+			name                    creator;
 			string                  idata; // immutable data
 			string                  mdata; // mutable data
 			std::vector<sasset>     container;
@@ -631,13 +631,13 @@ CONTRACT Assets : public contract{
 			auto primary_key() const {
 				return id;
 			}
-			uint64_t by_author() const {
-				return author.value;
+			uint64_t by_creator() const {
+				return creator.value;
 			}
 
 		};
 		typedef eosio::multi_index< "sassets"_n, sasset,
-			eosio::indexed_by< "author"_n, eosio::const_mem_fun<sasset, uint64_t, &sasset::by_author> >
+			eosio::indexed_by< "creator"_n, eosio::const_mem_fun<sasset, uint64_t, &sasset::by_creator> >
 			> sassets;
 
 		/*
@@ -713,7 +713,7 @@ CONTRACT Assets : public contract{
 		*/
 		TABLE sofferf {
 			uint64_t		id;
-			name			author;
+			name			creator;
 			name			owner;
 			asset			quantity;
 			name			offeredto;
