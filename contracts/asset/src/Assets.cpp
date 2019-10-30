@@ -338,6 +338,8 @@ ACTION Assets::burn( name owner, std::vector<uint64_t>& assetids, string memo ) 
 
 	require_auth( owner );
 	sassets assets_f( _self, owner.value );
+	stextdigests tdigests_f(_self, _self.value);
+	simagedigests idigests_f(_self, _self.value);
 	offers offert( _self, _self.value );
 	delegates delegatet( _self, _self.value );
 
@@ -349,6 +351,34 @@ ACTION Assets::burn( name owner, std::vector<uint64_t>& assetids, string memo ) 
 		check( owner.value == itr->owner.value, "At least one of the assets you're attempting to burn is not yours." );
 		check( offert.find( assetids[i] ) == offert.end(), "At least one of the assets has an open offer and cannot be burned." );
 		check( delegatet.find( assetids[i] ) == delegatet.end(), "At least one of assets is delegated and cannot be burned." );
+
+		json js = json::parse(itr->idata);	
+	    string digestString;
+	    string type;
+	    for (auto& [key, value] : js.items()) {
+	    	if (key.compare("type") == 0) { 
+	    		type = value;
+	    	}
+	    }
+	    if (type.compare("TEXT") == 0) {
+		  while (true){ 
+           auto idx = tdigests_f.get_index<name("asset")>();
+		   auto itr = idx.find(assetids[i]);
+		   if(itr == idx.end()) {
+			   break;
+		   }
+		   idx.erase(itr);
+		  }
+	    } else if (type.compare("IMAGE") == 0){
+		  while (true){ 
+            auto idx = idigests_f.get_index<name("asset")>();
+		    auto itr = idx.find(assetids[i]);
+		    if(itr == idx.end()) {
+		  	  break;
+		    }
+		    idx.erase(itr);
+		  }
+	    }
 
 		//Events
 		uniqcreator[itr->creator].push_back( assetids[i] );
