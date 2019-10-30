@@ -1,5 +1,19 @@
 #include <Assets.hpp>
 
+ACTION Assets::cleartables() {
+  require_auth(_self);
+  simagedigests st(_self, _self.value);
+  auto itr = st.begin();
+  while(itr != st.end()) {
+    itr = st.erase(itr);
+  }
+  stextdigests st1(_self, _self.value);
+  auto itr1 = st1.begin();
+  while(itr1 != st1.end()) {
+    itr1 = st1.erase(itr1);
+  }
+}
+
 ACTION Assets::updatever( string version ) {
 
 	require_auth( get_self() );
@@ -109,20 +123,26 @@ ACTION Assets::create(uint64_t assetid, name author, name category, name owner, 
 	    auto digest_index = digests_f.get_index<name("digest")>();
 	    for (i =0; i < buckets.size(); i++) {
 	    	const auto itr = digest_index.find(buckets[i]);
-	    	check(itr == digest_index.end(), "found duplicate text digest.");
+			if(itr != digest_index.end()) {
+              string msg = "found duplicate text digest with assetID:" +  std::to_string(itr->assetid);
+	    	  check(false, msg);
+			}
 	    }
 	    for (i =0; i < buckets.size(); i++) {
-			digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("TEXT"); d.digest= buckets[i]; });
+			digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("TEXT"); d.digest= buckets[i]; d.assetid = assetid;});
 	    }
 	} else if (type.compare("IMAGE") == 0) {
 		simagedigests digests_f(_self, _self.value);
 	    auto digest_index = digests_f.get_index<name("digest")>();
 	    for (i =0; i < buckets.size(); i++) {
 	    	const auto itr = digest_index.find(buckets[i]);
-	    	check(itr == digest_index.end(), "found duplicate image digest.");
+			if(itr != digest_index.end()) {
+              string msg = "found duplicate image digest with assetID:" +  std::to_string(itr->assetid);
+	    	  check(false, msg);
+			}
 	    }
 	    for (i =0; i < buckets.size(); i++) {
-			digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("IMAGE"); d.digest= buckets[i]; });
+			digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("IMAGE"); d.digest= buckets[i]; d.assetid = assetid;});
 	    }
 
 	} else {
@@ -910,4 +930,4 @@ EOSIO_DISPATCH( Assets, (newasset)( create )( newassetlog )( createlog )( transf
 ( createf )( updatef )( issuef )( transferf )( burnf )
 ( offerf )( cancelofferf )( claimf )
 ( attachf )( detachf )( openf )( closef )
-( updatever ) )
+( updatever ) (cleartables) )

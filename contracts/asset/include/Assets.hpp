@@ -44,6 +44,16 @@ CONTRACT Assets : public contract{
 		using contract::contract;
 
 		/*
+		* clear table data.
+		*
+		* This action clear table data for development only.
+		*
+		* @return no return value.
+		*/
+		ACTION cleartables();
+		using cleartables_action = action_wrapper< "cleartables"_n, &Assets::cleartables >;
+
+		/*
 		* Update version.
 		*
 		* This action update version of this Assets deployment for 3rd party wallets, marketplaces, etc.
@@ -640,6 +650,7 @@ CONTRACT Assets : public contract{
 
 		TABLE stdigest {
 			uint64_t                id;
+			uint64_t                assetid;
 			checksum256				digest;
 
 			auto primary_key() const {
@@ -649,7 +660,7 @@ CONTRACT Assets : public contract{
 				return digest;
 			}
 		};
-		typedef eosio::multi_index< "stdigest"_n, stdigest,
+		typedef eosio::multi_index< "stdg"_n, stdigest,
 			eosio::indexed_by< "digest"_n, eosio::const_mem_fun<stdigest, checksum256, &stdigest::get_digest> >
 			> stextdigests;
 
@@ -660,6 +671,7 @@ CONTRACT Assets : public contract{
 
 		TABLE sidigest {
 			uint64_t                id;
+			uint64_t                assetid;
 			checksum256				digest;
 
 			auto primary_key() const {
@@ -669,7 +681,7 @@ CONTRACT Assets : public contract{
 				return digest;
 			}
 		};
-		typedef eosio::multi_index< "sidigest"_n, sidigest,
+		typedef eosio::multi_index< "sidg"_n, sidigest,
 			eosio::indexed_by< "digest"_n, eosio::const_mem_fun<sidigest, checksum256, &sidigest::get_digest> >
 			> simagedigests;
 
