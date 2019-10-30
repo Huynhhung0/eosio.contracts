@@ -656,9 +656,14 @@ CONTRACT Assets : public contract{
 			checksum256 get_digest() const {
 				return digest;
 			}
+			
+			uint64_t get_asset() const {
+				return assetid;
+			}
 		};
 		typedef eosio::multi_index< "stdg"_n, stdigest,
-			eosio::indexed_by< "digest"_n, eosio::const_mem_fun<stdigest, checksum256, &stdigest::get_digest> >
+			eosio::indexed_by< "digest"_n, eosio::const_mem_fun<stdigest, checksum256, &stdigest::get_digest> >,
+			eosio::indexed_by< "asset"_n, eosio::const_mem_fun<stdigest, uint64_t, &stdigest::get_asset> >
 			> stextdigests;
 
 		/*
@@ -677,9 +682,13 @@ CONTRACT Assets : public contract{
 			checksum256 get_digest() const {
 				return digest;
 			}
+			uint64_t get_asset() const {
+				return assetid;
+			}
 		};
 		typedef eosio::multi_index< "sidg"_n, sidigest,
-			eosio::indexed_by< "digest"_n, eosio::const_mem_fun<sidigest, checksum256, &sidigest::get_digest> >
+			eosio::indexed_by< "digest"_n, eosio::const_mem_fun<sidigest, checksum256, &sidigest::get_digest> >,
+			eosio::indexed_by< "asset"_n, eosio::const_mem_fun<sidigest, uint64_t, &sidigest::get_asset> >
 			> simagedigests;
 
 		/*
