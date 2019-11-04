@@ -106,7 +106,7 @@ ACTION Assets::create(uint64_t assetid, name creator, name owner, string idata, 
     std::vector<string> digest = splitWord(digestString, ',');
     std::vector<std::vector<string>> digestGroup;
 	if (type.compare("TEXT") == 0) {
-	  digestGroup = groupBy(digest, 5);
+	  digestGroup = groupBy(digest, 13);
 	} else if (type.compare("IMAGE") == 0){
 	  digestGroup = groupBy(digest, 1);
 	}
