@@ -210,7 +210,7 @@ ACTION Assets::claim( name claimer, std::vector<uint64_t>& assetids ) {
 	}
 }
 
-ACTION Assets::transfer( name from, name to, std::vector<uint64_t>& assetids, string memo ) {
+ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonstr, std::vector<uint64_t>& assetids, string memo ) {
 
 	check( from != to, "cannot transfer to yourself" );
 	check( is_account( to ), "TO account does not exist" );
@@ -230,6 +230,9 @@ ACTION Assets::transfer( name from, name to, std::vector<uint64_t>& assetids, st
 	bool isDelegeting = false;
 
 	std::map< name, std::vector<uint64_t> > uniqcreator;
+
+	json fromjson = json::parse(fromjsonstr);
+	json tojson = json::parse(tojsonstr);
 
 	for ( auto i = 0; i < assetids.size(); ++i ) {
 		auto itrd = delegatet.find( assetids[i] );
@@ -254,16 +257,28 @@ ACTION Assets::transfer( name from, name to, std::vector<uint64_t>& assetids, st
 		}
 
 		auto itr = assets_f.find( assetids[i] );
+		json mdata = json::parse(itr->mdata);
+		string ownerState = mdata["echo_owner"].get<string>();
+		string refOwnerState = mdata["echo_ref_owner"].get<string>();
+		string fromOwner = fromjson["echo_owner"].get<string>();
+		string fromRefOwner = fromjson["echo_ref_owner"].get<string>();
+		string toOwner = tojson["echo_owner"].get<string>();
+		string toRefOwner = tojson["echo_ref_owner"].get<string>();
+		check(ownerState.compare(fromOwner) == 0, "cannot transfer from other owner.");
+		check(refOwnerState.compare(fromRefOwner) == 0, "cannot transfer from other ref owner.");
+		check(ownerState.compare(toOwner) != 0, "cannot transfer to yourself.");
+		check(refOwnerState.compare(toRefOwner) != 0, "cannot transfer to yourself.");
 		check( itr != assets_f.end(), "At least one of the assets cannot be found (check ids?)" );
 		check( from.value == itr->owner.value, "At least one of the assets is not yours to transfer." );
 		check( offert.find( assetids[i] ) == offert.end(), "At least one of the assets has been offered for a claim and cannot be transferred. Cancel offer?" );
-
+		mdata["echo_owner"] = toOwner;
+		mdata["echo_ref_owner"] = toRefOwner;
 		assets_t.emplace( rampayer, [&]( auto& s ) {
 			s.id = itr->id;
 			s.owner = to;
 			s.creator = itr->creator;
 			s.idata = itr->idata; 		// immutable data
-			s.mdata = itr->mdata; 		// mutable data
+			s.mdata = mdata.dump(); 		   // mutable data
 			s.container = itr->container;
 			s.containerf = itr->containerf;
 
@@ -392,7 +407,7 @@ ACTION Assets::revoke( name owner, std::vector<uint64_t>& assetids, string memo 
 	}
 }
 
-ACTION Assets::delegate( name owner, name to, std::vector<uint64_t>& assetids, uint64_t period, string memo ) {
+ACTION Assets::delegate( name owner, name to,string fromjson, string tojson, std::vector<uint64_t>& assetids, uint64_t period, string memo ) {
 
 	check(memo.size() <= 64, "Error. Size of memo cannot be bigger 64");
 	check( owner != to, "cannot delegate to yourself" );
@@ -419,7 +434,7 @@ ACTION Assets::delegate( name owner, name to, std::vector<uint64_t>& assetids, u
 		});
 	}
 
-	transfer( owner, to, assetids, "Delegate memo: " + memo );
+	transfer( owner, to, fromjson, tojson, assetids, "Delegate memo: " + memo );
 }
 
 ACTION Assets::delegatemore( name owner, uint64_t assetidc, uint64_t period ) {
@@ -436,7 +451,7 @@ ACTION Assets::delegatemore( name owner, uint64_t assetidc, uint64_t period ) {
 	});
 }
 
-ACTION Assets::undelegate( name owner, name from, std::vector<uint64_t>& assetids ) {
+ACTION Assets::undelegate( name owner, name from,string fromjson, string tojson, std::vector<uint64_t>& assetids ) {
 
 	require_auth( owner );
 	require_recipient( owner );
@@ -463,7 +478,7 @@ ACTION Assets::undelegate( name owner, name from, std::vector<uint64_t>& assetid
 		assetidsmemo += std::to_string( assetids[i] );
 	}
 
-	transfer( from, owner, assetids, "undelegate assetid: " + assetidsmemo );
+	transfer( from, owner, fromjson, tojson, assetids, "undelegate assetid: " + assetidsmemo );
 }
 
 

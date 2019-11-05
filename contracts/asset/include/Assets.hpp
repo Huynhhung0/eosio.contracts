@@ -193,11 +193,13 @@ CONTRACT Assets : public contract{
 		*
 		* @param from is account who sends the asset.
 		* @param to is account of receiver.
+		* @param fromjsonstr is json string object contains echo_owner and echo_ref_owner who sends the asset.
+		* @param tojsonstr is json string object contains echo_owner and echo_ref_owner of account receiver.
 		* @param assetids is array of assetid's to transfer.
 		* @param memo is transfers comment.
 		* @return no return value. 
 		*/
-		ACTION transfer( name from, name to, std::vector< uint64_t >& assetids, string memo );
+		ACTION transfer( name from, name to,string fromjsonstr, string tojsonstr, std::vector< uint64_t >& assetids, string memo );
 		using transfer_action = action_wrapper< "transfer"_n, &Assets::transfer >;
 
 		/*
@@ -265,13 +267,15 @@ CONTRACT Assets : public contract{
 		*
 		* @param owner is current asset owner account.
 		* @param to is borrower account name.
+		* @param fromjson is current owner of json.
+		* @param tojson is to borrower account.
 		* @param assetids is array of assetid's to delegate.
 		* @param period	is time in seconds that the asset will be lent. Lender cannot undelegate until
 		*		 the period expires, however the receiver can transfer back at any time.
 		* @param memo is memo for delegate action.
 		* @return no return value.
 		*/
-		ACTION delegate( name owner, name to, std::vector< uint64_t >& assetids, uint64_t period, string memo );
+		ACTION delegate( name owner, name to, string fromjson, string tojson, std::vector< uint64_t >& assetids, uint64_t period, string memo );
 		using delegate_action = action_wrapper< "delegate"_n, &Assets::delegate >;
 
 		/*
@@ -282,10 +286,12 @@ CONTRACT Assets : public contract{
 		*
 		* @param owner is real asset owner account.
 		* @param from is current account owner (borrower).
+		* @param fromjson is current owner of json.
+		* @param tojson is to borrower account.
 		* @param assetids is array of assetid's to undelegate.
 		* @return no return value.
 		*/
-		ACTION undelegate( name owner, name from, std::vector< uint64_t >& assetids );
+		ACTION undelegate( name owner, name from, string fromjson, string tojson, std::vector< uint64_t >& assetids );
 		using undelegate_action = action_wrapper< "undelegate"_n, &Assets::undelegate >;
 
 		/*
