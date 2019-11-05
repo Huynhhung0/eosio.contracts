@@ -246,23 +246,23 @@ CONTRACT Assets : public contract{
 		/*
 		* Burn asset.
 		*
-		* This action burn asset {{assetid}}. This action is only available for the asset owner. After executing, the
+		* This action revoke asset {{assetid}}. This action is only available for the asset owner. After executing, the
 		* asset will disappear forever, and RAM used for asset will be released.
 		*
 		* @param owner is current asset owner account.
-		* @param assetids is array of assetid's to burn.
-		* @param memo is memo for burn action.
+		* @param assetids is array of assetid's to revoke.
+		* @param memo is memo for revoke action.
 		* @return no return value.
 		*/
-		ACTION burn( name owner, std::vector< uint64_t >& assetids, string memo );
-		using burn_action = action_wrapper< "burn"_n, &Assets::burn >;
+		ACTION revoke( name owner, std::vector< uint64_t >& assetids, string memo );
+		using revoke_action = action_wrapper< "revoke"_n, &Assets::revoke >;
 
 		/*
 		* Burn asset.
 		*
 		* This action delegates asset to {{to}}. This action changes the asset owner by calling the transfer action.
 		* It also adds a record in the delegates table to record the asset as borrowed.  This blocks
-		* the asset from all owner actions (transfers, offers, burning by borrower).
+		* the asset from all owner actions (transfers, offers, revokeing by borrower).
 		*
 		* @param owner is current asset owner account.
 		* @param to is borrower account name.
@@ -370,7 +370,7 @@ CONTRACT Assets : public contract{
 		* @param creator is fungible token creator;
 		* @param maximum_supply is maximum token supply, example "10000000.0000 GOLD", "10000000 SEED", "100000000.00 WOOD".
 		*        Precision is also important here.
-		* @param creatorctrl is IMPORTANT! If true(1) allows token creator (and not just owner) to burnf and transferf.
+		* @param creatorctrl is IMPORTANT! If true(1) allows token creator (and not just owner) to revokef and transferf.
 		*        Cannot be changed after creation!
 		* @param data is stringify json (recommend including keys `img` and `name` for better displaying by markets).
 		* @return no return value.
@@ -466,17 +466,17 @@ CONTRACT Assets : public contract{
 		/*
 		* Burn fungible tokens
 		*
-		* This action burn a fungible token. This action is available for the token owner and creator. After executing,
+		* This action revoke a fungible token. This action is available for the token owner and creator. After executing,
 		* accounts balance and supply in stats table for this token will reduce by the specified quantity.
 		*
-		* @param from is account who burns the token.
+		* @param from is account who revokes the token.
 		* @param creator is account of fungible token creator.
-		* @param quantity is amount to burn, example "1.00 WOOD".
-		* @param memo is memo for burnf action.
+		* @param quantity is amount to revoke, example "1.00 WOOD".
+		* @param memo is memo for revokef action.
 		* @return no return value.
 		*/
-		ACTION burnf( name from, name creator, asset quantity, string memo );
-		using burnf_action = action_wrapper< "burnf"_n, &Assets::burnf >;
+		ACTION revokef( name from, name creator, asset quantity, string memo );
+		using revokef_action = action_wrapper< "revokef"_n, &Assets::revokef >;
 
 		/*
 		* Open accoutns table.
@@ -582,7 +582,7 @@ CONTRACT Assets : public contract{
 
 		/*
 		* Fungible token accounts stats info: Max Supply, Current Supply, issuer (creator), token unique id, creatorctrl.
-		* creatorctrl if true(1) allow token creator (and not just owner) to burn and transfer.
+		* creatorctrl if true(1) allow token creator (and not just owner) to revoke and transfer.
 		* Scope: token creator
 		*/
 		TABLE currency_stats {

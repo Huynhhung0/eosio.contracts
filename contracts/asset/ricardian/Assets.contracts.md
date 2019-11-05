@@ -154,8 +154,8 @@
 	This Contract expires at the conclusion of code execution.
 
 
-<h1 class="contract"> burn </h1>
-	## ACTION NAME: burn
+<h1 class="contract"> revoke </h1>
+	## ACTION NAME: revoke
 
 	### INTENT
 	Burns asset {{assetid}}. This action is only available for the asset owner. After executing, the 
@@ -163,8 +163,8 @@
 
 	### Input parameters:
 	`owner`    - current asset owner account;
-	`assetids` - array of assetid's to burn;
-	`memo`     - memo for burn action;
+	`assetids` - array of assetid's to revoke;
+	`memo`     - memo for revoke action;
 
 	### TERM
 	This Contract expires at the conclusion of code execution.
@@ -194,7 +194,7 @@
 	### INTENT
 	Delegates asset to {{to}}. This action changes the asset owner by calling the transfer action.
 	It also adds a record in the delegates table to record the asset as borrowed.  This blocks
-	the asset from all owner actions (transfers, offers, burning by borrower).
+	the asset from all owner actions (transfers, offers, revokeing by borrower).
 
 	### Input parameters:
 	`owner`     - current asset owner account;
@@ -235,7 +235,7 @@
 	### Input parameters:
 	`author`         - fungible token author;
 	`maximum_supply` - maximum token supply, example "10000000.0000 GOLD", "10000000 SEED", "100000000.00 WOOD". Precision is also important here;
-	`authorctrl`     - if true(1) allow token author (and not just owner) to burnf and transferf. Cannot be changed after creation!
+	`authorctrl`     - if true(1) allow token author (and not just owner) to revokef and transferf. Cannot be changed after creation!
 	`data`           - stringify json (recommend including keys `img` and `name` for better displaying by markets)
 	
 	### TERM
@@ -279,18 +279,18 @@
 
 
 
-<h1 class="contract"> burnf </h1>
-	## ACTION NAME: burnf
+<h1 class="contract"> revokef </h1>
+	## ACTION NAME: revokef
 
 	### INTENT
 	Burns a fungible token. This action is available for the token owner and author. After executing, 
 	accounts balance and supply in stats table for this token will reduce by the specified quantity.
 
 	### Input parameters:
-	`from`     - account who burns the token;
+	`from`     - account who revokes the token;
 	`author`   - account of fungible token author;
-	`quantity` - amount to burn, example "1.00 WOOD";
-	`memo`     - memo for burnf action;
+	`quantity` - amount to revoke, example "1.00 WOOD";
+	`memo`     - memo for revokef action;
 
 	### TERM
 	This Contract expires at the conclusion of code execution.

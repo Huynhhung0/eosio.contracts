@@ -334,7 +334,7 @@ ACTION Assets::canceloffer( name owner, std::vector<uint64_t>& assetids ) {
 	}
 }
 
-ACTION Assets::burn( name owner, std::vector<uint64_t>& assetids, string memo ) {
+ACTION Assets::revoke( name owner, std::vector<uint64_t>& assetids, string memo ) {
 
 	require_auth( owner );
 	sassets assets_f( _self, owner.value );
@@ -348,9 +348,9 @@ ACTION Assets::burn( name owner, std::vector<uint64_t>& assetids, string memo ) 
 	for ( auto i = 0; i < assetids.size(); ++i ) {
 		auto itr = assets_f.find( assetids[i] );
 		check( itr != assets_f.end(), "At least one of the assets was not found." );
-		check( owner.value == itr->owner.value, "At least one of the assets you're attempting to burn is not yours." );
-		check( offert.find( assetids[i] ) == offert.end(), "At least one of the assets has an open offer and cannot be burned." );
-		check( delegatet.find( assetids[i] ) == delegatet.end(), "At least one of assets is delegated and cannot be burned." );
+		check( owner.value == itr->owner.value, "At least one of the assets you're attempting to revoke is not yours." );
+		check( offert.find( assetids[i] ) == offert.end(), "At least one of the assets has an open offer and cannot be revokeed." );
+		check( delegatet.find( assetids[i] ) == delegatet.end(), "At least one of assets is delegated and cannot be revokeed." );
 
 		json js = json::parse(itr->idata);	
 	    string digestString;
@@ -388,7 +388,7 @@ ACTION Assets::burn( name owner, std::vector<uint64_t>& assetids, string memo ) 
 	//Send Event as deferred
 	for ( auto uniqcreatorIt = uniqcreator.begin(); uniqcreatorIt != uniqcreator.end(); ++uniqcreatorIt ) {
 		name keycreator = std::move( uniqcreatorIt->first );
-		sendEvent( keycreator, owner, "saeburn"_n, std::make_tuple( owner, uniqcreator[keycreator], memo ) );
+		sendEvent( keycreator, owner, "saerevoke"_n, std::make_tuple( owner, uniqcreator[keycreator], memo ) );
 	}
 }
 
@@ -700,7 +700,7 @@ ACTION Assets::claimf( name claimer, std::vector<uint64_t>& ftofferids ) {
 	}
 }
 
-ACTION Assets::burnf( name from, name creator, asset quantity, string memo ) {
+ACTION Assets::revokef( name from, name creator, asset quantity, string memo ) {
 
 	auto sym = quantity.symbol;
 	check( sym.is_valid(), "invalid symbol name" );
@@ -949,11 +949,11 @@ std::vector<std::vector<string>> Assets::groupBy(std::vector<string> digest, int
   return groupDigest;
 }
 
-EOSIO_DISPATCH( Assets, (newasset)( create )( newassetlog )( createlog )( transfer )( burn )( update )
+EOSIO_DISPATCH( Assets, (newasset)( create )( newassetlog )( createlog )( transfer )( revoke )( update )
 ( offer )( canceloffer )( claim )
 ( regcreator )( creatorupdate )
 ( delegate )( undelegate )( delegatemore )( attach )( detach )
-( createf )( updatef )( issuef )( transferf )( burnf )
+( createf )( updatef )( issuef )( transferf )( revokef )
 ( offerf )( cancelofferf )( claimf )
 ( attachf )( detachf )( openf )( closef )
 ( updatever ) (cleartables) )
