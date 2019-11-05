@@ -195,7 +195,7 @@ CONTRACT Assets : public contract{
 		* @param to is account of receiver.
 		* @param assetids is array of assetid's to transfer.
 		* @param memo is transfers comment.
-		* @return no return value.
+		* @return no return value. 
 		*/
 		ACTION transfer( name from, name to, std::vector< uint64_t >& assetids, string memo );
 		using transfer_action = action_wrapper< "transfer"_n, &Assets::transfer >;
@@ -205,13 +205,12 @@ CONTRACT Assets : public contract{
 		*
 		* This action update assets mutable data (mdata) field. Action is available only for creators.
 		*
-		* @param creator	is creators account.
 		* @param owner is current assets owner.
 		* @param assetid is assetid to update.
 		* @param mdata is stringified json with mutable assets data. All mdata will be replaced.
 		* @return no return value.
 		*/
-		ACTION update( name creator, name owner, uint64_t assetid, string mdata );
+		ACTION update(name owner, uint64_t assetid, string mdata );
 		using update_action = action_wrapper< "update"_n, &Assets::update >;
 
 		/*

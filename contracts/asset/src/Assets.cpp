@@ -281,15 +281,15 @@ ACTION Assets::transfer( name from, name to, std::vector<uint64_t>& assetids, st
 	}
 }
 
-ACTION Assets::update( name creator, name owner, uint64_t assetid, string mdata ) {
+ACTION Assets::update( name owner, uint64_t assetid, string mdata ) {
 
-	require_auth( creator );
+	require_auth( owner );
 	sassets assets_f( _self, owner.value );
 	const auto itr = assets_f.find( assetid );
 	check( itr != assets_f.end(), "asset not found" );
-	check( itr->creator == creator, "Only creator can update asset." );
+	check( itr->owner == owner, "Only owner can update asset." );
 
-	assets_f.modify( itr, creator, [&]( auto& a ) {
+	assets_f.modify( itr, owner, [&]( auto& a ) {
 		a.mdata = mdata;
 	});
 }

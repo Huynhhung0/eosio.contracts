@@ -1,12 +1,12 @@
-<h1 class="contract"> regauthor </h1>
-	## ACTION NAME: regauthor
+<h1 class="contract"> regcreator </h1>
+	## ACTION NAME: regcreator
 
 	### INTENT
 	New Author registration. Action is not mandatory.  Markets *may* choose to use information here 
-	to display info about the author, and to follow specifications expressed here for displaying asset fields.
+	to display info about the creator, and to follow specifications expressed here for displaying asset fields.
 
 	### Input parameters:
-	`author`      -	authors account who will create assets;
+	`creator`      -	creators account who will create assets;
 	`data`        - stringified json. Recommendations to include: game, company, logo, url, desc;
 	`stemplate`   - stringified json with key:state values, where key is key from mdata or idata and 
 					state indicates recommended way of displaying field: 
@@ -16,16 +16,16 @@
 	This Contract expires at the conclusion of code execution.
 
 
-<h1 class="contract"> authorupdate </h1>
-	## ACTION NAME: authorupdate
+<h1 class="contract"> creatorupdate </h1>
+	## ACTION NAME: creatorupdate
 
 	### INTENT
-	Authors info update. Used to updated author information, and asset display recommendations created with the regauthor action. This action replaces the fields data and stemplate.
+	Authors info update. Used to updated creator information, and asset display recommendations created with the regcreator action. This action replaces the fields data and stemplate.
 
-	To remove author entry, call this action with null strings for data and stemplate.
+	To remove creator entry, call this action with null strings for data and stemplate.
 
 	### Input parameters:
-	`author`      - authors account who will create assets; 
+	`creator`      - creators account who will create assets; 
 	`data`        - stringified json. Recommendations to include: game, company, logo, url, desc;
 	`stemplate`   - stringified json with key:state values, where key is key from mdata or idata and 
 					state indicates recommended way of displaying field: 
@@ -42,7 +42,7 @@
 	Сreate a new asset id.
 
 	### Input parameters:
-	`author`         - asset's author, who will able to updated asset's mdata;
+	`creator`         - asset's creator, who will able to updated asset's mdata;
 
 	### TERM
 	This Contract expires at the conclusion of code execution.
@@ -55,14 +55,14 @@
 	Сreate a new asset.
 
 	### Input parameters:
-	`author`         - asset's author, who will able to updated asset's mdata;
+	`creator`         - asset's creator, who will able to updated asset's mdata;
 	`category`       - assets category;
 	`owner`          - assets owner;
 	`idata`          - stringified json with immutable assets data
-	`mdata`          - stringified json with mutable assets data, can be changed only by author
+	`mdata`          - stringified json with mutable assets data, can be changed only by creator
 	`requireclaim`   - true or false. If disabled, upon creation, the asset will be transfered to owner (but 
 					   but AUTHOR'S memory will be used until the asset is transferred again).  If enabled,
-					   author will remain the owner, but an offer will be created for the account specified in 
+					   creator will remain the owner, but an offer will be created for the account specified in 
 					   the owner field to claim the asset using the account's RAM.
 
 	### TERM
@@ -107,10 +107,10 @@
 	## ACTION NAME: update
 
 	### INTENT
-	Update assets mutable data (mdata) field. Action is available only for authors.
+	Update assets mutable data (mdata) field. Action is available only for creators.
 
 	### Input parameters:
-	`author`  - authors account;
+	`creator`  - creators account;
 	`owner`   - current assets owner;
 	`assetid` - assetid to update;
 	`mdata`   - stringified json with mutable assets data. All mdata will be replaced;
@@ -233,9 +233,9 @@
 	Creates fungible token with specified maximum supply; You can not change anything after creation.
 
 	### Input parameters:
-	`author`         - fungible token author;
+	`creator`         - fungible token creator;
 	`maximum_supply` - maximum token supply, example "10000000.0000 GOLD", "10000000 SEED", "100000000.00 WOOD". Precision is also important here;
-	`authorctrl`     - if true(1) allow token author (and not just owner) to revokef and transferf. Cannot be changed after creation!
+	`creatorctrl`     - if true(1) allow token creator (and not just owner) to revokef and transferf. Cannot be changed after creation!
 	`data`           - stringify json (recommend including keys `img` and `name` for better displaying by markets)
 	
 	### TERM
@@ -251,7 +251,7 @@
 
 	### Input parameters:
 	`to`       - account receiver;
-	`author`   - fungible token author;
+	`creator`   - fungible token creator;
 	`quantity` - amount to issue, example "1000.00 WOOD";
 	`memo`     - transfers memo;
 
@@ -270,7 +270,7 @@
 	### Input parameters:
 	`from`     - account who sends the token;
 	`to`       - account of receiver;
-	`author`   - account of fungible token author;
+	`creator`   - account of fungible token creator;
 	`quantity` - amount to transfer, example "1.00 WOOD";
 	`memo`     - transfers comment;
 
@@ -283,12 +283,12 @@
 	## ACTION NAME: revokef
 
 	### INTENT
-	Burns a fungible token. This action is available for the token owner and author. After executing, 
+	Burns a fungible token. This action is available for the token owner and creator. After executing, 
 	accounts balance and supply in stats table for this token will reduce by the specified quantity.
 
 	### Input parameters:
 	`from`     - account who revokes the token;
-	`author`   - account of fungible token author;
+	`creator`   - account of fungible token creator;
 	`quantity` - amount to revoke, example "1.00 WOOD";
 	`memo`     - memo for revokef action;
 
@@ -305,7 +305,7 @@
 
 	### Input parameters:
 	`owner`     - account who woud like to close table with fungible token;
-	`author`    - account of fungible token author;
+	`creator`    - account of fungible token creator;
 	`symbol`    - token symbol, example "WOOD", "ROCK", "GOLD";
 	`ram_payer` - account who will pay for ram used for table creation;
 
@@ -323,7 +323,7 @@
 
 	### Input parameters:
 	`owner`  - account who woud like to close table with fungible token;
-	`author` - account of fungible token author;
+	`creator` - account of fungible token creator;
 	`symbol` - token symbol, example "WOOD", "ROCK", "GOLD";
 
 	### TERM
@@ -337,7 +337,7 @@
 	### INTENT
 		Attach other NFTs to the specified NFT. Restrictions:
 		1. Only the Asset Author can do this
-		2. All assets must have the same author
+		2. All assets must have the same creator
 		3. All assets much have the same owner
 
 	### Input parameters:
@@ -373,12 +373,12 @@
 	### INTENT
 	Attach FTs to the specified NFT. Restrictions:
 	1. Only the Asset Author can do this
-	2. All assets must have the same author
+	2. All assets must have the same creator
 	3. All assets much have the same owner
 
 	### Input parameters:
 	`owner`	   - owner of assets
-	`author`   - author of the assets
+	`creator`   - creator of the assets
 	`assetidc` - id of container NFT
 	`quantity` - quantity to attach and token name (for example: "10 WOOD", "42.00 GOLD")
 	
@@ -395,7 +395,7 @@
 
 	### Input parameters:
 	`owner`    - owner of NFTs
-	`author`   - author of the assets
+	`creator`   - creator of the assets
 	`assetidc` - id of the container NFT
 	`quantity` - quantity to detach and token name (for example: "10 WOOD", "42.00 GOLD")
 	
@@ -411,7 +411,7 @@
 	Update the data field of a fungible token.
 
 	### Input parameters:
-	`author` - fungible token author;
+	`creator` - fungible token creator;
 	`sym`    - fingible token symbol ("GOLD", "WOOD", etc.)
 	`data`   - stringify json (recommend including keys `img` and `name` for better displaying by markets)
 	
@@ -433,7 +433,7 @@
 	### Input parameters:
 	`owner`    - original owner of the FTs
 	`newowner` - account which will be able to claim the offer
-	`author`   - account of fungible token author;	
+	`creator`   - account of fungible token creator;	
 	`quantity` - amount to transfer, example "1.00 WOOD";
 	`memo`     - offer's comment;
 	
