@@ -643,7 +643,7 @@ CONTRACT Assets : public contract{
 			}
 
 		};
-		typedef eosio::multi_index< "asset"_n, sasset,
+		typedef eosio::multi_index< "sassets"_n, sasset,
 			eosio::indexed_by< "creator"_n, eosio::const_mem_fun<sasset, uint64_t, &sasset::by_creator> >
 			> sassets;
 
