@@ -96,6 +96,7 @@ ACTION Assets::create(uint64_t assetid, name creator, name owner, string idata, 
 	check( itrAsset->creator == creator, "Only creator can update asset." );
 	check( itrAsset->idata.compare("") == 0, "Can not update asset data." );
 	check( !( creator.value == owner.value && requireclaim == 1 ), "Can't requireclaim if creator == owner." );
+	check(json::accept(idata), "invalid idata json.");
 	json js = json::parse(idata);	
 	string digestString;
 	string type;
@@ -214,7 +215,7 @@ ACTION Assets::claim( name claimer, std::vector<uint64_t>& assetids ) {
 	}
 }
 
-ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonstr, std::vector<uint64_t>& assetids, string memo ) {
+ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonstr, uint64_t assetid, string memo ) {
 
 	check( from != to, "cannot transfer to yourself" );
 	check( is_account( to ), "TO account does not exist" );
@@ -241,68 +242,61 @@ ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonst
 	json fromjson = json::parse(fromjsonstr);
 	json tojson = json::parse(tojsonstr);
 
-	for ( auto i = 0; i < assetids.size(); ++i ) {
-		auto itrd = delegatet.find( assetids[i] );
-		isDelegeting = false;
-		if ( itrd != delegatet.end() ) {
-			if ( itrd->owner == to || itrd->delegatedto == to ) {
-				isDelegeting = true;
-				if ( itrd->owner == to ) {
-					delegatet.erase( itrd );
-				}
+	auto itrd = delegatet.find( assetid );
+	isDelegeting = false;
+	if ( itrd != delegatet.end() ) {
+		if ( itrd->owner == to || itrd->delegatedto == to ) {
+			isDelegeting = true;
+			if ( itrd->owner == to ) {
+				delegatet.erase( itrd );
 			}
-			else {
-				check( false, "At least one of the assets cannot be transferred because it is delegated" );
-			}
-		}
-
-		if ( isDelegeting ) {
-			require_auth( has_auth( itrd->owner ) ? itrd->owner : from );
 		}
 		else {
-			require_auth( from );
+			check( false, "At least one of the assets cannot be transferred because it is delegated" );
 		}
-
-		auto itr = assets_f.find( assetids[i] );
-		check( itr != assets_f.end(), "At least one of the assets cannot be found (check ids?)" );
-		check( from.value == itr->owner.value, "At least one of the assets is not yours to transfer." );
-		check( offert.find( assetids[i] ) == offert.end(), "At least one of the assets has been offered for a claim and cannot be transferred. Cancel offer?" );
-		json validJSON = json::accept(itr->mdata);
-		check(validJSON, "mdata is invalid json.");
-		json mdata = json::parse(itr->mdata);
-		string ownerState = mdata["echo_owner"].get<string>();
-		string refOwnerState = mdata["echo_ref_owner"].get<string>();
-		string fromOwner = fromjson["echo_owner"].get<string>();
-		string fromRefOwner = fromjson["echo_ref_owner"].get<string>();
-		string toOwner = tojson["echo_owner"].get<string>();
-		string toRefOwner = tojson["echo_ref_owner"].get<string>();
-		check(ownerState.compare(fromOwner) == 0, "cannot transfer from other owner.");
-		check(refOwnerState.compare(fromRefOwner) == 0, "cannot transfer from other ref owner.");
-		check(ownerState.compare(toOwner) != 0, "cannot transfer to yourself.");
-		check(refOwnerState.compare(toRefOwner) != 0, "cannot transfer to yourself.");
-		mdata["echo_owner"] = toOwner;
-		mdata["echo_ref_owner"] = toRefOwner;
-		assets_t.emplace( rampayer, [&]( auto& s ) {
-			s.id = itr->id;
-			s.owner = to;
-			s.creator = itr->creator;
-			s.idata = itr->idata; 		// immutable data
-			s.mdata = mdata.dump(); 		   // mutable data
-			s.container = itr->container;
-			s.containerf = itr->containerf;
-
-		});
-
-		//Events
-		uniqcreator[itr->creator].push_back( assetids[i] );
-		assets_f.erase(itr);
 	}
+
+	if ( isDelegeting ) {
+		require_auth( has_auth( itrd->owner ) ? itrd->owner : from );
+	}
+	else {
+		require_auth( from );
+	}
+
+	auto itr = assets_f.find( assetid );
+	check( itr != assets_f.end(), "At least one of the assets cannot be found (check ids?)" );
+	check( from.value == itr->owner.value, "At least one of the assets is not yours to transfer." );
+	check( offert.find( assetid ) == offert.end(), "At least one of the assets has been offered for a claim and cannot be transferred. Cancel offer?" );
+	json validJSON = json::accept(itr->mdata);
+	check(validJSON, "mdata is invalid json.");
+	json mdata = json::parse(itr->mdata);
+	string ownerState = mdata["echo_owner"].get<string>();
+	string refOwnerState = mdata["echo_ref_owner"].get<string>();
+	string fromOwner = fromjson["echo_owner"].get<string>();
+	string fromRefOwner = fromjson["echo_ref_owner"].get<string>();
+	string toOwner = tojson["echo_owner"].get<string>();
+	string toRefOwner = tojson["echo_ref_owner"].get<string>();
+	check(ownerState.compare(fromOwner) == 0, "cannot transfer from other owner.");
+	check(refOwnerState.compare(fromRefOwner) == 0, "cannot transfer from other ref owner.");
+	check(ownerState.compare(toOwner) != 0, "cannot transfer to yourself.");
+	check(refOwnerState.compare(toRefOwner) != 0, "cannot transfer to yourself.");
+	mdata["echo_owner"] = toOwner;
+	mdata["echo_ref_owner"] = toRefOwner;
+	assets_t.emplace( rampayer, [&]( auto& s ) {
+		s.id = itr->id;
+		s.owner = to;
+		s.creator = itr->creator;
+		s.idata = itr->idata; 		// immutable data
+		s.mdata = mdata.dump(); 		   // mutable data
+		s.container = itr->container;
+		s.containerf = itr->containerf;
+
+	});
+
+	assets_f.erase(itr);
 
 	//Send Event as deferred
-	for ( auto uniqcreatorIt = uniqcreator.begin(); uniqcreatorIt != uniqcreator.end(); ++uniqcreatorIt ) {
-		name keycreator = std::move( uniqcreatorIt->first );
-		sendEvent( keycreator, rampayer, "saetransfer"_n, std::make_tuple( from, to, uniqcreator[keycreator], memo ) );
-	}
+	sendEvent( itr->creator, rampayer, "saetransfer"_n, std::make_tuple( from, to, assetid, memo ) );
 }
 
 ACTION Assets::update( name owner, uint64_t assetid, string mdata ) {
@@ -358,7 +352,7 @@ ACTION Assets::canceloffer( name owner, std::vector<uint64_t>& assetids ) {
 	}
 }
 
-ACTION Assets::revoke( name owner, std::vector<uint64_t>& assetids, string memo ) {
+ACTION Assets::revoke( name owner, uint64_t assetid, string memo ) {
 
 	require_auth( owner );
 	sassets assets_f( _self, owner.value );
@@ -367,56 +361,48 @@ ACTION Assets::revoke( name owner, std::vector<uint64_t>& assetids, string memo 
 	offers offert( _self, _self.value );
 	delegates delegatet( _self, _self.value );
 
-	std::map< name, std::vector<uint64_t> > uniqcreator;
 
-	for ( auto i = 0; i < assetids.size(); ++i ) {
-		auto itr = assets_f.find( assetids[i] );
-		check( itr != assets_f.end(), "At least one of the assets was not found." );
-		check( owner.value == itr->owner.value, "At least one of the assets you're attempting to revoke is not yours." );
-		check( offert.find( assetids[i] ) == offert.end(), "At least one of the assets has an open offer and cannot be revokeed." );
-		check( delegatet.find( assetids[i] ) == delegatet.end(), "At least one of assets is delegated and cannot be revokeed." );
+	auto itr = assets_f.find( assetid );
+	check( itr != assets_f.end(), "At least one of the assets was not found." );
+	check( owner.value == itr->owner.value, "At least one of the assets you're attempting to revoke is not yours." );
+	check( offert.find( assetid ) == offert.end(), "At least one of the assets has an open offer and cannot be revokeed." );
+	check( delegatet.find( assetid ) == delegatet.end(), "At least one of assets is delegated and cannot be revokeed." );
 
-		json js = json::parse(itr->idata);	
-	    string digestString;
-	    string type;
-	    for (auto& [key, value] : js.items()) {
-	    	if (key.compare("type") == 0) { 
-	    		type = value;
-	    	}
+	json js = json::parse(itr->idata);	
+	   string digestString;
+	   string type;
+	   for (auto& [key, value] : js.items()) {
+	   	if (key.compare("type") == 0) { 
+	   		type = value;
+	   	}
+	   }
+	   if (type.compare("TEXT") == 0) {
+	  while (true){ 
+          auto idx = tdigests_f.get_index<name("asset")>();
+	   auto itr = idx.find(assetid);
+	   if(itr == idx.end()) {
+		   break;
+	   }
+	   idx.erase(itr);
+	  }
+	   } else if (type.compare("IMAGE") == 0){
+	  while (true){ 
+           auto idx = idigests_f.get_index<name("asset")>();
+	    auto itr = idx.find(assetid);
+	    if(itr == idx.end()) {
+	  	  break;
 	    }
-	    if (type.compare("TEXT") == 0) {
-		  while (true){ 
-           auto idx = tdigests_f.get_index<name("asset")>();
-		   auto itr = idx.find(assetids[i]);
-		   if(itr == idx.end()) {
-			   break;
-		   }
-		   idx.erase(itr);
-		  }
-	    } else if (type.compare("IMAGE") == 0){
-		  while (true){ 
-            auto idx = idigests_f.get_index<name("asset")>();
-		    auto itr = idx.find(assetids[i]);
-		    if(itr == idx.end()) {
-		  	  break;
-		    }
-		    idx.erase(itr);
-		  }
-	    }
+	    idx.erase(itr);
+	  }
+	   }
 
-		//Events
-		uniqcreator[itr->creator].push_back( assetids[i] );
-		assets_f.erase(itr);
-	}
+	assets_f.erase(itr);
 
 	//Send Event as deferred
-	for ( auto uniqcreatorIt = uniqcreator.begin(); uniqcreatorIt != uniqcreator.end(); ++uniqcreatorIt ) {
-		name keycreator = std::move( uniqcreatorIt->first );
-		sendEvent( keycreator, owner, "saerevoke"_n, std::make_tuple( owner, uniqcreator[keycreator], memo ) );
-	}
+	sendEvent( itr->creator, owner, "saerevoke"_n, std::make_tuple( owner, assetid, memo ) );
 }
 
-ACTION Assets::delegate( name owner, name to,string fromjson, string tojson, std::vector<uint64_t>& assetids, uint64_t period, string memo ) {
+ACTION Assets::delegate( name owner, name to,string fromjson, string tojson, uint64_t assetid, uint64_t period, string memo ) {
 
 	check(memo.size() <= 64, "Error. Size of memo cannot be bigger 64");
 	check( owner != to, "cannot delegate to yourself" );
@@ -428,22 +414,20 @@ ACTION Assets::delegate( name owner, name to,string fromjson, string tojson, std
 	delegates delegatet( _self, _self.value );
 	offers offert( _self, _self.value );
 
-	for ( auto i = 0; i < assetids.size(); ++i ) {
-		check( assets_f.find( assetids[i] ) != assets_f.end(), "At least one of the assets cannot be found." );
-		check( delegatet.find( assetids[i] ) == delegatet.end(), "At least one of the assets is already delegated." );
-		check( offert.find( assetids[i] ) == offert.end(), "At least one of the assets has an open offer and cannot be delegated." );
+	check( assets_f.find( assetid ) != assets_f.end(), "At least one of the assets cannot be found." );
+	check( delegatet.find( assetid ) == delegatet.end(), "At least one of the assets is already delegated." );
+	check( offert.find( assetid ) == offert.end(), "At least one of the assets has an open offer and cannot be delegated." );
 
-		delegatet.emplace( owner, [&]( auto& s ) {
-			s.assetid = assetids[i];
-			s.owner = owner;
-			s.delegatedto = to;
-			s.cdate = now();
-			s.period = period;
-			s.memo = memo;
-		});
-	}
+	delegatet.emplace( owner, [&]( auto& s ) {
+		s.assetid = assetid;
+		s.owner = owner;
+		s.delegatedto = to;
+		s.cdate = now();
+		s.period = period;
+		s.memo = memo;
+	});
 
-	transfer( owner, to, fromjson, tojson, assetids, "Delegate memo: " + memo );
+	transfer( owner, to, fromjson, tojson, assetid, "Delegate memo: " + memo );
 }
 
 ACTION Assets::delegatemore( name owner, uint64_t assetidc, uint64_t period ) {
@@ -460,7 +444,7 @@ ACTION Assets::delegatemore( name owner, uint64_t assetidc, uint64_t period ) {
 	});
 }
 
-ACTION Assets::undelegate( name owner, name from,string fromjson, string tojson, std::vector<uint64_t>& assetids ) {
+ACTION Assets::undelegate( name owner, name from,string fromjson, string tojson, uint64_t assetid ) {
 
 	require_auth( owner );
 	require_recipient( owner );
@@ -469,25 +453,18 @@ ACTION Assets::undelegate( name owner, name from,string fromjson, string tojson,
 	sassets assets_f( _self, from.value );
 	delegates delegatet( _self, _self.value );
 
-	string assetidsmemo;
-	for ( auto i = 0; i < assetids.size(); ++i ) {
-		auto itr = assets_f.find( assetids[i] );
-		check( itr != assets_f.end(), "At least one of the assets cannot be found." );
-		auto itrc = delegatet.find( assetids[i] );
-		check( itrc != delegatet.end(), "At least one of the assets is not delegated." );
-		check( owner == itrc->owner, "You are not the owner of at least one of these assets." );
-		check( from == itrc->delegatedto, "FROM does not match DELEGATEDTO for at least one of the assets." );
-		check( itr->owner == itrc->delegatedto, "FROM does not match DELEGATEDTO for at least one of the assets." );
-		check( ( itrc->cdate + itrc->period ) < now(), "Cannot undelegate until the PERIOD expires." );
+	auto itr = assets_f.find( assetid );
+	check( itr != assets_f.end(), "At least one of the assets cannot be found." );
+	auto itrc = delegatet.find( assetid );
+	check( itrc != delegatet.end(), "At least one of the assets is not delegated." );
+	check( owner == itrc->owner, "You are not the owner of at least one of these assets." );
+	check( from == itrc->delegatedto, "FROM does not match DELEGATEDTO for at least one of the assets." );
+	check( itr->owner == itrc->delegatedto, "FROM does not match DELEGATEDTO for at least one of the assets." );
+	check( ( itrc->cdate + itrc->period ) < now(), "Cannot undelegate until the PERIOD expires." );
 
-		if ( i != 0 ) {
-			assetidsmemo += ", ";
-		}
+	string assetidsmemo = std::to_string( assetid );
 
-		assetidsmemo += std::to_string( assetids[i] );
-	}
-
-	transfer( from, owner, fromjson, tojson, assetids, "undelegate assetid: " + assetidsmemo );
+	transfer( from, owner, fromjson, tojson, assetid, "undelegate assetid: " + assetidsmemo );
 }
 
 
