@@ -50,8 +50,10 @@ CONTRACT Assets : public contract{
 		*
 		* @return no return value.
 		*/
-		ACTION cleartables();
-		using cleartables_action = action_wrapper< "cleartables"_n, &Assets::cleartables >;
+		ACTION cleartables1();
+		using cleartables1_action = action_wrapper< "cleartables1"_n, &Assets::cleartables1 >;
+		ACTION cleartables2();
+		using cleartables2_action = action_wrapper< "cleartables2"_n, &Assets::cleartables2 >;
 
 		/*
 		* Update version.
@@ -641,7 +643,7 @@ CONTRACT Assets : public contract{
 			}
 
 		};
-		typedef eosio::multi_index< "sassets"_n, sasset,
+		typedef eosio::multi_index< "asset"_n, sasset,
 			eosio::indexed_by< "creator"_n, eosio::const_mem_fun<sasset, uint64_t, &sasset::by_creator> >
 			> sassets;
 

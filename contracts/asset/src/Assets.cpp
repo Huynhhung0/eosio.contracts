@@ -1,12 +1,16 @@
 #include <Assets.hpp>
 
-ACTION Assets::cleartables() {
+ACTION Assets::cleartables1() {
   require_auth(_self);
   simagedigests st(_self, _self.value);
   auto itr = st.begin();
   while(itr != st.end()) {
     itr = st.erase(itr);
   }
+}
+
+ACTION Assets::cleartables2() {
+  require_auth(_self);
   stextdigests st1(_self, _self.value);
   auto itr1 = st1.begin();
   while(itr1 != st1.end()) {
@@ -971,4 +975,4 @@ EOSIO_DISPATCH( Assets, (newasset)( create )( newassetlog )( createlog )( transf
 ( createf )( updatef )( issuef )( transferf )( revokef )
 ( offerf )( cancelofferf )( claimf )
 ( attachf )( detachf )( openf )( closef )
-( updatever ) (cleartables) )
+( updatever ) (cleartables1) (cleartables2))
