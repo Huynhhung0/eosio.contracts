@@ -235,6 +235,9 @@ ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonst
 
 	std::map< name, std::vector<uint64_t> > uniqcreator;
 
+	check(json::accept(fromjsonstr), "from is invalid json.");
+	check(json::accept(tojsonstr), "to is invalid json.");
+
 	json fromjson = json::parse(fromjsonstr);
 	json tojson = json::parse(tojsonstr);
 
@@ -261,6 +264,11 @@ ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonst
 		}
 
 		auto itr = assets_f.find( assetids[i] );
+		check( itr != assets_f.end(), "At least one of the assets cannot be found (check ids?)" );
+		check( from.value == itr->owner.value, "At least one of the assets is not yours to transfer." );
+		check( offert.find( assetids[i] ) == offert.end(), "At least one of the assets has been offered for a claim and cannot be transferred. Cancel offer?" );
+		json validJSON = json::accept(itr->mdata);
+		check(validJSON, "mdata is invalid json.");
 		json mdata = json::parse(itr->mdata);
 		string ownerState = mdata["echo_owner"].get<string>();
 		string refOwnerState = mdata["echo_ref_owner"].get<string>();
@@ -272,9 +280,6 @@ ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonst
 		check(refOwnerState.compare(fromRefOwner) == 0, "cannot transfer from other ref owner.");
 		check(ownerState.compare(toOwner) != 0, "cannot transfer to yourself.");
 		check(refOwnerState.compare(toRefOwner) != 0, "cannot transfer to yourself.");
-		check( itr != assets_f.end(), "At least one of the assets cannot be found (check ids?)" );
-		check( from.value == itr->owner.value, "At least one of the assets is not yours to transfer." );
-		check( offert.find( assetids[i] ) == offert.end(), "At least one of the assets has been offered for a claim and cannot be transferred. Cancel offer?" );
 		mdata["echo_owner"] = toOwner;
 		mdata["echo_ref_owner"] = toRefOwner;
 		assets_t.emplace( rampayer, [&]( auto& s ) {
