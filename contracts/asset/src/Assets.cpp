@@ -97,7 +97,7 @@ ACTION Assets::create(uint64_t assetid, name creator, name owner, string idata, 
 	check( itrAsset->idata.compare("") == 0, "Can not update asset data." );
 	check( !( creator.value == owner.value && requireclaim == 1 ), "Can't requireclaim if creator == owner." );
 	check(json::accept(idata), "invalid idata json.");
-	check(json::accept(mdata), "invalid idata json.");
+	check(json::accept(mdata), "invalid mdata json.");
 	json js = json::parse(idata);	
 	string digestString;
 	string type;
