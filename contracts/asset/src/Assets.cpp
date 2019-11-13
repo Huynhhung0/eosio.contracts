@@ -97,6 +97,7 @@ ACTION Assets::create(uint64_t assetid, name creator, name owner, string idata, 
 	check( itrAsset->idata.compare("") == 0, "Can not update asset data." );
 	check( !( creator.value == owner.value && requireclaim == 1 ), "Can't requireclaim if creator == owner." );
 	check(json::accept(idata), "invalid idata json.");
+	check(json::accept(mdata), "invalid idata json.");
 	json js = json::parse(idata);	
 	string digestString;
 	string type;
@@ -162,8 +163,8 @@ ACTION Assets::create(uint64_t assetid, name creator, name owner, string idata, 
 	//Events
 	sendEvent( creator, creator, "saecreate"_n, std::make_tuple( owner, assetid) );
 	SEND_INLINE_ACTION( *this, createlog, { {_self, "active"_n} }, { creator, owner, idata, mdata, assetid, requireclaim } );
-
 }
+
 ACTION Assets::newassetlog( name creator, uint64_t assetid) {
 
 	require_auth(get_self());
@@ -217,7 +218,6 @@ ACTION Assets::claim( name claimer, std::vector<uint64_t>& assetids ) {
 
 ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonstr, uint64_t assetid, string memo ) {
 
-	check( from != to, "cannot transfer to yourself" );
 	check( is_account( to ), "TO account does not exist" );
 	check( memo.size() <= 256, "memo has more than 256 bytes" );
 
@@ -282,6 +282,7 @@ ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonst
 	check(refOwnerState.compare(toRefOwner) != 0, "cannot transfer to yourself.");
 	mdata["echo_owner"] = toOwner;
 	mdata["echo_ref_owner"] = toRefOwner;
+	assets_f.erase(itr);
 	assets_t.emplace( rampayer, [&]( auto& s ) {
 		s.id = itr->id;
 		s.owner = to;
@@ -292,8 +293,6 @@ ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonst
 		s.containerf = itr->containerf;
 
 	});
-
-	assets_f.erase(itr);
 
 	//Send Event as deferred
 	sendEvent( itr->creator, rampayer, "saetransfer"_n, std::make_tuple( from, to, assetid, memo ) );
@@ -307,8 +306,23 @@ ACTION Assets::update( name owner, uint64_t assetid, string mdata ) {
 	check( itr != assets_f.end(), "asset not found" );
 	check( itr->owner == owner, "Only owner can update asset." );
 
+	json validJSON = json::accept(mdata);
+	check(validJSON, "mdata is invalid json.");
+	json jsUpdate = json::parse(mdata);
+	json jsMdata = json::parse(itr->mdata);
+	for (auto j = jsUpdate.begin();j != jsUpdate.end();j++) {
+		string key = j.key();
+		if(key.rfind("echo_", 0) == 0) jsUpdate.erase(key);
+	}
+	for (auto j = jsMdata.begin();j != jsMdata.end();j++) {
+		string key = j.key();
+		if(key.rfind("echo_", 0) == 0) continue;
+		jsMdata.erase(key);
+	}
+	jsUpdate.merge_patch(jsMdata);
+
 	assets_f.modify( itr, owner, [&]( auto& a ) {
-		a.mdata = mdata;
+		a.mdata = jsUpdate.dump();
 	});
 }
 
