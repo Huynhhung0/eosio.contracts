@@ -9,6 +9,23 @@ ACTION Assets::cleartables1() {
   }
 }
 
+/*
+ACTION Assets::genid(name submitted_by, string r) {
+	require_auth(submitted_by);
+	check( is_account( submitted_by ), "submitted_by account does not exist." );
+	require_recipient( submitted_by );
+	checksum256 r256 = sha256(r.c_str(), r.size() * sizeof(char));
+	auto checksumBytes = r256.extract_as_byte_array().data();
+	uint64_t newID;
+	memcpy(&newID, &checksumBytes[7], 8);
+
+	//Events
+	sendEvent( submitted_by, submitted_by, "saenewasset"_n, std::make_tuple( submitted_by, checksumBytes ) );
+	SEND_INLINE_ACTION( *this, newassetlog, { {_self, "active"_n} }, { submitted_by, &checksumBytes[7]} );
+
+}
+*/
+
 ACTION Assets::cleartables2() {
   require_auth(_self);
   stextdigests st1(_self, _self.value);
@@ -25,16 +42,16 @@ ACTION Assets::updatever( string version ) {
 	configs.set( tokenconfigs{ "simpleassets"_n, version }, _self );
 }
 
-ACTION Assets::regcreator( name creator, string data, string stemplate, string imgpriority ) {
+ACTION Assets::regsubmitted( name submitted_by, string data, string stemplate, string imgpriority ) {
 
-	require_auth( creator );
-	require_recipient( creator );
+	require_auth( submitted_by );
+	require_recipient( submitted_by );
 	check( data.size() > 3, "Data field is too short. Please tell us about yourselves." );
-	creators creator_( _self, _self.value );
+	submitted_bys submitted_by_( _self, _self.value );
 
-	if ( creator_.find( creator.value ) == creator_.end() ) {
-		creator_.emplace( creator, [&]( auto& s ) {
-			s.creator = creator;
+	if ( submitted_by_.find( submitted_by.value ) == submitted_by_.end() ) {
+		submitted_by_.emplace( submitted_by, [&]( auto& s ) {
+			s.submitted_by = submitted_by;
 			s.data = data;
 			s.stemplate = stemplate;
 			s.imgpriority = imgpriority;
@@ -45,19 +62,19 @@ ACTION Assets::regcreator( name creator, string data, string stemplate, string i
 	}
 }
 
-ACTION Assets::creatorupdate( name creator, string data, string stemplate, string imgpriority ) {
+ACTION Assets::submittedud( name submitted_by, string data, string stemplate, string imgpriority ) {
 
-	require_auth( creator );
-	require_recipient( creator );
-	creators creator_( _self, _self.value );
-	auto itr = creator_.find( creator.value );
-	check( itr != creator_.end(), "creator not registered" );
+	require_auth( submitted_by );
+	require_recipient( submitted_by );
+	submitted_bys submitted_by_( _self, _self.value );
+	auto itr = submitted_by_.find( submitted_by.value );
+	check( itr != submitted_by_.end(), "submitted_by not registered" );
 
 	if ( data.empty() && stemplate.empty() ) {
-		itr = creator_.erase( itr );
+		itr = submitted_by_.erase( itr );
 	}
 	else {
-		creator_.modify( itr, creator, [&]( auto& s ) {
+		submitted_by_.modify( itr, submitted_by, [&]( auto& s ) {
 			s.data = data;
 			s.stemplate = stemplate;
 			s.imgpriority = imgpriority;
@@ -65,39 +82,46 @@ ACTION Assets::creatorupdate( name creator, string data, string stemplate, strin
 	}
 }
 
-//@TODO dont allow an creator run brute force new assetid.
-ACTION Assets::newasset(name creator) {
-	require_auth(creator);
-	check( is_account( creator ), "creator account does not exist." );
-	require_recipient( creator );
+//@TODO dont allow an submitted_by run brute force new asset_id.
+ACTION Assets::newasset(name submitted_by) {
+	require_auth(submitted_by);
+	check( is_account( submitted_by ), "submitted_by account does not exist." );
+	require_recipient( submitted_by );
 	const auto newID = getid();
-	sassets assets( _self, creator.value );
+	sassets assets( _self, submitted_by.value );
 	string empty = "";
 	bool no = false;
 
 	assets.emplace( _self, [&]( auto& s ) {
 		s.id = newID;
-		s.owner = creator;
-		s.creator = creator;
+		s.platform = submitted_by;
+		s.submitted_by = submitted_by;
 	});
 
 	//Events
-	sendEvent( creator, creator, "saenewasset"_n, std::make_tuple( creator, newID ) );
-	SEND_INLINE_ACTION( *this, newassetlog, { {_self, "active"_n} }, { creator, newID} );
+	sendEvent( submitted_by, submitted_by, "saenewasset"_n, std::make_tuple( submitted_by, newID ) );
+	SEND_INLINE_ACTION( *this, newassetlog, { {_self, "active"_n} }, { submitted_by, newID} );
 
 }
 
-ACTION Assets::create(uint64_t assetid, name creator, name owner, string idata, string mdata, bool requireclaim ) {
+ACTION Assets::create( name submitted_by, uint64_t asset_id, string idata, string mdata, string common_info, string detail_info, string ref_info) {
 
-	require_auth( creator );
-	sassets assets_f( _self, creator.value );
-	const auto itrAsset = assets_f.find( assetid );
+	require_auth( submitted_by );
+	sassets assets_f( _self, submitted_by.value );
+	const auto itrAsset = assets_f.find( asset_id );
 	check( itrAsset != assets_f.end(), "asset not found" );
-	check( itrAsset->creator == creator, "Only creator can update asset." );
+	check( itrAsset->submitted_by == submitted_by, "Only submitted_by can update asset." );
 	check( itrAsset->idata.compare("") == 0, "Can not update asset data." );
-	check( !( creator.value == owner.value && requireclaim == 1 ), "Can't requireclaim if creator == owner." );
 	check(json::accept(idata), "invalid idata json.");
 	check(json::accept(mdata), "invalid mdata json.");
+	check(json::accept(common_info), "invalid common_info json.");
+	check(json::accept(detail_info), "invalid detail_info json.");
+	check(json::accept(ref_info), "invalid ref_info json.");
+	/*
+	json refInfo = json::parse(refinfo);
+	name platform = name(refInfo["platform"].get<string>());
+	*/
+	name platform = submitted_by;
 	json js = json::parse(idata);	
 	string digestString;
 	string type;
@@ -130,12 +154,12 @@ ACTION Assets::create(uint64_t assetid, name creator, name owner, string idata, 
 	    for (i =0; i < buckets.size(); i++) {
 	    	const auto itr = digest_index.find(buckets[i]);
 			if(itr != digest_index.end()) {
-              string msg = "found duplicate text digest with assetID:" +  std::to_string(itr->assetid);
+              string msg = "found duplicate text digest with assetID:" +  std::to_string(itr->asset_id);
 	    	  check(false, msg);
 			}
 	    }
 	    for (i =0; i < buckets.size(); i++) {
-			digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("TEXT"); d.digest= buckets[i]; d.assetid = assetid;});
+			digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("TEXT"); d.digest= buckets[i]; d.asset_id = asset_id;});
 	    }
 	} else if (type.compare("IMAGE") == 0) {
 		simagedigests digests_f(_self, _self.value);
@@ -143,60 +167,63 @@ ACTION Assets::create(uint64_t assetid, name creator, name owner, string idata, 
 	    for (i =0; i < buckets.size(); i++) {
 	    	const auto itr = digest_index.find(buckets[i]);
 			if(itr != digest_index.end()) {
-              string msg = "found duplicate image digest with assetID:" +  std::to_string(itr->assetid);
+              string msg = "found duplicate image digest with assetID:" +  std::to_string(itr->asset_id);
 	    	  check(false, msg);
 			}
 	    }
 	    for (i =0; i < buckets.size(); i++) {
-			digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("IMAGE"); d.digest= buckets[i]; d.assetid = assetid;});
+			digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("IMAGE"); d.digest= buckets[i]; d.asset_id = asset_id;});
 	    }
 
 	} else {
 		check(false, "invalid type");
 	}
-	assets_f.modify( itrAsset, creator, [&]( auto& a ) {
-		a.owner = owner;
+	assets_f.modify( itrAsset, submitted_by, [&]( auto& a ) {
+		a.platform = platform;
 		a.mdata = mdata; // mutable data
 		a.idata = idata; // immutable data
+		a.common_info = common_info;
+		a.detail_info = detail_info;
+		a.ref_info = ref_info;
 	});
 
 	//Events
-	sendEvent( creator, creator, "saecreate"_n, std::make_tuple( owner, assetid) );
-	SEND_INLINE_ACTION( *this, createlog, { {_self, "active"_n} }, { creator, owner, idata, mdata, assetid, requireclaim } );
+	sendEvent( submitted_by, submitted_by, "saecreate"_n, std::make_tuple( platform, asset_id) );
+	SEND_INLINE_ACTION( *this, createlog, { {_self, "active"_n} }, { submitted_by, platform, idata, mdata, common_info, detail_info, ref_info, asset_id } );
 }
 
-ACTION Assets::newassetlog( name creator, uint64_t assetid) {
+ACTION Assets::newassetlog( name submitted_by, uint64_t asset_id) {
 
 	require_auth(get_self());
 }
 
-ACTION Assets::createlog( name creator, name owner, string idata, string mdata, uint64_t assetid, bool requireclaim ) {
+ACTION Assets::createlog( name submitted_by, name platform, string idata, string mdata, string common_info, string detail_info, string ref_info, uint64_t asset_id ) {
 
 	require_auth(get_self());
 }
 
-ACTION Assets::claim( name claimer, std::vector<uint64_t>& assetids ) {
+ACTION Assets::claim( name claimer, std::vector<uint64_t>& asset_ids ) {
 
 	require_auth( claimer );
 	require_recipient( claimer );
 	offers offert( _self, _self.value );
 	sassets assets_t( _self, claimer.value );
 
-	std::map< name, std::map< uint64_t, name > > uniqcreator;
-	for ( auto i = 0; i < assetids.size(); ++i ) {
-		auto itrc = offert.find( assetids[i] );
+	std::map< name, std::map< uint64_t, name > > uniqsubmitted_by;
+	for ( auto i = 0; i < asset_ids.size(); ++i ) {
+		auto itrc = offert.find( asset_ids[i] );
 		check( itrc != offert.end(), "Cannot find at least one of the assets you're attempting to claim." );
 		check( claimer == itrc->offeredto, "At least one of the assets has not been offerred to you." );
 
-		sassets assets_f( _self, itrc->owner.value );
-		auto itr = assets_f.find( assetids[i] );
+		sassets assets_f( _self, itrc->platform.value );
+		auto itr = assets_f.find( asset_ids[i] );
 		check( itr != assets_f.end(), "Cannot find at least one of the assets you're attempting to claim." );
-		check( itrc->owner.value == itr->owner.value, "Owner was changed for at least one of the items!?" );
+		check( itrc->platform.value == itr->platform.value, "Owner was changed for at least one of the items!?" );
 
 		assets_t.emplace( claimer, [&]( auto& s ) {
 			s.id = itr->id;
-			s.owner = claimer;
-			s.creator = itr->creator;
+			s.platform = claimer;
+			s.submitted_by = itr->submitted_by;
 			s.mdata = itr->mdata; 		// mutable data
 			s.idata = itr->idata; 		// immutable data
 			s.container = itr->container;
@@ -204,19 +231,19 @@ ACTION Assets::claim( name claimer, std::vector<uint64_t>& assetids ) {
 		});
 
 		//Events
-		uniqcreator[itr->creator][assetids[i]] = itrc->owner;
+		uniqsubmitted_by[itr->submitted_by][asset_ids[i]] = itrc->platform;
 
 		assets_f.erase(itr);
 		offert.erase(itrc);
 	}
 
-	for ( auto uniqcreatorIt = uniqcreator.begin(); uniqcreatorIt != uniqcreator.end(); ++uniqcreatorIt ) {
-		name keycreator = std::move( uniqcreatorIt->first );
-		sendEvent( keycreator, claimer, "saeclaim"_n, std::make_tuple( claimer, uniqcreator[keycreator] ) );
+	for ( auto uniqsubmitted_byIt = uniqsubmitted_by.begin(); uniqsubmitted_byIt != uniqsubmitted_by.end(); ++uniqsubmitted_byIt ) {
+		name keysubmitted_by = std::move( uniqsubmitted_byIt->first );
+		sendEvent( keysubmitted_by, claimer, "saeclaim"_n, std::make_tuple( claimer, uniqsubmitted_by[keysubmitted_by] ) );
 	}
 }
 
-ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonstr, uint64_t assetid, string memo ) {
+ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonstr, uint64_t asset_id, string memo ) {
 
 	check( is_account( to ), "TO account does not exist" );
 	check( memo.size() <= 256, "memo has more than 256 bytes" );
@@ -234,20 +261,18 @@ ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonst
 
 	bool isDelegeting = false;
 
-	std::map< name, std::vector<uint64_t> > uniqcreator;
-
 	check(json::accept(fromjsonstr), "from is invalid json.");
 	check(json::accept(tojsonstr), "to is invalid json.");
 
 	json fromjson = json::parse(fromjsonstr);
 	json tojson = json::parse(tojsonstr);
 
-	auto itrd = delegatet.find( assetid );
+	auto itrd = delegatet.find( asset_id );
 	isDelegeting = false;
 	if ( itrd != delegatet.end() ) {
-		if ( itrd->owner == to || itrd->delegatedto == to ) {
+		if ( itrd->platform == to || itrd->delegatedto == to ) {
 			isDelegeting = true;
-			if ( itrd->owner == to ) {
+			if ( itrd->platform == to ) {
 				delegatet.erase( itrd );
 			}
 		}
@@ -257,54 +282,54 @@ ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonst
 	}
 
 	if ( isDelegeting ) {
-		require_auth( has_auth( itrd->owner ) ? itrd->owner : from );
+		require_auth( has_auth( itrd->platform ) ? itrd->platform : from );
 	}
 	else {
 		require_auth( from );
 	}
 
-	auto itr = assets_f.find( assetid );
+	auto itr = assets_f.find( asset_id );
 	check( itr != assets_f.end(), "At least one of the assets cannot be found (check ids?)" );
-	check( from.value == itr->owner.value, "At least one of the assets is not yours to transfer." );
-	check( offert.find( assetid ) == offert.end(), "At least one of the assets has been offered for a claim and cannot be transferred. Cancel offer?" );
-	json validJSON = json::accept(itr->mdata);
-	check(validJSON, "mdata is invalid json.");
-	json mdata = json::parse(itr->mdata);
-	string ownerState = mdata["echo_owner"].get<string>();
-	string refOwnerState = mdata["echo_ref_owner"].get<string>();
-	string fromOwner = fromjson["echo_owner"].get<string>();
-	string fromRefOwner = fromjson["echo_ref_owner"].get<string>();
-	string toOwner = tojson["echo_owner"].get<string>();
-	string toRefOwner = tojson["echo_ref_owner"].get<string>();
-	check(ownerState.compare(fromOwner) == 0, "cannot transfer from other owner.");
-	check(refOwnerState.compare(fromRefOwner) == 0, "cannot transfer from other ref owner.");
-	check(ownerState.compare(toOwner) != 0, "cannot transfer to yourself.");
+	check( from.value == itr->platform.value, "At least one of the assets is not yours to transfer." );
+	check( offert.find( asset_id ) == offert.end(), "At least one of the assets has been offered for a claim and cannot be transferred. Cancel offer?" );
+	json validJSON = json::accept(itr->ref_info);
+	check(validJSON, "ref_info is invalid json.");
+	json refInfo = json::parse(itr->ref_info);
+	string platformState = refInfo["owner"].get<string>();
+	string refOwnerState = refInfo["ref_owner"].get<string>();
+	string fromOwner = fromjson["owner"].get<string>();
+	string fromRefOwner = fromjson["ref_owner"].get<string>();
+	string toOwner = tojson["owner"].get<string>();
+	string toRefOwner = tojson["ref_owner"].get<string>();
+	check(platformState.compare(fromOwner) == 0, "cannot transfer from other owner.");
+	check(refOwnerState.compare(fromRefOwner) == 0, "cannot transfer from other ref_owner.");
+	check(platformState.compare(toOwner) != 0, "cannot transfer to yourself.");
 	check(refOwnerState.compare(toRefOwner) != 0, "cannot transfer to yourself.");
-	mdata["echo_owner"] = toOwner;
-	mdata["echo_ref_owner"] = toRefOwner;
+	refInfo["owner"] = toOwner;
+	refInfo["ref_owner"] = toRefOwner;
 	assets_f.erase(itr);
 	assets_t.emplace( rampayer, [&]( auto& s ) {
 		s.id = itr->id;
-		s.owner = to;
-		s.creator = itr->creator;
+		s.platform = to;
+		s.submitted_by = itr->submitted_by;
 		s.idata = itr->idata; 		// immutable data
-		s.mdata = mdata.dump(); 		   // mutable data
+		s.ref_info= refInfo.dump(); 		   // mutable data
 		s.container = itr->container;
 		s.containerf = itr->containerf;
 
 	});
 
 	//Send Event as deferred
-	sendEvent( itr->creator, rampayer, "saetransfer"_n, std::make_tuple( from, to, assetid, memo ) );
+	sendEvent( itr->submitted_by, rampayer, "saetransfer"_n, std::make_tuple( from, to, asset_id, memo ) );
 }
 
-ACTION Assets::update( name owner, uint64_t assetid, string mdata ) {
+ACTION Assets::update( name platform, uint64_t asset_id, string mdata ) {
 
-	require_auth( owner );
-	sassets assets_f( _self, owner.value );
-	const auto itr = assets_f.find( assetid );
+	require_auth( platform );
+	sassets assets_f( _self, platform.value );
+	const auto itr = assets_f.find( asset_id );
 	check( itr != assets_f.end(), "asset not found" );
-	check( itr->owner == owner, "Only owner can update asset." );
+	check( itr->platform == platform, "Only platform can update asset." );
 
 	json validJSON = json::accept(mdata);
 	check(validJSON, "mdata is invalid json.");
@@ -321,66 +346,66 @@ ACTION Assets::update( name owner, uint64_t assetid, string mdata ) {
 	}
 	jsUpdate.merge_patch(jsMdata);
 
-	assets_f.modify( itr, owner, [&]( auto& a ) {
+	assets_f.modify( itr, platform, [&]( auto& a ) {
 		a.mdata = jsUpdate.dump();
 	});
 }
 
-ACTION Assets::offer( name owner, name newowner, std::vector<uint64_t>& assetids, string memo ) {
+ACTION Assets::offer( name platform, name newplatform, std::vector<uint64_t>& asset_ids, string memo ) {
 
-	check( owner != newowner, "cannot offer to yourself" );
-	require_auth( owner );
-	require_recipient( owner );
-	require_recipient( newowner );
-	check( is_account( newowner ), "newowner account does not exist" );
+	check( platform != newplatform, "cannot offer to yourself" );
+	require_auth( platform );
+	require_recipient( platform );
+	require_recipient( newplatform );
+	check( is_account( newplatform ), "newplatform account does not exist" );
 
-	sassets assets_f( _self, owner.value );
+	sassets assets_f( _self, platform.value );
 	offers offert( _self, _self.value );
 	delegates delegatet( _self, _self.value );
 
-	for ( auto i = 0; i < assetids.size(); ++i ) {
-		check( assets_f.find( assetids[i] ) != assets_f.end(), "At least one of the assets was not found." );
-		check( offert.find( assetids[i] ) == offert.end(), "At least one of the assets is already offered for claim." );
-		check( delegatet.find( assetids[i] ) == delegatet.end(), "At least one of the assets is delegated and cannot be offered." );
+	for ( auto i = 0; i < asset_ids.size(); ++i ) {
+		check( assets_f.find( asset_ids[i] ) != assets_f.end(), "At least one of the assets was not found." );
+		check( offert.find( asset_ids[i] ) == offert.end(), "At least one of the assets is already offered for claim." );
+		check( delegatet.find( asset_ids[i] ) == delegatet.end(), "At least one of the assets is delegated and cannot be offered." );
 
-		offert.emplace( owner, [&]( auto& s ) {
-			s.assetid = assetids[i];
-			s.offeredto = newowner;
-			s.owner = owner;
+		offert.emplace( platform, [&]( auto& s ) {
+			s.asset_id = asset_ids[i];
+			s.offeredto = newplatform;
+			s.platform = platform;
 			s.cdate = now();
 		});
 	}
 }
 
-ACTION Assets::canceloffer( name owner, std::vector<uint64_t>& assetids ) {
+ACTION Assets::canceloffer( name platform, std::vector<uint64_t>& asset_ids ) {
 
-	require_auth( owner );
-	require_recipient( owner );
+	require_auth( platform );
+	require_recipient( platform );
 	offers offert( _self, _self.value );
 
-	for ( auto i = 0; i < assetids.size(); ++i ) {
-		auto itr = offert.find( assetids[i] );
+	for ( auto i = 0; i < asset_ids.size(); ++i ) {
+		auto itr = offert.find( asset_ids[i] );
 		check( itr != offert.end(), "The offer for at least one of the assets was not found." );
-		check( owner.value == itr->owner.value, "You're not the owner of at least one of the assets whose offers you're attempting to cancel." );
+		check( platform.value == itr->platform.value, "You're not the platform of at least one of the assets whose offers you're attempting to cancel." );
 		offert.erase( itr );
 	}
 }
 
-ACTION Assets::revoke( name owner, uint64_t assetid, string memo ) {
+ACTION Assets::revoke( name platform, uint64_t asset_id, string memo ) {
 
-	require_auth( owner );
-	sassets assets_f( _self, owner.value );
+	require_auth( platform );
+	sassets assets_f( _self, platform.value );
 	stextdigests tdigests_f(_self, _self.value);
 	simagedigests idigests_f(_self, _self.value);
 	offers offert( _self, _self.value );
 	delegates delegatet( _self, _self.value );
 
 
-	auto itr = assets_f.find( assetid );
+	auto itr = assets_f.find( asset_id );
 	check( itr != assets_f.end(), "At least one of the assets was not found." );
-	check( owner.value == itr->owner.value, "At least one of the assets you're attempting to revoke is not yours." );
-	check( offert.find( assetid ) == offert.end(), "At least one of the assets has an open offer and cannot be revokeed." );
-	check( delegatet.find( assetid ) == delegatet.end(), "At least one of assets is delegated and cannot be revokeed." );
+	check( platform.value == itr->platform.value, "At least one of the assets you're attempting to revoke is not yours." );
+	check( offert.find( asset_id ) == offert.end(), "At least one of the assets has an open offer and cannot be revokeed." );
+	check( delegatet.find( asset_id ) == delegatet.end(), "At least one of assets is delegated and cannot be revokeed." );
 
 	json js = json::parse(itr->idata);	
 	   string digestString;
@@ -393,7 +418,7 @@ ACTION Assets::revoke( name owner, uint64_t assetid, string memo ) {
 	   if (type.compare("TEXT") == 0) {
 	  while (true){ 
           auto idx = tdigests_f.get_index<name("asset")>();
-	   auto itr = idx.find(assetid);
+	   auto itr = idx.find(asset_id);
 	   if(itr == idx.end()) {
 		   break;
 	   }
@@ -402,7 +427,7 @@ ACTION Assets::revoke( name owner, uint64_t assetid, string memo ) {
 	   } else if (type.compare("IMAGE") == 0){
 	  while (true){ 
            auto idx = idigests_f.get_index<name("asset")>();
-	    auto itr = idx.find(assetid);
+	    auto itr = idx.find(asset_id);
 	    if(itr == idx.end()) {
 	  	  break;
 	    }
@@ -413,122 +438,122 @@ ACTION Assets::revoke( name owner, uint64_t assetid, string memo ) {
 	assets_f.erase(itr);
 
 	//Send Event as deferred
-	sendEvent( itr->creator, owner, "saerevoke"_n, std::make_tuple( owner, assetid, memo ) );
+	sendEvent( itr->submitted_by, platform, "saerevoke"_n, std::make_tuple( platform, asset_id, memo ) );
 }
 
-ACTION Assets::delegate( name owner, name to,string fromjson, string tojson, uint64_t assetid, uint64_t period, string memo ) {
+ACTION Assets::delegate( name platform, name to,string fromjson, string tojson, uint64_t asset_id, uint64_t period, string memo ) {
 
 	check(memo.size() <= 64, "Error. Size of memo cannot be bigger 64");
-	check( owner != to, "cannot delegate to yourself" );
-	require_auth( owner );
-	require_recipient( owner );
+	check( platform != to, "cannot delegate to yourself" );
+	require_auth( platform );
+	require_recipient( platform );
 	check( is_account( to ), "TO account does not exist" );
 
-	sassets assets_f( _self, owner.value );
+	sassets assets_f( _self, platform.value );
 	delegates delegatet( _self, _self.value );
 	offers offert( _self, _self.value );
 
-	check( assets_f.find( assetid ) != assets_f.end(), "At least one of the assets cannot be found." );
-	check( delegatet.find( assetid ) == delegatet.end(), "At least one of the assets is already delegated." );
-	check( offert.find( assetid ) == offert.end(), "At least one of the assets has an open offer and cannot be delegated." );
+	check( assets_f.find( asset_id ) != assets_f.end(), "At least one of the assets cannot be found." );
+	check( delegatet.find( asset_id ) == delegatet.end(), "At least one of the assets is already delegated." );
+	check( offert.find( asset_id ) == offert.end(), "At least one of the assets has an open offer and cannot be delegated." );
 
-	delegatet.emplace( owner, [&]( auto& s ) {
-		s.assetid = assetid;
-		s.owner = owner;
+	delegatet.emplace( platform, [&]( auto& s ) {
+		s.asset_id = asset_id;
+		s.platform = platform;
 		s.delegatedto = to;
 		s.cdate = now();
 		s.period = period;
 		s.memo = memo;
 	});
 
-	transfer( owner, to, fromjson, tojson, assetid, "Delegate memo: " + memo );
+	transfer( platform, to, fromjson, tojson, asset_id, "Delegate memo: " + memo );
 }
 
-ACTION Assets::delegatemore( name owner, uint64_t assetidc, uint64_t period ) {
+ACTION Assets::delegatemore( name platform, uint64_t asset_idc, uint64_t period ) {
 
-	require_auth( owner );
-	require_recipient( owner );
+	require_auth( platform );
+	require_recipient( platform );
 
 	delegates delegatet( _self, _self.value );
-	const auto itrc = delegatet.find( assetidc );
-	check( itrc != delegatet.end(), "Assets assetidc is not delegated." );
+	const auto itrc = delegatet.find( asset_idc );
+	check( itrc != delegatet.end(), "Assets asset_idc is not delegated." );
 	
-	delegatet.modify( itrc, owner, [&]( auto& s ) {
+	delegatet.modify( itrc, platform, [&]( auto& s ) {
 		s.period = itrc->period + period;
 	});
 }
 
-ACTION Assets::undelegate( name owner, name from,string fromjson, string tojson, uint64_t assetid ) {
+ACTION Assets::undelegate( name platform, name from,string fromjson, string tojson, uint64_t asset_id ) {
 
-	require_auth( owner );
-	require_recipient( owner );
+	require_auth( platform );
+	require_recipient( platform );
 	check( is_account( from ), "to account does not exist" );
 
 	sassets assets_f( _self, from.value );
 	delegates delegatet( _self, _self.value );
 
-	auto itr = assets_f.find( assetid );
+	auto itr = assets_f.find( asset_id );
 	check( itr != assets_f.end(), "At least one of the assets cannot be found." );
-	auto itrc = delegatet.find( assetid );
+	auto itrc = delegatet.find( asset_id );
 	check( itrc != delegatet.end(), "At least one of the assets is not delegated." );
-	check( owner == itrc->owner, "You are not the owner of at least one of these assets." );
+	check( platform == itrc->platform, "You are not the platform of at least one of these assets." );
 	check( from == itrc->delegatedto, "FROM does not match DELEGATEDTO for at least one of the assets." );
-	check( itr->owner == itrc->delegatedto, "FROM does not match DELEGATEDTO for at least one of the assets." );
+	check( itr->platform == itrc->delegatedto, "FROM does not match DELEGATEDTO for at least one of the assets." );
 	check( ( itrc->cdate + itrc->period ) < now(), "Cannot undelegate until the PERIOD expires." );
 
-	string assetidsmemo = std::to_string( assetid );
+	string asset_idsmemo = std::to_string( asset_id );
 
-	transfer( from, owner, fromjson, tojson, assetid, "undelegate assetid: " + assetidsmemo );
+	transfer( from, platform, fromjson, tojson, asset_id, "undelegate asset_id: " + asset_idsmemo );
 }
 
 
-ACTION Assets::attach( name owner, uint64_t assetidc, std::vector<uint64_t>& assetids ) {
+ACTION Assets::attach( name platform, uint64_t asset_idc, std::vector<uint64_t>& asset_ids ) {
 
-	sassets assets_f( _self, owner.value );
+	sassets assets_f( _self, platform.value );
 	delegates delegatet( _self, _self.value );
 	offers offert( _self, _self.value );
-	require_recipient( owner );
-	const auto ac_ = assets_f.find( assetidc );
+	require_recipient( platform );
+	const auto ac_ = assets_f.find( asset_idc );
 	check( ac_ != assets_f.end(), "Asset cannot be found." );
-	require_auth( ac_->creator );
+	require_auth( ac_->submitted_by );
 
-	for ( auto i = 0; i < assetids.size(); ++i ) {
-		auto itr = assets_f.find( assetids[i] );
+	for ( auto i = 0; i < asset_ids.size(); ++i ) {
+		auto itr = assets_f.find( asset_ids[i] );
 		check( itr != assets_f.end(), "At least one of the assets cannot be found." );
-		check( assetidc != assetids[i], "Cannot attcach to self." );
-		check( itr->creator == ac_->creator, "Different creators." );
-		check( delegatet.find( assetids[i] ) == delegatet.end(), "At least one of the assets is delegated." );
-		check( offert.find( assetids[i] ) == offert.end(), "At least one of the assets has an open offer and cannot be delegated." );
+		check( asset_idc != asset_ids[i], "Cannot attcach to self." );
+		check( itr->submitted_by == ac_->submitted_by, "Different submitted_bys." );
+		check( delegatet.find( asset_ids[i] ) == delegatet.end(), "At least one of the assets is delegated." );
+		check( offert.find( asset_ids[i] ) == offert.end(), "At least one of the assets has an open offer and cannot be delegated." );
 
-		assets_f.modify( ac_, ac_->creator, [&]( auto& a ) {
+		assets_f.modify( ac_, ac_->submitted_by, [&]( auto& a ) {
 			a.container.push_back( *itr );
 		});
 		assets_f.erase( itr );
 	}
 }
 
-ACTION Assets::detach( name owner, uint64_t assetidc, std::vector<uint64_t>& assetids ) {
+ACTION Assets::detach( name platform, uint64_t asset_idc, std::vector<uint64_t>& asset_ids ) {
 
-	require_auth( owner );
-	require_recipient( owner );
-	sassets assets_f( _self, owner.value );
+	require_auth( platform );
+	require_recipient( platform );
+	sassets assets_f( _self, platform.value );
 
-	const auto ac_ = assets_f.find( assetidc );
+	const auto ac_ = assets_f.find( asset_idc );
 	check( ac_ != assets_f.end(), "Asset cannot be found." );
 
 	delegates delegatet( _self, _self.value );
-	check( delegatet.find( assetidc ) == delegatet.end(), "Cannot detach from delegated. assetidc is delegated." );
+	check( delegatet.find( asset_idc ) == delegatet.end(), "Cannot detach from delegated. asset_idc is delegated." );
 
-	for ( auto i = 0; i < assetids.size(); ++i ) {
+	for ( auto i = 0; i < asset_ids.size(); ++i ) {
 		std::vector<sasset> newcontainer;
 
 		for ( auto j = 0; j < ac_->container.size(); ++j ) {
 			auto acc = ac_->container[j];
-			if ( assetids[i] == acc.id ) {
-				assets_f.emplace( owner, [&]( auto& s ) {
+			if ( asset_ids[i] == acc.id ) {
+				assets_f.emplace( platform, [&]( auto& s ) {
 					s.id = acc.id;
-					s.owner = owner;
-					s.creator = acc.creator;
+					s.platform = platform;
+					s.submitted_by = acc.submitted_by;
 					s.idata = acc.idata; 		// immutable data
 					s.mdata = acc.mdata; 		// mutable data
 					s.container = acc.container;
@@ -540,64 +565,64 @@ ACTION Assets::detach( name owner, uint64_t assetidc, std::vector<uint64_t>& ass
 			}
 		}
 
-		assets_f.modify( ac_, owner, [&]( auto& a ) {
+		assets_f.modify( ac_, platform, [&]( auto& a ) {
 			a.container = newcontainer;
 		});
 	}
 }
 
-ACTION Assets::attachf( name owner, name creator, asset quantity, uint64_t assetidc ) {
+ACTION Assets::attachf( name platform, name submitted_by, asset quantity, uint64_t asset_idc ) {
 
-	attachdeatch( owner, creator, quantity, assetidc, true );
+	attachdeatch( platform, submitted_by, quantity, asset_idc, true );
 }
 
 
-ACTION Assets::detachf( name owner, name creator, asset quantity, uint64_t assetidc ) {
+ACTION Assets::detachf( name platform, name submitted_by, asset quantity, uint64_t asset_idc ) {
 
-	attachdeatch( owner, creator, quantity, assetidc, false );
+	attachdeatch( platform, submitted_by, quantity, asset_idc, false );
 }
 
-ACTION Assets::createf( name creator, asset maximum_supply, bool creatorctrl, string data ) {
+ACTION Assets::createf( name submitted_by, asset maximum_supply, bool submitted_byctrl, string data ) {
 
-	require_auth( creator );
+	require_auth( submitted_by );
 	const auto sym = maximum_supply.symbol;
 	check( sym.is_valid(), "invalid symbol name" );
 	check( maximum_supply.is_valid(), "invalid supply" );
 	check( maximum_supply.amount > 0, "max-supply must be positive" );
 
-	stats statstable( _self, creator.value );
+	stats statstable( _self, submitted_by.value );
 	check( statstable.find( sym.code().raw() ) == statstable.end(), "token with symbol already exists" );
 
-	statstable.emplace( creator, [&]( auto& s ) {
+	statstable.emplace( submitted_by, [&]( auto& s ) {
 		s.supply.symbol = maximum_supply.symbol;
 		s.max_supply = maximum_supply;
-		s.issuer = creator;
+		s.issuer = submitted_by;
 		s.id = getid();
-		s.creatorctrl = creatorctrl;
+		s.submitted_byctrl = submitted_byctrl;
 		s.data = data;
 	});
 }
 
-ACTION Assets::updatef( name creator, symbol sym, string data ) {
+ACTION Assets::updatef( name submitted_by, symbol sym, string data ) {
 
-	require_auth( creator );
+	require_auth( submitted_by );
 	check( sym.is_valid(), "invalid symbol name" );
-	stats statstable( _self, creator.value );
+	stats statstable( _self, submitted_by.value );
 	const auto existing = statstable.find( sym.code().raw() );
 	check( existing != statstable.end(), "Symbol not exists" );
 
-	statstable.modify( existing, creator, [&]( auto& a ) {
+	statstable.modify( existing, submitted_by, [&]( auto& a ) {
 		a.data = data;
 	});
 }
 
-ACTION Assets::issuef( name to, name creator, asset quantity, string memo ) {
+ACTION Assets::issuef( name to, name submitted_by, asset quantity, string memo ) {
 
 	const auto sym = quantity.symbol;
 	check( sym.is_valid(), "invalid symbol name" );
 	check( memo.size() <= 256, "memo has more than 256 bytes" );
 
-	stats statstable( _self, creator.value );
+	stats statstable( _self, submitted_by.value );
 	const auto existing = statstable.find( sym.code().raw() );
 	check( existing != statstable.end(), "token with symbol does not exist, create token before issue" );
 
@@ -612,19 +637,19 @@ ACTION Assets::issuef( name to, name creator, asset quantity, string memo ) {
 		s.supply += quantity;
 	});
 
-	add_balancef( existing->issuer, creator, quantity, existing->issuer );
+	add_balancef( existing->issuer, submitted_by, quantity, existing->issuer );
 
 	if ( to != existing->issuer ) {
-		transferf( existing->issuer, to, creator, quantity, memo );
+		transferf( existing->issuer, to, submitted_by, quantity, memo );
 	}
 }
 
-ACTION Assets::transferf( name from, name to, name creator, asset quantity, string memo ) {
+ACTION Assets::transferf( name from, name to, name submitted_by, asset quantity, string memo ) {
 
 	check( from != to, "cannot transfer to self" );
 	check( is_account( to ), "to account does not exist" );
 	const auto sym = quantity.symbol.code();
-	stats statstable( _self, creator.value );
+	stats statstable( _self, submitted_by.value );
 	const auto& st = statstable.get( sym.raw() );
 
 	require_recipient( from );
@@ -638,28 +663,28 @@ ACTION Assets::transferf( name from, name to, name creator, asset quantity, stri
 	auto payer = has_auth( to ) ? to : from;
 	auto checkAuth = from;
 
-	if ( st.creatorctrl && has_auth( st.issuer ) ) {
+	if ( st.submitted_byctrl && has_auth( st.issuer ) ) {
 		checkAuth = st.issuer;
 		payer = st.issuer;
 	}
 
 	require_auth( checkAuth );
-	sub_balancef( from, creator, quantity );
-	add_balancef( to, creator, quantity, payer );
+	sub_balancef( from, submitted_by, quantity );
+	add_balancef( to, submitted_by, quantity, payer );
 }
 
-ACTION Assets::offerf( name owner, name newowner, name creator, asset quantity, string memo ) {
+ACTION Assets::offerf( name platform, name newplatform, name submitted_by, asset quantity, string memo ) {
 
-	require_auth( owner );
-	require_recipient( owner );
-	require_recipient( newowner );
-	check( is_account( newowner ), "newowner account does not exist" );
-	check( owner != newowner, "cannot offer to yourself" );
+	require_auth( platform );
+	require_recipient( platform );
+	require_recipient( newplatform );
+	check( is_account( newplatform ), "newplatform account does not exist" );
+	check( platform != newplatform, "cannot offer to yourself" );
 	const auto sym = quantity.symbol;
 	check( sym.is_valid(), "invalid symbol name" );
 	check( memo.size() <= 256, "memo has more than 256 bytes" );
 
-	stats statstable( _self, creator.value );
+	stats statstable( _self, submitted_by.value );
 	const auto existing = statstable.find( sym.code().raw() );
 	check( existing != statstable.end(), "token with symbol does not exist" );
 	check( quantity.is_valid(), "invalid quantity" );
@@ -667,34 +692,34 @@ ACTION Assets::offerf( name owner, name newowner, name creator, asset quantity, 
 	check( quantity.symbol == existing->supply.symbol, "symbol precision mismatch" );
 
 	offerfs offert( _self, _self.value );
-	auto owner_index = offert.template get_index< "owner"_n >();
+	auto platform_index = offert.template get_index< "platform"_n >();
 
-	for ( auto itro = owner_index.find( owner.value ); itro != owner_index.end(); itro++ ) {
-		check( !( itro->creator == creator && itro->offeredto == newowner && itro->quantity.symbol == quantity.symbol ), "Such an offer already exists" );
+	for ( auto itro = platform_index.find( platform.value ); itro != platform_index.end(); itro++ ) {
+		check( !( itro->submitted_by == submitted_by && itro->offeredto == newplatform && itro->quantity.symbol == quantity.symbol ), "Such an offer already exists" );
 	}
 
-	offert.emplace( owner, [&]( auto& s ) {
+	offert.emplace( platform, [&]( auto& s ) {
 		s.id = getid("DEFER");
-		s.creator = creator;
+		s.submitted_by = submitted_by;
 		s.quantity = quantity;
-		s.offeredto = newowner;
-		s.owner = owner;
+		s.offeredto = newplatform;
+		s.platform = platform;
 		s.cdate = now();
 	});
-	sub_balancef( owner, creator, quantity );
+	sub_balancef( platform, submitted_by, quantity );
 }
 
-ACTION Assets::cancelofferf( name owner, std::vector<uint64_t>& ftofferids ) {
+ACTION Assets::cancelofferf( name platform, std::vector<uint64_t>& ftofferids ) {
 
-	require_auth( owner );
-	require_recipient( owner );
+	require_auth( platform );
+	require_recipient( platform );
 	offerfs offert( _self, _self.value );
 
 	for ( auto i = 0; i < ftofferids.size(); ++i ) {
 		auto itr = offert.find( ftofferids[i] );
 		check( itr != offert.end(), "The offer for at least one of the FT was not found." );
-		check( owner.value == itr->owner.value, "You're not the owner of at least one of those FTs." );
-		add_balancef( owner, itr->creator, itr->quantity, owner );
+		check( platform.value == itr->platform.value, "You're not the platform of at least one of those FTs." );
+		add_balancef( platform, itr->submitted_by, itr->quantity, platform );
 		offert.erase( itr );
 	}
 }
@@ -704,27 +729,27 @@ ACTION Assets::claimf( name claimer, std::vector<uint64_t>& ftofferids ) {
 	require_auth( claimer );
 	require_recipient( claimer );
 	offerfs offert( _self, _self.value );
-	std::map< name, std::vector< uint64_t > > uniqcreator;
+	std::map< name, std::vector< uint64_t > > uniqsubmitted_by;
 
 	for ( auto i = 0; i < ftofferids.size(); ++i ) {
 		auto itrc = offert.find( ftofferids[i] );
 		check( itrc != offert.end(), "Cannot find at least one of the FT you're attempting to claim." );
 		check( claimer == itrc->offeredto, "At least one of the FTs has not been offerred to you." );
-		add_balancef( claimer, itrc->creator, itrc->quantity, claimer );
+		add_balancef( claimer, itrc->submitted_by, itrc->quantity, claimer );
 		offert.erase( itrc );
 	}
 }
 
-ACTION Assets::revokef( name from, name creator, asset quantity, string memo ) {
+ACTION Assets::revokef( name from, name submitted_by, asset quantity, string memo ) {
 
 	auto sym = quantity.symbol;
 	check( sym.is_valid(), "invalid symbol name" );
 	check( memo.size() <= 256, "memo has more than 256 bytes" );
-	stats statstable( _self, creator.value );
+	stats statstable( _self, submitted_by.value );
 
 	const auto existing = statstable.find( sym.code().raw() );
 	check( existing != statstable.end(), "token with symbol does not exist" );
-	require_auth( existing->creatorctrl && has_auth( existing->issuer ) ? existing->issuer : from );
+	require_auth( existing->submitted_byctrl && has_auth( existing->issuer ) ? existing->issuer : from );
 
 	check( quantity.is_valid(), "invalid quantity" );
 	check( quantity.amount > 0, "must retire positive quantity" );
@@ -734,38 +759,38 @@ ACTION Assets::revokef( name from, name creator, asset quantity, string memo ) {
 		s.supply -= quantity;
 	});
 
-	sub_balancef( from, creator, quantity );
+	sub_balancef( from, submitted_by, quantity );
 }
 
-ACTION Assets::openf( name owner, name creator, const symbol& symbol, name ram_payer ) {
+ACTION Assets::openf( name platform, name submitted_by, const symbol& symbol, name ram_payer ) {
 
 	require_auth( ram_payer );
-	stats statstable( _self, creator.value );
+	stats statstable( _self, submitted_by.value );
 	const auto& st = statstable.get( symbol.code().raw(), "symbol does not exist" );
 	check( st.supply.symbol == symbol, "symbol precision mismatch" );
-	accounts acnts( _self, owner.value );
+	accounts acnts( _self, platform.value );
 
 	if ( acnts.find( st.id ) == acnts.end() ) {
 		acnts.emplace( ram_payer, [&]( auto& a ) {
 			a.id = st.id;
-			a.creator = creator;
+			a.submitted_by = submitted_by;
 			a.balance = asset{ 0, symbol };
 		});
 	}
 }
 
-ACTION Assets::closef( name owner, name creator, const symbol& symbol ) {
+ACTION Assets::closef( name platform, name submitted_by, const symbol& symbol ) {
 
-	require_auth( owner );
-	accounts acnts( _self, owner.value );
-	auto it = acnts.find( getFTIndex( creator, symbol ) );
+	require_auth( platform );
+	accounts acnts( _self, platform.value );
+	auto it = acnts.find( getFTIndex( submitted_by, symbol ) );
 	check( it != acnts.end(), "Balance row already deleted or never existed. Action won't have any effect." );
 	check( it->balance.amount == 0, "Cannot close because the balance is not zero." );
 
 	offerfs offert( _self, _self.value );
-	const auto owner_index = offert.template get_index< "owner"_n >();
-	for ( auto itro = owner_index.find( owner.value ); itro != owner_index.end(); itro++ ) {
-		check( !( itro->creator == creator && itro->quantity.symbol == symbol ), "You have open offers for this FT.." );
+	const auto platform_index = offert.template get_index< "platform"_n >();
+	for ( auto itro = platform_index.find( platform.value ); itro != platform_index.end(); itro++ ) {
+		check( !( itro->submitted_by == submitted_by && itro->quantity.symbol == symbol ), "You have open offers for this FT.." );
 	}
 
 	acnts.erase( it );
@@ -798,41 +823,41 @@ uint64_t Assets::getid( string type ) {
 	return resid;
 }
 
-uint64_t Assets::getFTIndex( name creator, symbol symbol ) {
+uint64_t Assets::getFTIndex( name submitted_by, symbol symbol ) {
 
-	stats statstable( _self, creator.value );
+	stats statstable( _self, submitted_by.value );
 	const auto existing = statstable.find( symbol.code().raw() );
 	check( existing != statstable.end(), "token with symbol does not exist." );
 	return existing->id;
 }
 
-void Assets::attachdeatch( name owner, name creator, asset quantity, uint64_t assetidc, bool attach ) {
+void Assets::attachdeatch( name platform, name submitted_by, asset quantity, uint64_t asset_idc, bool attach ) {
 
-	sassets assets_f( _self, owner.value );
+	sassets assets_f( _self, platform.value );
 	delegates delegatet( _self, _self.value );
 	offers offert( _self, _self.value );
-	stats statstable( _self, creator.value );
+	stats statstable( _self, submitted_by.value );
 	const auto& st = statstable.get( quantity.symbol.code().raw() );
 
-	require_recipient( owner );
+	require_recipient( platform );
 
 	check( quantity.is_valid(), "invalid quantity" );
 	check( quantity.amount > 0, "must transfer positive quantity" );
 	check( quantity.symbol == st.supply.symbol, "symbol precision mismatch" );
-	check( st.issuer == creator, "Different creators" );
+	check( st.issuer == submitted_by, "Different submitted_bys" );
 
 	if ( attach ) {
-		require_auth( creator );	 //attach
+		require_auth( submitted_by );	 //attach
 	}
 	else {
-		require_auth( owner );  //deatach
+		require_auth( platform );  //deatach
 	}
 
-	const auto itr = assets_f.find( assetidc );
-	check( itr != assets_f.end(), "assetid cannot be found." );
-	check( itr->creator == creator, "Different creators." );
-	check( delegatet.find(assetidc) == delegatet.end(), "Asset is delegated." );
-	check( offert.find(assetidc) == offert.end(), "Assets has an open offer and cannot be delegated." );
+	const auto itr = assets_f.find( asset_idc );
+	check( itr != assets_f.end(), "asset_id cannot be found." );
+	check( itr->submitted_by == submitted_by, "Different submitted_bys." );
+	check( delegatet.find(asset_idc) == delegatet.end(), "Asset is delegated." );
+	check( offert.find(asset_idc) == offert.end(), "Assets has an open offer and cannot be delegated." );
 
 	std::vector<account> newcontainerf;
 	bool found = false;
@@ -856,7 +881,7 @@ void Assets::attachdeatch( name owner, name creator, asset quantity, uint64_t as
 	if ( !found && attach ) {
 		account addft;
 		addft.id = st.id;
-		addft.creator = creator;
+		addft.submitted_by = submitted_by;
 		addft.balance = quantity;
 
 		newcontainerf.push_back( addft );
@@ -865,41 +890,41 @@ void Assets::attachdeatch( name owner, name creator, asset quantity, uint64_t as
 	if ( !attach )
 		check( found, "not attached" );
 
-	assets_f.modify( itr, creator, [&]( auto& a ) {
+	assets_f.modify( itr, submitted_by, [&]( auto& a ) {
 		a.containerf = newcontainerf;
 	});
 
 	if ( attach ) {
-		sub_balancef( owner, creator, quantity );
+		sub_balancef( platform, submitted_by, quantity );
 	}
 	else {
-		add_balancef( owner, creator, quantity, owner );
+		add_balancef( platform, submitted_by, quantity, platform );
 	}
 }
 
-void Assets::sub_balancef( name owner, name creator, asset value ) {
+void Assets::sub_balancef( name platform, name submitted_by, asset value ) {
 
-	accounts from_acnts( _self, owner.value );
-	const auto& from = from_acnts.get( getFTIndex( creator, value.symbol ), "no balance object found" );
+	accounts from_acnts( _self, platform.value );
+	const auto& from = from_acnts.get( getFTIndex( submitted_by, value.symbol ), "no balance object found" );
 	check( from.balance.amount >= value.amount, "overdrawn balance" );
 	check( value.symbol.code().raw() == from.balance.symbol.code().raw(), "Wrong symbol" );
 
-	from_acnts.modify( from, has_auth( creator ) ? creator : owner, [&]( auto& a ) {
+	from_acnts.modify( from, has_auth( submitted_by ) ? submitted_by : platform, [&]( auto& a ) {
 		a.balance -= value;
 	});
 }
 
-void Assets::add_balancef( name owner, name creator, asset value, name ram_payer ) {
+void Assets::add_balancef( name platform, name submitted_by, asset value, name ram_payer ) {
 
-	accounts to_acnts( _self, owner.value );
-	auto ftid = getFTIndex( creator, value.symbol );
+	accounts to_acnts( _self, platform.value );
+	auto ftid = getFTIndex( submitted_by, value.symbol );
 	auto to = to_acnts.find( ftid );
 
 	if ( to == to_acnts.end() ) {
 		to_acnts.emplace( ram_payer, [&]( auto& a ) {
 			a.id = ftid;
 			a.balance = value;
-			a.creator = creator;
+			a.submitted_by = submitted_by;
 		});
 	}
 	else {
@@ -910,22 +935,22 @@ void Assets::add_balancef( name owner, name creator, asset value, name ram_payer
 }
 
 template<typename... Args>
-void Assets::sendEvent( name creator, name rampayer, name seaction, const std::tuple<Args...> &adata ) {
+void Assets::sendEvent( name submitted_by, name rampayer, name seaction, const std::tuple<Args...> &adata ) {
 
 	transaction sevent{};
-	sevent.actions.emplace_back( permission_level{ _self, "active"_n }, creator, seaction, adata );
+	sevent.actions.emplace_back( permission_level{ _self, "active"_n }, submitted_by, seaction, adata );
 	sevent.delay_sec = 0;
 	sevent.send( getid("DEFER"), rampayer );
 }
 
-asset Assets::get_supply( name token_contract_account, name creator, symbol_code sym_code ) {
-	stats statstable( token_contract_account, creator.value );
+asset Assets::get_supply( name token_contract_account, name submitted_by, symbol_code sym_code ) {
+	stats statstable( token_contract_account, submitted_by.value );
 	return statstable.get( sym_code.raw() ).supply;
 }
 
-asset Assets::get_balance( name token_contract_account, name owner, name creator, symbol_code sym_code ) {
-	stats statstable( token_contract_account, creator.value );
-	accounts accountstable( token_contract_account, owner.value );
+asset Assets::get_balance( name token_contract_account, name platform, name submitted_by, symbol_code sym_code ) {
+	stats statstable( token_contract_account, submitted_by.value );
+	accounts accountstable( token_contract_account, platform.value );
 	return accountstable.get( statstable.get( sym_code.raw() ).id ).balance;
 }
 
@@ -966,9 +991,9 @@ std::vector<std::vector<string>> Assets::groupBy(std::vector<string> digest, int
 
 EOSIO_DISPATCH( Assets, (newasset)( create )( newassetlog )( createlog )( transfer )( revoke )( update )
 ( offer )( canceloffer )( claim )
-( regcreator )( creatorupdate )
+( regsubmitted )( submittedud )
 ( delegate )( undelegate )( delegatemore )( attach )( detach )
 ( createf )( updatef )( issuef )( transferf )( revokef )
 ( offerf )( cancelofferf )( claimf )
 ( attachf )( detachf )( openf )( closef )
-( updatever ) (cleartables1) (cleartables2))
+( updatever ) (cleartables1) (cleartables2) )
