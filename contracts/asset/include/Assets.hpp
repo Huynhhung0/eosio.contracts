@@ -211,7 +211,20 @@ CONTRACT Assets : public contract{
 		using transfer_action = action_wrapper< "transfer"_n, &Assets::transfer >;
 
 		/*
-		* Update assets data.
+		* Update assets common info.
+		*
+		* This action update assets mutable data (mdata) field. Action is available only for submitted_bys.
+		*
+		* @param platform is current assets platform.
+		* @param asset_id is asset_id to update.
+		* @param common_info is stringified json with mutable assets data. merge old data with new data.
+		* @return no return value.
+		*/
+		ACTION updatecinfo(name platform, uint64_t asset_id, string common_info );
+		using updatecinfo_action = action_wrapper< "updatecinfo"_n, &Assets::updatecinfo >;
+
+		/*
+		* Set assets mdata.
 		*
 		* This action update assets mutable data (mdata) field. Action is available only for submitted_bys.
 		*
@@ -220,8 +233,21 @@ CONTRACT Assets : public contract{
 		* @param mdata is stringified json with mutable assets data. All mdata will be replaced.
 		* @return no return value.
 		*/
-		ACTION update(name platform, uint64_t asset_id, string mdata );
-		using update_action = action_wrapper< "update"_n, &Assets::update >;
+		ACTION setmdata(name platform, uint64_t asset_id, string mdata );
+		using setmdata_action = action_wrapper< "setmdata"_n, &Assets::setmdata >;
+
+		/*
+		* Set assets detail info.
+		*
+		* This action update assets mutable data (mdata) field. Action is available only for submitted_bys.
+		*
+		* @param platform is current assets platform.
+		* @param asset_id is asset_id to update.
+		* @param detail_info is stringified json with detail info. All detail_info will be replaced.
+		* @return no return value.
+		*/
+		ACTION setdinfo(name platform, uint64_t asset_id, string detail_info);
+		using setdinfo_action = action_wrapper< "setdinfo"_n, &Assets::setdinfo >;
 
 		/*
 		* Offer asset for claim.

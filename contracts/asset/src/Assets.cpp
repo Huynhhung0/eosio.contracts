@@ -323,8 +323,7 @@ ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonst
 	sendEvent( itr->submitted_by, rampayer, "saetransfer"_n, std::make_tuple( from, to, asset_id, memo ) );
 }
 
-ACTION Assets::update( name platform, uint64_t asset_id, string mdata ) {
-
+ACTION Assets::setmdata( name platform, uint64_t asset_id, string mdata ) {
 	require_auth( platform );
 	sassets assets_f( _self, platform.value );
 	const auto itr = assets_f.find( asset_id );
@@ -333,21 +332,46 @@ ACTION Assets::update( name platform, uint64_t asset_id, string mdata ) {
 
 	json validJSON = json::accept(mdata);
 	check(validJSON, "mdata is invalid json.");
-	json jsUpdate = json::parse(mdata);
-	json jsMdata = json::parse(itr->mdata);
-	for (auto j = jsUpdate.begin();j != jsUpdate.end();j++) {
-		string key = j.key();
-		if(key.rfind("echo_", 0) == 0) jsUpdate.erase(key);
-	}
-	for (auto j = jsMdata.begin();j != jsMdata.end();j++) {
-		string key = j.key();
-		if(key.rfind("echo_", 0) == 0) continue;
-		jsMdata.erase(key);
-	}
-	jsUpdate.merge_patch(jsMdata);
 
 	assets_f.modify( itr, platform, [&]( auto& a ) {
-		a.mdata = jsUpdate.dump();
+		a.mdata = mdata; 
+	});
+
+}
+
+ACTION Assets::setdinfo( name platform, uint64_t asset_id, string detail_info) {
+	require_auth( platform );
+	sassets assets_f( _self, platform.value );
+	const auto itr = assets_f.find( asset_id );
+	check( itr != assets_f.end(), "asset not found" );
+	check( itr->platform == platform, "Only platform can update asset." );
+
+	json validJSON = json::accept(detail_info);
+	check(validJSON, "mdata is invalid json.");
+
+	assets_f.modify( itr, platform, [&]( auto& a ) {
+		a.detail_info = detail_info; 
+	});
+
+}
+
+
+ACTION Assets::updatecinfo( name platform, uint64_t asset_id, string common_info) {
+
+	require_auth( platform );
+	sassets assets_f( _self, platform.value );
+	const auto itr = assets_f.find( asset_id );
+	check( itr != assets_f.end(), "asset not found" );
+	check( itr->platform == platform, "Only platform can update asset." );
+
+	json validJSON = json::accept(common_info);
+	check(validJSON, "mdata is invalid json.");
+	json jsUpdate = json::parse(common_info);
+	json jsMdata = json::parse(itr->common_info);
+	jsMdata.merge_patch(jsUpdate);
+
+	assets_f.modify( itr, platform, [&]( auto& a ) {
+		a.mdata = jsMdata.dump();
 	});
 }
 
@@ -989,8 +1013,8 @@ std::vector<std::vector<string>> Assets::groupBy(std::vector<string> digest, int
   return groupDigest;
 }
 
-EOSIO_DISPATCH( Assets, (newasset)( create )( newassetlog )( createlog )( transfer )( revoke )( update )
-( offer )( canceloffer )( claim )
+EOSIO_DISPATCH( Assets, (newasset)( create )( newassetlog )( createlog )( transfer )( revoke ) 
+( offer )( canceloffer )( claim )( setmdata )( setdinfo ) ( updatecinfo )
 ( regsubmitted )( submittedud )
 ( delegate )( undelegate )( delegatemore )( attach )( detach )
 ( createf )( updatef )( issuef )( transferf )( revokef )
