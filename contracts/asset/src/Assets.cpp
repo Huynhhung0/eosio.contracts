@@ -290,6 +290,7 @@ ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonst
 
 	auto itr = assets_f.find( asset_id );
 	check( itr != assets_f.end(), "At least one of the assets cannot be found (check ids?)" );
+	check(!itr->revoke, "asset is revoked.");
 	check( from.value == itr->platform.value, "At least one of the assets is not yours to transfer." );
 	check( offert.find( asset_id ) == offert.end(), "At least one of the assets has been offered for a claim and cannot be transferred. Cancel offer?" );
 	json validJSON = json::accept(itr->ref_info);
@@ -328,6 +329,7 @@ ACTION Assets::setmdata( name platform, uint64_t asset_id, string mdata ) {
 	sassets assets_f( _self, platform.value );
 	const auto itr = assets_f.find( asset_id );
 	check( itr != assets_f.end(), "asset not found" );
+	check(!itr->revoke, "asset is revoked.");
 	check( itr->platform == platform, "Only platform can update asset." );
 
 	json validJSON = json::accept(mdata);
@@ -344,6 +346,7 @@ ACTION Assets::setdinfo( name platform, uint64_t asset_id, string detail_info) {
 	sassets assets_f( _self, platform.value );
 	const auto itr = assets_f.find( asset_id );
 	check( itr != assets_f.end(), "asset not found" );
+	check(!itr->revoke, "asset is revoked.");
 	check( itr->platform == platform, "Only platform can update asset." );
 
 	json validJSON = json::accept(detail_info);
@@ -362,6 +365,7 @@ ACTION Assets::updatecinfo( name platform, uint64_t asset_id, string common_info
 	sassets assets_f( _self, platform.value );
 	const auto itr = assets_f.find( asset_id );
 	check( itr != assets_f.end(), "asset not found" );
+	check(!itr->revoke, "asset is revoked.");
 	check( itr->platform == platform, "Only platform can update asset." );
 
 	json validJSON = json::accept(common_info);
@@ -430,6 +434,7 @@ ACTION Assets::revoke( name platform, uint64_t asset_id, string memo ) {
 	check( platform.value == itr->platform.value, "At least one of the assets you're attempting to revoke is not yours." );
 	check( offert.find( asset_id ) == offert.end(), "At least one of the assets has an open offer and cannot be revokeed." );
 	check( delegatet.find( asset_id ) == delegatet.end(), "At least one of assets is delegated and cannot be revokeed." );
+	check( !itr->revoke , "Asset is already revoked." );
 
 	json js = json::parse(itr->idata);	
 	   string digestString;
@@ -459,7 +464,9 @@ ACTION Assets::revoke( name platform, uint64_t asset_id, string memo ) {
 	  }
 	   }
 
-	assets_f.erase(itr);
+	assets_f.modify( itr, platform, [&]( auto& a ) {
+		a.revoke = true;
+	});
 
 	//Send Event as deferred
 	sendEvent( itr->submitted_by, platform, "saerevoke"_n, std::make_tuple( platform, asset_id, memo ) );

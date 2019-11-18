@@ -667,6 +667,7 @@ CONTRACT Assets : public contract{
 			string                  common_info; // asset detail ie. title
 			string                  detail_info; //echo detail
 			string                  ref_info; //platform info
+			bool					revoke; // is revoke ?
 			std::vector<sasset>     container;
 			std::vector<account>    containerf;
 
@@ -679,7 +680,7 @@ CONTRACT Assets : public contract{
 			}
 
 		};
-		typedef eosio::multi_index< "asset3"_n, sasset,
+		typedef eosio::multi_index< "asset4"_n, sasset,
 			eosio::indexed_by< "submittedby"_n, eosio::const_mem_fun<sasset, uint64_t, &sasset::by_submitted > >
 			> sassets;
 
