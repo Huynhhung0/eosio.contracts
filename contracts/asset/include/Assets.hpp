@@ -289,7 +289,7 @@ CONTRACT Assets : public contract{
 		* @param memo is memo for revoke action.
 		* @return no return value.
 		*/
-		ACTION revoke( name platform, uint64_t asset_ids, string memo );
+		ACTION revoke( name platform, uint64_t asset_id, string memo );
 		using revoke_action = action_wrapper< "revoke"_n, &Assets::revoke >;
 
 		/*

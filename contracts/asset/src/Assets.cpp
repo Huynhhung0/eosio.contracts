@@ -375,7 +375,7 @@ ACTION Assets::updatecinfo( name platform, uint64_t asset_id, string common_info
 	jsMdata.merge_patch(jsUpdate);
 
 	assets_f.modify( itr, platform, [&]( auto& a ) {
-		a.mdata = jsMdata.dump();
+		a.common_info = jsMdata.dump();
 	});
 }
 
