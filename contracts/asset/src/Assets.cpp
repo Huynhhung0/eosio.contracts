@@ -105,7 +105,7 @@ ACTION Assets::newasset(name submitted_by) {
 }
 
 ACTION Assets::create( name submitted_by, uint64_t asset_id, string idata, string mdata, string common_info, string detail_info, string ref_info) {
-
+	print("hello");
 	require_auth( submitted_by );
 	sassets assets_f( _self, submitted_by.value );
 	const auto itrAsset = assets_f.find( asset_id );
@@ -117,66 +117,37 @@ ACTION Assets::create( name submitted_by, uint64_t asset_id, string idata, strin
 	check(json::accept(common_info), "invalid common_info json.");
 	check(json::accept(detail_info), "invalid detail_info json.");
 	check(json::accept(ref_info), "invalid ref_info json.");
-	/*
-	json refInfo = json::parse(refinfo);
-	name platform = name(refInfo["platform"].get<string>());
-	*/
 	name platform = submitted_by;
 	json js = json::parse(idata);	
-	string digestString;
-	string type;
-	for (auto& [key, value] : js.items()) {
-		if (key.compare("digest") == 0) { 
-			digestString = value;
+	string digestString = js["digest"].get<string>();
+	string type = js["type"].get<string>();
+	bool isDuplicate;
+	std::vector<uint64_t> duplicateAssetIDs;
+	std::vector<checksum256> digestsForInsert;
+	print("hi");
+	std::vector<std::vector<checksum256>> buckets = getBucket(digestString, type);
+	print("hi1");
+	std::tie(isDuplicate, duplicateAssetIDs, digestsForInsert ) = checkDuplicate(buckets, type);
+	print("hi2");
+	if(isDuplicate) {
+		string msg = "found duplicate digest with Asset IDs: ";
+	    for (int i = 0; i < duplicateAssetIDs.size(); i++) {
+			msg = msg + std::to_string(duplicateAssetIDs[i]);
+			if (i != (duplicateAssetIDs.size() -1) ) msg = msg + ", ";
 		}
-		else if (key.compare("type") == 0) { 
-			type = value;
-		}
-	}
-    std::vector<string> digest = splitWord(digestString, ',');
-    std::vector<std::vector<string>> digestGroup;
-	if (type.compare("TEXT") == 0) {
-	  digestGroup = groupBy(digest, 13);
-	} else if (type.compare("IMAGE") == 0){
-	  digestGroup = groupBy(digest, 1);
-	}
-	int i,j;
-	std::vector<checksum256> buckets;
-    for (i = 0,j = 0; i < digestGroup.size(); i++, j++) {
-      string bucket;
-      bucket = std::to_string(j) + "_" + join(digestGroup[i], "_");
-      checksum256 bucket256 = sha256(bucket.c_str(), bucket.size() * sizeof(char));
-	  buckets.push_back(bucket256);
-    }
-	if (type.compare("TEXT") == 0) {
-		stextdigests digests_f(_self, _self.value);
-	    auto digest_index = digests_f.get_index<name("digest")>();
-	    for (i =0; i < buckets.size(); i++) {
-	    	const auto itr = digest_index.find(buckets[i]);
-			if(itr != digest_index.end()) {
-              string msg = "found duplicate text digest with assetID:" +  std::to_string(itr->asset_id);
-	    	  check(false, msg);
-			}
-	    }
-	    for (i =0; i < buckets.size(); i++) {
-			digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("TEXT"); d.digest= buckets[i]; d.asset_id = asset_id;});
-	    }
-	} else if (type.compare("IMAGE") == 0) {
-		simagedigests digests_f(_self, _self.value);
-	    auto digest_index = digests_f.get_index<name("digest")>();
-	    for (i =0; i < buckets.size(); i++) {
-	    	const auto itr = digest_index.find(buckets[i]);
-			if(itr != digest_index.end()) {
-              string msg = "found duplicate image digest with assetID:" +  std::to_string(itr->asset_id);
-	    	  check(false, msg);
-			}
-	    }
-	    for (i =0; i < buckets.size(); i++) {
-			digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("IMAGE"); d.digest= buckets[i]; d.asset_id = asset_id;});
-	    }
-
+		check(false, msg);
 	} else {
-		check(false, "invalid type");
+	  for (int i =0; i < digestsForInsert.size(); i++) {
+        if (type.compare("TEXT") == 0) {
+		  stextdigests digests_f(_self, _self.value);
+	      auto digest_index = digests_f.get_index<name("digest")>();
+		  digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("TEXT"); d.digest= digestsForInsert[i]; d.asset_id = asset_id;});
+		} else if (type.compare("IMAGE") == 0) {
+		  stextdigests digests_f(_self, _self.value);
+	      auto digest_index = digests_f.get_index<name("digest")>();
+		  digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("IMAGE"); d.digest= digestsForInsert[i]; d.asset_id = asset_id;});
+		}
+	  }
 	}
 	assets_f.modify( itrAsset, submitted_by, [&]( auto& a ) {
 		a.platform = platform;
@@ -989,7 +960,7 @@ asset Assets::get_balance( name token_contract_account, name platform, name subm
 	return accountstable.get( statstable.get( sym_code.raw() ).id ).balance;
 }
 
-std::vector<string> Assets::splitWord(string s, char delimiter) {
+std::vector<string> Assets::splitWord(string& s, char delimiter) {
   std::vector<string> tokens;
   string token;
   size_t pos = 0;
@@ -1023,6 +994,75 @@ std::vector<std::vector<string>> Assets::groupBy(std::vector<string> digest, int
   }
   return groupDigest;
 }
+
+std::vector<std::vector<checksum256>> Assets::getBucket(string& digestString, string& type) {
+    std::vector<string> digest = splitWord(digestString, ',');
+    std::vector<std::vector<std::vector<string>>> digestGroup;
+	std::vector<std::vector<checksum256>> buckets;
+
+	if (type.compare("TEXT") == 0) {
+	  digestGroup.push_back(groupBy(digest, 5));
+	  digestGroup.push_back(groupBy(digest, 9));
+	  digestGroup.push_back(groupBy(digest, 13));
+	} else if (type.compare("IMAGE") == 0){
+	  digestGroup.push_back(groupBy(digest, 1));
+	}
+	print(" hello from getbucket");
+	for (int i = 0; i < digestGroup.size(); i++) {
+	  print(" hello from each getbucket.");
+	  std::vector<checksum256> smallBuckets;
+      for (int j = 0; i < digestGroup[i].size(); j++) {
+        string bucket;
+        bucket = std::to_string(j) + "_" + join(digestGroup[i][j], "_");
+        checksum256 bucket256 = sha256(bucket.c_str(), bucket.size() * sizeof(char));
+	    smallBuckets.push_back(bucket256);
+      }
+	  buckets.push_back(smallBuckets);
+	}
+	print(" hello from getbucket ended.");
+	return buckets;
+}
+std::tuple<bool, std::vector<uint64_t>, std::vector<checksum256> > Assets::checkDuplicate(std::vector<std::vector<checksum256>> buckets, string type) {
+	bool isDuplicate = true;
+	std::vector<uint64_t> duplicateAssetID; // for logging duplicate with asset ids.
+	std::vector<checksum256> digestsForInsert;
+	if (type.compare("TEXT") == 0) {
+		stextdigests digests_f(_self, _self.value);
+	    auto digest_index = digests_f.get_index<name("digest")>();
+	    for (int i =0; i < buckets.size(); i++) {
+          bool isInnerDuplicate = false; // flag for check duplicate in digest group
+	      for (int j = 0; j < buckets[i].size(); j++) {
+	      	const auto itr = digest_index.find(buckets[i][j]);
+			if(itr != digest_index.end()) {
+              isInnerDuplicate = true;
+              duplicateAssetID.push_back(itr->asset_id); 
+			} else if(itr == digest_index.end()) {
+				if (!isInnerDuplicate) isDuplicate = false; //if digest group not duplicate then set flag not dup
+			  	digestsForInsert.push_back(buckets[i][j]);
+			}
+	      }
+		}
+	} else if (type.compare("IMAGE") == 0) {
+		stextdigests digests_f(_self, _self.value);
+	    auto digest_index = digests_f.get_index<name("digest")>();
+	    for (int i =0; i < buckets.size(); i++) {
+          bool isInnerDuplicate = false; // flag for check duplicate in digest group
+	      for (int j = 0; j < buckets[i].size(); j++) {
+	      	const auto itr = digest_index.find(buckets[i][j]);
+			if(itr != digest_index.end()) {
+              isInnerDuplicate = true;
+              duplicateAssetID.push_back(itr->asset_id); 
+			} else if(itr == digest_index.end()) {
+				if (!isInnerDuplicate) isDuplicate = false; //if digest group not duplicate then set flag not dup
+			  	digestsForInsert.push_back(buckets[i][j]);
+			}
+	      }
+		}
+	}
+
+	return std::make_tuple(isDuplicate, duplicateAssetID, digestsForInsert);
+}
+
 
 EOSIO_DISPATCH( Assets, (newasset)( create )( newassetlog )( createlog )( transfer )( revoke ) 
 ( offer )( canceloffer )( claim )( setmdata )( setdinfo ) ( updatecinfo )

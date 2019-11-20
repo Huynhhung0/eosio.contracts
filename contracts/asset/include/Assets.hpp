@@ -597,9 +597,11 @@ CONTRACT Assets : public contract{
 
 		template<typename... Args>
 		void sendEvent( name submitted_by, name rampayer, name seaction, const std::tuple<Args...> &tup );
-		std::vector<string> splitWord(string s, char delimiter); 
+		std::vector<string> splitWord(string& s, char delimiter); 
 		string join(const std::vector<string> &lst, const string &delim); 
 		std::vector<std::vector<string>> groupBy(std::vector<string> digest, int size);
+		std::vector<std::vector<checksum256>> getBucket(string&, string&); 
+        std::tuple<bool, std::vector<uint64_t>, std::vector<checksum256> > checkDuplicate(std::vector<std::vector<checksum256>>, string);
 
 		/*
 		* Creators table. Can be used by asset markets, asset explorers, or wallets for correct asset
