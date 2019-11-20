@@ -105,7 +105,6 @@ ACTION Assets::newasset(name submitted_by) {
 }
 
 ACTION Assets::create( name submitted_by, uint64_t asset_id, string idata, string mdata, string common_info, string detail_info, string ref_info) {
-	print("hello");
 	require_auth( submitted_by );
 	sassets assets_f( _self, submitted_by.value );
 	const auto itrAsset = assets_f.find( asset_id );
@@ -124,11 +123,8 @@ ACTION Assets::create( name submitted_by, uint64_t asset_id, string idata, strin
 	bool isDuplicate;
 	std::vector<uint64_t> duplicateAssetIDs;
 	std::vector<checksum256> digestsForInsert;
-	print("hi");
 	std::vector<std::vector<checksum256>> buckets = getBucket(digestString, type);
-	print("hi1");
 	std::tie(isDuplicate, duplicateAssetIDs, digestsForInsert ) = checkDuplicate(buckets, type);
-	print("hi2");
 	if(isDuplicate) {
 		string msg = "found duplicate digest with Asset IDs: ";
 	    for (int i = 0; i < duplicateAssetIDs.size(); i++) {
@@ -1007,11 +1003,10 @@ std::vector<std::vector<checksum256>> Assets::getBucket(string& digestString, st
 	} else if (type.compare("IMAGE") == 0){
 	  digestGroup.push_back(groupBy(digest, 1));
 	}
-	print(" hello from getbucket");
-	for (int i = 0; i < digestGroup.size(); i++) {
-	  print(" hello from each getbucket.");
+	const int length = digestGroup.size();
+	for (int i = 0; i < length; i++) {
 	  std::vector<checksum256> smallBuckets;
-      for (int j = 0; i < digestGroup[i].size(); j++) {
+      for (int j = 0; j < digestGroup[j].size(); j++) {
         string bucket;
         bucket = std::to_string(j) + "_" + join(digestGroup[i][j], "_");
         checksum256 bucket256 = sha256(bucket.c_str(), bucket.size() * sizeof(char));
@@ -1019,7 +1014,6 @@ std::vector<std::vector<checksum256>> Assets::getBucket(string& digestString, st
       }
 	  buckets.push_back(smallBuckets);
 	}
-	print(" hello from getbucket ended.");
 	return buckets;
 }
 std::tuple<bool, std::vector<uint64_t>, std::vector<checksum256> > Assets::checkDuplicate(std::vector<std::vector<checksum256>> buckets, string type) {
@@ -1059,6 +1053,8 @@ std::tuple<bool, std::vector<uint64_t>, std::vector<checksum256> > Assets::check
 	      }
 		}
 	}
+	sort( duplicateAssetID.begin(), duplicateAssetID.end() );
+	duplicateAssetID.erase( unique( duplicateAssetID.begin(), duplicateAssetID.end() ), duplicateAssetID.end() );
 
 	return std::make_tuple(isDuplicate, duplicateAssetID, digestsForInsert);
 }
