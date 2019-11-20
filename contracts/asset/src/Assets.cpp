@@ -298,16 +298,20 @@ ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonst
 	json refInfo = json::parse(itr->ref_info);
 	string platformState = refInfo["owner"].get<string>();
 	string refOwnerState = refInfo["ref_owner"].get<string>();
-	string fromOwner = fromjson["owner"].get<string>();
-	string fromRefOwner = fromjson["ref_owner"].get<string>();
-	string toOwner = tojson["owner"].get<string>();
-	string toRefOwner = tojson["ref_owner"].get<string>();
-	check(platformState.compare(fromOwner) == 0, "cannot transfer from other owner.");
-	check(refOwnerState.compare(fromRefOwner) == 0, "cannot transfer from other ref_owner.");
-	check(platformState.compare(toOwner) != 0, "cannot transfer to yourself.");
-	check(refOwnerState.compare(toRefOwner) != 0, "cannot transfer to yourself.");
-	refInfo["owner"] = toOwner;
-	refInfo["ref_owner"] = toRefOwner;
+	if(!fromjson.empty()){
+	  string fromOwner = fromjson["owner"].get<string>();
+	  string fromRefOwner = fromjson["ref_owner"].get<string>();
+	  check(platformState.compare(fromOwner) == 0, "cannot transfer from other owner.");
+	  check(refOwnerState.compare(fromRefOwner) == 0, "cannot transfer from other ref_owner.");
+	  if(!tojson.empty()) {
+	    string toOwner = tojson["owner"].get<string>();
+	    string toRefOwner = tojson["ref_owner"].get<string>();
+	    check(platformState.compare(toOwner) != 0, "cannot transfer to yourself.");
+	    check(refOwnerState.compare(toRefOwner) != 0, "cannot transfer to yourself.");
+	    refInfo["owner"] = toOwner;
+	    refInfo["ref_owner"] = toRefOwner;
+	  }
+	} 
 	assets_f.erase(itr);
 	assets_t.emplace( rampayer, [&]( auto& s ) {
 		s.id = itr->id;
