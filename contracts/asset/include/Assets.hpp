@@ -682,7 +682,7 @@ CONTRACT Assets : public contract{
 			}
 
 		};
-		typedef eosio::multi_index< "asset4"_n, sasset,
+		typedef eosio::multi_index< "asset5"_n, sasset,
 			eosio::indexed_by< "submittedby"_n, eosio::const_mem_fun<sasset, uint64_t, &sasset::by_submitted > >
 			> sassets;
 
@@ -707,7 +707,7 @@ CONTRACT Assets : public contract{
 				return asset_id;
 			}
 		};
-		typedef eosio::multi_index< "stdg1"_n, stdigest,
+		typedef eosio::multi_index< "stdg2"_n, stdigest,
 			eosio::indexed_by< "digest"_n, eosio::const_mem_fun<stdigest, checksum256, &stdigest::get_digest> >,
 			eosio::indexed_by< "asset"_n, eosio::const_mem_fun<stdigest, uint64_t, &stdigest::get_asset> >
 			> stextdigests;
@@ -732,7 +732,7 @@ CONTRACT Assets : public contract{
 				return asset_id;
 			}
 		};
-		typedef eosio::multi_index< "sidg1"_n, sidigest,
+		typedef eosio::multi_index< "sidg2"_n, sidigest,
 			eosio::indexed_by< "digest"_n, eosio::const_mem_fun<sidigest, checksum256, &sidigest::get_digest> >,
 			eosio::indexed_by< "asset"_n, eosio::const_mem_fun<sidigest, uint64_t, &sidigest::get_asset> >
 			> simagedigests;
@@ -757,7 +757,7 @@ CONTRACT Assets : public contract{
 				return offeredto.value;
 			}
 		};
-		typedef eosio::multi_index< "offers1"_n, soffer,
+		typedef eosio::multi_index< "offers2"_n, soffer,
 			eosio::indexed_by< "platform"_n, eosio::const_mem_fun< soffer, uint64_t, &soffer::by_platform > >,
 			eosio::indexed_by< "offeredto"_n, eosio::const_mem_fun< soffer, uint64_t, &soffer::by_offeredto > >
 			> offers;

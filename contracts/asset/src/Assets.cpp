@@ -139,7 +139,7 @@ ACTION Assets::create( name submitted_by, uint64_t asset_id, string idata, strin
 	      auto digest_index = digests_f.get_index<name("digest")>();
 		  digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("TEXT"); d.digest= digestsForInsert[i]; d.asset_id = asset_id;});
 		} else if (type.compare("IMAGE") == 0) {
-		  stextdigests digests_f(_self, _self.value);
+		  simagedigests digests_f(_self, _self.value);
 	      auto digest_index = digests_f.get_index<name("digest")>();
 		  digests_f.emplace( _self, [&]( auto& d ) { d.id = getid("IMAGE"); d.digest= digestsForInsert[i]; d.asset_id = asset_id;});
 		}
@@ -1006,7 +1006,7 @@ std::vector<std::vector<checksum256>> Assets::getBucket(string& digestString, st
 	const int length = digestGroup.size();
 	for (int i = 0; i < length; i++) {
 	  std::vector<checksum256> smallBuckets;
-      for (int j = 0; j < digestGroup[j].size(); j++) {
+      for (int j = 0; j < digestGroup[i].size(); j++) {
         string bucket;
         bucket = std::to_string(j) + "_" + join(digestGroup[i][j], "_");
         checksum256 bucket256 = sha256(bucket.c_str(), bucket.size() * sizeof(char));
@@ -1037,7 +1037,7 @@ std::tuple<bool, std::vector<uint64_t>, std::vector<checksum256> > Assets::check
 	      }
 		}
 	} else if (type.compare("IMAGE") == 0) {
-		stextdigests digests_f(_self, _self.value);
+		simagedigests digests_f(_self, _self.value);
 	    auto digest_index = digests_f.get_index<name("digest")>();
 	    for (int i =0; i < buckets.size(); i++) {
           bool isInnerDuplicate = false; // flag for check duplicate in digest group
