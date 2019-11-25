@@ -285,7 +285,11 @@ ACTION Assets::transfer( name from, name to, string fromjsonstr, string tojsonst
 		s.platform = to;
 		s.submitted_by = itr->submitted_by;
 		s.idata = itr->idata; 		// immutable data
-		s.ref_info= refInfo.dump(); 		   // mutable data
+		s.mdata = itr->mdata; 		// mutable data
+		s.common_info= itr->common_info;
+		s.detail_info = itr->detail_info;
+		s.ref_info= refInfo.dump(); 
+		s.revoke = false;
 		s.container = itr->container;
 		s.containerf = itr->containerf;
 
