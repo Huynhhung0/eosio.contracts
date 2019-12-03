@@ -1,5 +1,6 @@
 #include <Assets.hpp>
 
+/*
 ACTION Assets::cleartables1() {
   require_auth(_self);
   simagedigests st(_self, _self.value);
@@ -8,6 +9,7 @@ ACTION Assets::cleartables1() {
     itr = st.erase(itr);
   }
 }
+*/
 
 /*
 ACTION Assets::genid(name submitted_by, string r) {
@@ -25,7 +27,7 @@ ACTION Assets::genid(name submitted_by, string r) {
 
 }
 */
-
+/*
 ACTION Assets::cleartables2() {
   require_auth(_self);
   stextdigests st1(_self, _self.value);
@@ -34,6 +36,7 @@ ACTION Assets::cleartables2() {
     itr1 = st1.erase(itr1);
   }
 }
+*/
 
 ACTION Assets::updatever( string version ) {
 
@@ -85,7 +88,7 @@ ACTION Assets::submittedud( name submitted_by, string data, string stemplate, st
 //@TODO dont allow an submitted_by run brute force new asset_id.
 ACTION Assets::newasset(name submitted_by) {
 	require_auth(submitted_by);
-	check( is_account( submitted_by ), "submitted_by account does not exist." );
+	check( is_account( submitted_by ), "submittd_by account does not exist." );
 	require_recipient( submitted_by );
 	const auto newID = getid();
 	sassets assets( _self, submitted_by.value );
@@ -102,6 +105,33 @@ ACTION Assets::newasset(name submitted_by) {
 	sendEvent( submitted_by, submitted_by, "saenewasset"_n, std::make_tuple( submitted_by, newID ) );
 	SEND_INLINE_ACTION( *this, newassetlog, { {_self, "active"_n} }, { submitted_by, newID} );
 
+}
+
+
+ACTION Assets::isduplicate(string idata) {
+	check(json::accept(idata), "invalid json");
+	json js = json::parse(idata);
+	check(!js.empty(),"idata can not be empty");
+	check(!js["digest"].empty(),"idata digest can not be empty.");
+	check(!js["type"].empty(),"idata type can not be empty.");
+	string digestString = js["digest"].get<string>();
+	string type = js["type"].get<string>();
+	bool isDuplicate = false;
+	std::vector<uint64_t> duplicateAssetIDs;
+	std::vector<std::vector<checksum256>> buckets = getBucket(digestString, type);
+	std::tie(isDuplicate, duplicateAssetIDs, std::ignore ) = checkDuplicate(buckets, type);
+	string msg = "";
+	   for (int i = 0; i < duplicateAssetIDs.size(); i++) {
+		msg = msg + std::to_string(duplicateAssetIDs[i]);
+		if (i != (duplicateAssetIDs.size() -1) ) msg = msg + ", ";
+	}
+	SEND_INLINE_ACTION( *this, isduplog, { {_self, "active"_n} }, {(isDuplicate ? "true": "false"), msg} );
+}
+
+
+ACTION Assets::isduplog(string is_duplicate, string duplicate_asset_ids) {
+
+	require_auth(get_self());
 }
 
 ACTION Assets::create( name submitted_by, uint64_t asset_id, string idata, string mdata, string common_info, string detail_info, string ref_info) {
@@ -983,6 +1013,8 @@ string Assets::join(const std::vector<string> &lst, const string &delim) {
   return ret;
 }
 
+
+
 std::vector<std::vector<string>> Assets::groupBy(std::vector<string> digest, int size) {
   std::vector<std::vector<string>> groupDigest;
   for (int i = 0; i < digest.size() / size; i++) {
@@ -1070,5 +1102,5 @@ EOSIO_DISPATCH( Assets, (newasset)( create )( newassetlog )( createlog )( transf
 ( delegate )( undelegate )( delegatemore )( attach )( detach )
 ( createf )( updatef )( issuef )( transferf )( revokef )
 ( offerf )( cancelofferf )( claimf )
-( attachf )( detachf )( openf )( closef )
-( updatever ) (cleartables1) (cleartables2) )
+( attachf )( detachf )( openf )( closef )( isduplicate )( isduplog )
+( updatever ) /*(cleartables1) (cleartables2)*/ )

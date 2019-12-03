@@ -50,10 +50,13 @@ CONTRACT Assets : public contract{
 		*
 		* @return no return value.
 		*/
+
+	/*
 		ACTION cleartables1();
 		using cleartables1_action = action_wrapper< "cleartables1"_n, &Assets::cleartables1 >;
 		ACTION cleartables2();
 		using cleartables2_action = action_wrapper< "cleartables2"_n, &Assets::cleartables2 >;
+	*/
 
 		/*
 		* Update version.
@@ -140,6 +143,20 @@ CONTRACT Assets : public contract{
 		*/
 		ACTION newassetlog( name submitted_by, uint64_t asset_id);
 		using newassetlog_action = action_wrapper< "newassetlog"_n, &Assets::newassetlog >;
+
+		/*
+		* check duplicate digest 
+		*
+		* This is action. Used by check that digest is duplicate with assets id in table 
+		*
+		* @param idata is json string.
+		* @return no return value.
+		*/
+		ACTION isduplicate(string idata); 
+		using isduplicate_action = action_wrapper< "isduplicate"_n, &Assets::isduplicate >; 
+
+		ACTION isduplog(string duplicate,string duplicateAssetID ); 
+		using isduplog_action = action_wrapper< "isduplog"_n, &Assets::isduplog >; 
 
 		/*
 		* Create a new asset.
