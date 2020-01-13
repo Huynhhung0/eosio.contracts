@@ -1,0 +1,501 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+AddFilters	../include/json/third_party/cpplint/cpplint.py	/^  def AddFilters(self, filters):$/;"	kind:member	line:1059
+AddJUnitFailure	../include/json/third_party/cpplint/cpplint.py	/^  def AddJUnitFailure(self, filename, linenum, message, category, confidence):$/;"	kind:member	line:1111
+Amalgamation	../include/json/third_party/amalgamate/amalgamate.py	/^class Amalgamation(object):$/;"	kind:class	line:43
+ArgumentParser	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^from argparse import ArgumentParser$/;"	kind:namespace	line:8
+ArgumentParser	../include/json/benchmarks/thirdparty/benchmark/tools/compare_bench.py	/^from argparse import ArgumentParser$/;"	kind:namespace	line:7
+ArgumentParser	../include/json/benchmarks/thirdparty/benchmark/tools/strip_asm.py	/^from argparse import ArgumentParser$/;"	kind:namespace	line:7
+BC_BOLD	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^BC_BOLD = BenchmarkColor('BOLD', '\\033[1m')$/;"	kind:variable	line:29
+BC_CYAN	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^BC_CYAN = BenchmarkColor('CYAN', '\\033[96m')$/;"	kind:variable	line:22
+BC_ENDC	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^BC_ENDC = BenchmarkColor('ENDC', '\\033[0m')$/;"	kind:variable	line:28
+BC_FAIL	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^BC_FAIL = BenchmarkColor('FAIL', '\\033[91m')$/;"	kind:variable	line:27
+BC_HEADER	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^BC_HEADER = BenchmarkColor('HEADER', '\\033[92m')$/;"	kind:variable	line:24
+BC_MAGENTA	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^BC_MAGENTA = BenchmarkColor('MAGENTA', '\\033[95m')$/;"	kind:variable	line:21
+BC_NONE	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^BC_NONE = BenchmarkColor('NONE', '')$/;"	kind:variable	line:20
+BC_OKBLUE	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^BC_OKBLUE = BenchmarkColor('OKBLUE', '\\033[94m')$/;"	kind:variable	line:23
+BC_UNDERLINE	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^BC_UNDERLINE = BenchmarkColor('UNDERLINE', '\\033[4m')$/;"	kind:variable	line:30
+BC_WARNING	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^BC_WARNING = BenchmarkColor('WARNING', '\\033[93m')$/;"	kind:variable	line:25
+BC_WHITE	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^BC_WHITE = BenchmarkColor('WHITE', '\\033[97m')$/;"	kind:variable	line:26
+BackupFilters	../include/json/third_party/cpplint/cpplint.py	/^  def BackupFilters(self):$/;"	kind:member	line:1070
+BaseName	../include/json/third_party/cpplint/cpplint.py	/^  def BaseName(self):$/;"	kind:member	line:1384
+Begin	../include/json/third_party/cpplint/cpplint.py	/^  def Begin(self, function_name):$/;"	kind:member	line:1243
+BenchmarkColor	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^class BenchmarkColor(object):$/;"	kind:class	line:7
+CanonicalizeAlphabeticalOrder	../include/json/third_party/cpplint/cpplint.py	/^  def CanonicalizeAlphabeticalOrder(self, header_path):$/;"	kind:member	line:905
+Check	../include/json/third_party/cpplint/cpplint.py	/^  def Check(self, error, filename, linenum):$/;"	kind:member	line:1258
+CheckAltTokens	../include/json/third_party/cpplint/cpplint.py	/^def CheckAltTokens(filename, clean_lines, linenum, error):$/;"	kind:function	line:4473
+CheckBegin	../include/json/third_party/cpplint/cpplint.py	/^  def CheckBegin(self, filename, clean_lines, linenum, error):$/;"	kind:member	line:2438
+CheckBegin	../include/json/third_party/cpplint/cpplint.py	/^  def CheckBegin(self, filename, clean_lines, linenum, error):$/;"	kind:member	line:2518
+CheckBraces	../include/json/third_party/cpplint/cpplint.py	/^def CheckBraces(filename, clean_lines, linenum, error):$/;"	kind:function	line:3962
+CheckBracesSpacing	../include/json/third_party/cpplint/cpplint.py	/^def CheckBracesSpacing(filename, clean_lines, linenum, nesting_state, error):$/;"	kind:function	line:3778
+CheckCStyleCast	../include/json/third_party/cpplint/cpplint.py	/^def CheckCStyleCast(filename, clean_lines, linenum, cast_type, pattern, error):$/;"	kind:function	line:5521
+CheckCasts	../include/json/third_party/cpplint/cpplint.py	/^def CheckCasts(filename, clean_lines, linenum, error):$/;"	kind:function	line:5402
+CheckCheck	../include/json/third_party/cpplint/cpplint.py	/^def CheckCheck(filename, clean_lines, linenum, error):$/;"	kind:function	line:4355
+CheckCommaSpacing	../include/json/third_party/cpplint/cpplint.py	/^def CheckCommaSpacing(filename, clean_lines, linenum, error):$/;"	kind:function	line:3679
+CheckComment	../include/json/third_party/cpplint/cpplint.py	/^def CheckComment(line, filename, linenum, next_line_start, error):$/;"	kind:function	line:3344
+CheckCompletedBlocks	../include/json/third_party/cpplint/cpplint.py	/^  def CheckCompletedBlocks(self, filename, error):$/;"	kind:member	line:2981
+CheckEmptyBlockBody	../include/json/third_party/cpplint/cpplint.py	/^def CheckEmptyBlockBody(filename, clean_lines, linenum, error):$/;"	kind:function	line:4228
+CheckEnd	../include/json/third_party/cpplint/cpplint.py	/^  def CheckEnd(self, filename, clean_lines, linenum, error):$/;"	kind:member	line:2453
+CheckEnd	../include/json/third_party/cpplint/cpplint.py	/^  def CheckEnd(self, filename, clean_lines, linenum, error):$/;"	kind:member	line:2523
+CheckEnd	../include/json/third_party/cpplint/cpplint.py	/^  def CheckEnd(self, filename, clean_lines, linenum, error):$/;"	kind:member	line:2562
+CheckForBadCharacters	../include/json/third_party/cpplint/cpplint.py	/^def CheckForBadCharacters(filename, lines, error):$/;"	kind:function	line:2231
+CheckForCopyright	../include/json/third_party/cpplint/cpplint.py	/^def CheckForCopyright(filename, lines, error):$/;"	kind:function	line:1972
+CheckForFunctionLengths	../include/json/third_party/cpplint/cpplint.py	/^def CheckForFunctionLengths(filename, clean_lines, linenum,$/;"	kind:function	line:3273
+CheckForHeaderGuard	../include/json/third_party/cpplint/cpplint.py	/^def CheckForHeaderGuard(filename, clean_lines, error):$/;"	kind:function	line:2101
+CheckForIncludeWhatYouUse	../include/json/third_party/cpplint/cpplint.py	/^def CheckForIncludeWhatYouUse(filename, clean_lines, include_state, error,$/;"	kind:function	line:5751
+CheckForMultilineCommentsAndStrings	../include/json/third_party/cpplint/cpplint.py	/^def CheckForMultilineCommentsAndStrings(filename, clean_lines, linenum, error):$/;"	kind:function	line:2274
+CheckForNamespaceIndentation	../include/json/third_party/cpplint/cpplint.py	/^def CheckForNamespaceIndentation(filename, nesting_state, clean_lines, line,$/;"	kind:function	line:3259
+CheckForNewlineAtEOF	../include/json/third_party/cpplint/cpplint.py	/^def CheckForNewlineAtEOF(filename, lines, error):$/;"	kind:function	line:2256
+CheckForNonConstReference	../include/json/third_party/cpplint/cpplint.py	/^def CheckForNonConstReference(filename, clean_lines, linenum,$/;"	kind:function	line:5263
+CheckForNonStandardConstructs	../include/json/third_party/cpplint/cpplint.py	/^def CheckForNonStandardConstructs(filename, clean_lines, linenum,$/;"	kind:function	line:3003
+CheckGlobalStatic	../include/json/third_party/cpplint/cpplint.py	/^def CheckGlobalStatic(filename, clean_lines, linenum, error):$/;"	kind:function	line:5093
+CheckHeaderFileIncluded	../include/json/third_party/cpplint/cpplint.py	/^def CheckHeaderFileIncluded(filename, include_state, error):$/;"	kind:function	line:2204
+CheckIncludeLine	../include/json/third_party/cpplint/cpplint.py	/^def CheckIncludeLine(filename, clean_lines, linenum, include_state, error):$/;"	kind:function	line:4768
+CheckInvalidIncrement	../include/json/third_party/cpplint/cpplint.py	/^def CheckInvalidIncrement(filename, clean_lines, linenum, error):$/;"	kind:function	line:2392
+CheckItemIndentationInNamespace	../include/json/third_party/cpplint/cpplint.py	/^def CheckItemIndentationInNamespace(filename, raw_lines_no_comments, linenum,$/;"	kind:function	line:6025
+CheckLanguage	../include/json/third_party/cpplint/cpplint.py	/^def CheckLanguage(filename, clean_lines, linenum, file_extension,$/;"	kind:function	line:4932
+CheckMakePairUsesDeduction	../include/json/third_party/cpplint/cpplint.py	/^def CheckMakePairUsesDeduction(filename, clean_lines, linenum, error):$/;"	kind:function	line:5855
+CheckNextIncludeOrder	../include/json/third_party/cpplint/cpplint.py	/^  def CheckNextIncludeOrder(self, header_type):$/;"	kind:member	line:941
+CheckOperatorSpacing	../include/json/third_party/cpplint/cpplint.py	/^def CheckOperatorSpacing(filename, clean_lines, linenum, error):$/;"	kind:function	line:3526
+CheckParenthesisSpacing	../include/json/third_party/cpplint/cpplint.py	/^def CheckParenthesisSpacing(filename, clean_lines, linenum, error):$/;"	kind:function	line:3641
+CheckPosixThreading	../include/json/third_party/cpplint/cpplint.py	/^def CheckPosixThreading(filename, clean_lines, linenum, error):$/;"	kind:function	line:2342
+CheckPrintf	../include/json/third_party/cpplint/cpplint.py	/^def CheckPrintf(filename, clean_lines, linenum, error):$/;"	kind:function	line:5154
+CheckRedundantOverrideOrFinal	../include/json/third_party/cpplint/cpplint.py	/^def CheckRedundantOverrideOrFinal(filename, clean_lines, linenum, error):$/;"	kind:function	line:5940
+CheckRedundantVirtual	../include/json/third_party/cpplint/cpplint.py	/^def CheckRedundantVirtual(filename, clean_lines, linenum, error):$/;"	kind:function	line:5876
+CheckSectionSpacing	../include/json/third_party/cpplint/cpplint.py	/^def CheckSectionSpacing(filename, clean_lines, class_info, linenum, error):$/;"	kind:function	line:3884
+CheckSpacing	../include/json/third_party/cpplint/cpplint.py	/^def CheckSpacing(filename, clean_lines, linenum, nesting_state, error):$/;"	kind:function	line:3398
+CheckSpacingForFunctionCall	../include/json/third_party/cpplint/cpplint.py	/^def CheckSpacingForFunctionCall(filename, clean_lines, linenum, error):$/;"	kind:function	line:3167
+CheckStyle	../include/json/third_party/cpplint/cpplint.py	/^def CheckStyle(filename, clean_lines, linenum, file_extension, nesting_state,$/;"	kind:function	line:4537
+CheckTrailingSemicolon	../include/json/third_party/cpplint/cpplint.py	/^def CheckTrailingSemicolon(filename, clean_lines, linenum, error):$/;"	kind:function	line:4081
+CheckVlogArguments	../include/json/third_party/cpplint/cpplint.py	/^def CheckVlogArguments(filename, clean_lines, linenum, error):$/;"	kind:function	line:2368
+CleanseComments	../include/json/third_party/cpplint/cpplint.py	/^def CleanseComments(line):$/;"	kind:function	line:1624
+CleanseRawStrings	../include/json/third_party/cpplint/cpplint.py	/^def CleanseRawStrings(raw_lines):$/;"	kind:function	line:1504
+CleansedLines	../include/json/third_party/cpplint/cpplint.py	/^class CleansedLines(object):$/;"	kind:class	line:1640
+CloseExpression	../include/json/third_party/cpplint/cpplint.py	/^def CloseExpression(clean_lines, linenum, pos):$/;"	kind:function	line:1813
+Count	../include/json/third_party/cpplint/cpplint.py	/^  def Count(self):$/;"	kind:member	line:1253
+ElementTree	../include/json/third_party/cpplint/cpplint.py	/^import xml.etree.ElementTree$/;"	kind:namespace	line:57
+EmptyLogger	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^class EmptyLogger(object):$/;"	kind:class	line:27
+End	../include/json/third_party/cpplint/cpplint.py	/^  def End(self):$/;"	kind:member	line:1286
+Error	../include/json/third_party/cpplint/cpplint.py	/^def Error(filename, linenum, category, confidence, message):$/;"	kind:function	line:1429
+ExpectingFunctionArgs	../include/json/third_party/cpplint/cpplint.py	/^def ExpectingFunctionArgs(clean_lines, linenum):$/;"	kind:function	line:5574
+Extension	../include/json/third_party/cpplint/cpplint.py	/^  def Extension(self):$/;"	kind:member	line:1388
+FileInfo	../include/json/third_party/cpplint/cpplint.py	/^class FileInfo(object):$/;"	kind:class	line:1296
+FilesBelongToSameModule	../include/json/third_party/cpplint/cpplint.py	/^def FilesBelongToSameModule(filename_cc, filename_h):$/;"	kind:function	line:5666
+FindCheckMacro	../include/json/third_party/cpplint/cpplint.py	/^def FindCheckMacro(line):$/;"	kind:function	line:4332
+FindEndOfExpressionInLine	../include/json/third_party/cpplint/cpplint.py	/^def FindEndOfExpressionInLine(line, startpos, stack):$/;"	kind:function	line:1735
+FindHeader	../include/json/third_party/cpplint/cpplint.py	/^  def FindHeader(self, header):$/;"	kind:member	line:869
+FindNextMultiLineCommentEnd	../include/json/third_party/cpplint/cpplint.py	/^def FindNextMultiLineCommentEnd(lines, lineix):$/;"	kind:function	line:1591
+FindNextMultiLineCommentStart	../include/json/third_party/cpplint/cpplint.py	/^def FindNextMultiLineCommentStart(lines, lineix):$/;"	kind:function	line:1580
+FindStartOfExpressionInLine	../include/json/third_party/cpplint/cpplint.py	/^def FindStartOfExpressionInLine(line, endpos, stack):$/;"	kind:function	line:1857
+FixupPathFromRoot	../include/json/third_party/cpplint/cpplint.py	/^  def FixupPathFromRoot():$/;"	kind:function	line:2047
+FlagCxx11Features	../include/json/third_party/cpplint/cpplint.py	/^def FlagCxx11Features(filename, clean_lines, linenum, error):$/;"	kind:function	line:6078
+FlagCxx14Features	../include/json/third_party/cpplint/cpplint.py	/^def FlagCxx14Features(filename, clean_lines, linenum, error):$/;"	kind:function	line:6130
+FormatJUnitXML	../include/json/third_party/cpplint/cpplint.py	/^  def FormatJUnitXML(self):$/;"	kind:member	line:1115
+FullName	../include/json/third_party/cpplint/cpplint.py	/^  def FullName(self):$/;"	kind:member	line:1306
+GCOVS_SKIPPED	../include/json/test/thirdparty/fastcov/fastcov.py	/^GCOVS_SKIPPED = []$/;"	kind:variable	line:37
+GCOVS_TOTAL	../include/json/test/thirdparty/fastcov/fastcov.py	/^GCOVS_TOTAL = []$/;"	kind:variable	line:36
+GetAllExtensions	../include/json/third_party/cpplint/cpplint.py	/^def GetAllExtensions():$/;"	kind:function	line:704
+GetHeaderExtensions	../include/json/third_party/cpplint/cpplint.py	/^def GetHeaderExtensions():$/;"	kind:function	line:699
+GetHeaderGuardCPPVariable	../include/json/third_party/cpplint/cpplint.py	/^def GetHeaderGuardCPPVariable(filename):$/;"	kind:function	line:2025
+GetIndentLevel	../include/json/third_party/cpplint/cpplint.py	/^def GetIndentLevel(line):$/;"	kind:function	line:1985
+GetLineWidth	../include/json/third_party/cpplint/cpplint.py	/^def GetLineWidth(line):$/;"	kind:function	line:4505
+GetNonHeaderExtensions	../include/json/third_party/cpplint/cpplint.py	/^def GetNonHeaderExtensions():$/;"	kind:function	line:709
+GetPreviousNonBlankLine	../include/json/third_party/cpplint/cpplint.py	/^def GetPreviousNonBlankLine(clean_lines, linenum):$/;"	kind:function	line:3939
+IT_Executable	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^IT_Executable = 2$/;"	kind:variable	line:12
+IT_Invalid	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^IT_Invalid    = 0$/;"	kind:variable	line:10
+IT_JSON	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^IT_JSON       = 1$/;"	kind:variable	line:11
+InAsmBlock	../include/json/third_party/cpplint/cpplint.py	/^  def InAsmBlock(self):$/;"	kind:member	line:2688
+InClassDeclaration	../include/json/third_party/cpplint/cpplint.py	/^  def InClassDeclaration(self):$/;"	kind:member	line:2680
+InExternC	../include/json/third_party/cpplint/cpplint.py	/^  def InExternC(self):$/;"	kind:member	line:2672
+InNamespaceBody	../include/json/third_party/cpplint/cpplint.py	/^  def InNamespaceBody(self):$/;"	kind:member	line:2664
+InTemplateArgumentList	../include/json/third_party/cpplint/cpplint.py	/^  def InTemplateArgumentList(self, clean_lines, linenum, pos):$/;"	kind:member	line:2696
+IncrementErrorCount	../include/json/third_party/cpplint/cpplint.py	/^  def IncrementErrorCount(self, category):$/;"	kind:member	line:1083
+InnermostClass	../include/json/third_party/cpplint/cpplint.py	/^  def InnermostClass(self):$/;"	kind:member	line:2969
+IsBlankLine	../include/json/third_party/cpplint/cpplint.py	/^def IsBlankLine(line):$/;"	kind:function	line:3244
+IsBlockInNameSpace	../include/json/third_party/cpplint/cpplint.py	/^def IsBlockInNameSpace(nesting_state, is_forward_declaration):$/;"	kind:function	line:5973
+IsBlockInfo	../include/json/third_party/cpplint/cpplint.py	/^  def IsBlockInfo(self):$/;"	kind:member	line:2466
+IsCppString	../include/json/third_party/cpplint/cpplint.py	/^def IsCppString(line):$/;"	kind:function	line:1487
+IsDecltype	../include/json/third_party/cpplint/cpplint.py	/^def IsDecltype(clean_lines, linenum, column):$/;"	kind:function	line:3867
+IsDerivedFunction	../include/json/third_party/cpplint/cpplint.py	/^def IsDerivedFunction(clean_lines, linenum):$/;"	kind:function	line:5183
+IsErrorSuppressedByNolint	../include/json/third_party/cpplint/cpplint.py	/^def IsErrorSuppressedByNolint(category, linenum):$/;"	kind:function	line:770
+IsForwardClassDeclaration	../include/json/third_party/cpplint/cpplint.py	/^def IsForwardClassDeclaration(clean_lines, linenum):$/;"	kind:function	line:2424
+IsHeaderExtension	../include/json/third_party/cpplint/cpplint.py	/^def IsHeaderExtension(file_extension):$/;"	kind:function	line:696
+IsInAlphabeticalOrder	../include/json/third_party/cpplint/cpplint.py	/^  def IsInAlphabeticalOrder(self, clean_lines, linenum, header_path):$/;"	kind:member	line:920
+IsInitializerList	../include/json/third_party/cpplint/cpplint.py	/^def IsInitializerList(clean_lines, linenum):$/;"	kind:function	line:5221
+IsMacroDefinition	../include/json/third_party/cpplint/cpplint.py	/^def IsMacroDefinition(clean_lines, linenum):$/;"	kind:function	line:2414
+IsOutOfLineMethodDefinition	../include/json/third_party/cpplint/cpplint.py	/^def IsOutOfLineMethodDefinition(clean_lines, linenum):$/;"	kind:function	line:5205
+IsSource	../include/json/third_party/cpplint/cpplint.py	/^  def IsSource(self):$/;"	kind:member	line:1396
+MINIMUM_CHUNK_SIZE	../include/json/test/thirdparty/fastcov/fastcov.py	/^MINIMUM_CHUNK_SIZE = 5$/;"	kind:variable	line:32
+MINIMUM_GCOV	../include/json/test/thirdparty/fastcov/fastcov.py	/^MINIMUM_GCOV = (9,0,0)$/;"	kind:variable	line:31
+Match	../include/json/third_party/cpplint/cpplint.py	/^def Match(pattern, s):$/;"	kind:function	line:788
+NestingState	../include/json/third_party/cpplint/cpplint.py	/^class NestingState(object):$/;"	kind:class	line:2629
+NoExtension	../include/json/third_party/cpplint/cpplint.py	/^  def NoExtension(self):$/;"	kind:member	line:1392
+NumLines	../include/json/third_party/cpplint/cpplint.py	/^  def NumLines(self):$/;"	kind:member	line:1663
+ParseArguments	../include/json/third_party/cpplint/cpplint.py	/^def ParseArguments(args):$/;"	kind:function	line:6417
+ParseNolintSuppressions	../include/json/third_party/cpplint/cpplint.py	/^def ParseNolintSuppressions(filename, raw_line, linenum, error):$/;"	kind:function	line:714
+PathSplitToList	../include/json/third_party/cpplint/cpplint.py	/^def PathSplitToList(path):$/;"	kind:function	line:2000
+PrintCategories	../include/json/third_party/cpplint/cpplint.py	/^def PrintCategories():$/;"	kind:function	line:6408
+PrintError	../include/json/third_party/cpplint/cpplint.py	/^  def PrintError(self, message):$/;"	kind:member	line:1105
+PrintErrorCounts	../include/json/third_party/cpplint/cpplint.py	/^  def PrintErrorCounts(self):$/;"	kind:member	line:1093
+PrintInfo	../include/json/third_party/cpplint/cpplint.py	/^  def PrintInfo(self, message):$/;"	kind:member	line:1101
+PrintUsage	../include/json/third_party/cpplint/cpplint.py	/^def PrintUsage(message):$/;"	kind:function	line:6386
+PrintVersion	../include/json/third_party/cpplint/cpplint.py	/^def PrintVersion():$/;"	kind:function	line:6402
+ProcessConfigOverrides	../include/json/third_party/cpplint/cpplint.py	/^def ProcessConfigOverrides(filename):$/;"	kind:function	line:6200
+ProcessFile	../include/json/third_party/cpplint/cpplint.py	/^def ProcessFile(filename, vlevel, extra_check_functions=None):$/;"	kind:function	line:6294
+ProcessFileData	../include/json/third_party/cpplint/cpplint.py	/^def ProcessFileData(filename, file_extension, lines, error,$/;"	kind:function	line:6149
+ProcessGlobalSuppresions	../include/json/third_party/cpplint/cpplint.py	/^def ProcessGlobalSuppresions(lines):$/;"	kind:function	line:746
+ProcessHppHeadersOption	../include/json/third_party/cpplint/cpplint.py	/^def ProcessHppHeadersOption(val):$/;"	kind:function	line:687
+ProcessLine	../include/json/third_party/cpplint/cpplint.py	/^def ProcessLine(filename, file_extension, clean_lines, line,$/;"	kind:function	line:6033
+RemoveMultiLineComments	../include/json/third_party/cpplint/cpplint.py	/^def RemoveMultiLineComments(filename, lines, error):$/;"	kind:function	line:1608
+RemoveMultiLineCommentsFromRange	../include/json/third_party/cpplint/cpplint.py	/^def RemoveMultiLineCommentsFromRange(lines, begin, end):$/;"	kind:function	line:1600
+ReplaceAll	../include/json/third_party/cpplint/cpplint.py	/^def ReplaceAll(pattern, rep, s):$/;"	kind:function	line:798
+RepositoryName	../include/json/third_party/cpplint/cpplint.py	/^  def RepositoryName(self):$/;"	kind:member	line:1310
+ResetErrorCounts	../include/json/third_party/cpplint/cpplint.py	/^  def ResetErrorCounts(self):$/;"	kind:member	line:1078
+ResetNolintSuppressions	../include/json/third_party/cpplint/cpplint.py	/^def ResetNolintSuppressions():$/;"	kind:function	line:764
+ResetSection	../include/json/third_party/cpplint/cpplint.py	/^  def ResetSection(self, directive):$/;"	kind:member	line:884
+RestoreFilters	../include/json/third_party/cpplint/cpplint.py	/^  def RestoreFilters(self):$/;"	kind:member	line:1074
+ReverseCloseExpression	../include/json/third_party/cpplint/cpplint.py	/^def ReverseCloseExpression(clean_lines, linenum, pos):$/;"	kind:function	line:1934
+START_TIME	../include/json/test/thirdparty/fastcov/fastcov.py	/^START_TIME = time.time()$/;"	kind:variable	line:35
+Search	../include/json/third_party/cpplint/cpplint.py	/^def Search(pattern, s):$/;"	kind:function	line:816
+SeenOpenBrace	../include/json/third_party/cpplint/cpplint.py	/^  def SeenOpenBrace(self):$/;"	kind:member	line:2655
+SetCountingStyle	../include/json/third_party/cpplint/cpplint.py	/^  def SetCountingStyle(self, counting_style):$/;"	kind:member	line:1037
+SetFilters	../include/json/third_party/cpplint/cpplint.py	/^  def SetFilters(self, filters):$/;"	kind:member	line:1041
+SetLastHeader	../include/json/third_party/cpplint/cpplint.py	/^  def SetLastHeader(self, header_path):$/;"	kind:member	line:902
+SetOutputFormat	../include/json/third_party/cpplint/cpplint.py	/^  def SetOutputFormat(self, output_format):$/;"	kind:member	line:1021
+SetQuiet	../include/json/third_party/cpplint/cpplint.py	/^  def SetQuiet(self, quiet):$/;"	kind:member	line:1025
+SetVerboseLevel	../include/json/third_party/cpplint/cpplint.py	/^  def SetVerboseLevel(self, level):$/;"	kind:member	line:1031
+ShouldCheckNamespaceIndentation	../include/json/third_party/cpplint/cpplint.py	/^def ShouldCheckNamespaceIndentation(nesting_state, is_namespace_indent_item,$/;"	kind:function	line:5992
+Split	../include/json/third_party/cpplint/cpplint.py	/^  def Split(self):$/;"	kind:member	line:1370
+StripListPrefix	../include/json/third_party/cpplint/cpplint.py	/^    def StripListPrefix(lst, prefix):$/;"	kind:function	line:2058
+TestParser	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^class TestParser(unittest.TestCase):$/;"	kind:class	line:217
+TestReportDifference	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^class TestReportDifference(unittest.TestCase):$/;"	kind:class	line:135
+TestReportDifferenceBetweenFamilies	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^class TestReportDifferenceBetweenFamilies(unittest.TestCase):$/;"	kind:class	line:173
+TranslationUnit	../include/json/third_party/amalgamate/amalgamate.py	/^class TranslationUnit(object):$/;"	kind:class	line:115
+Update	../include/json/third_party/cpplint/cpplint.py	/^  def Update(self, filename, clean_lines, linenum, error):$/;"	kind:member	line:2805
+UpdateIncludeState	../include/json/third_party/cpplint/cpplint.py	/^def UpdateIncludeState(filename, include_dict, io=codecs):$/;"	kind:function	line:5724
+UpdatePreprocessor	../include/json/third_party/cpplint/cpplint.py	/^  def UpdatePreprocessor(self, line):$/;"	kind:member	line:2748
+_ALT_TOKEN_REPLACEMENT	../include/json/third_party/cpplint/cpplint.py	/^_ALT_TOKEN_REPLACEMENT = {$/;"	kind:variable	line:576
+_ALT_TOKEN_REPLACEMENT_PATTERN	../include/json/third_party/cpplint/cpplint.py	/^_ALT_TOKEN_REPLACEMENT_PATTERN = re.compile($/;"	kind:variable	line:595
+_AddFilters	../include/json/third_party/cpplint/cpplint.py	/^def _AddFilters(filters):$/;"	kind:function	line:1212
+_BLOCK_ASM	../include/json/third_party/cpplint/cpplint.py	/^_BLOCK_ASM = 3    # The whole block is an inline assembly block$/;"	kind:variable	line:611
+_BackupFilters	../include/json/third_party/cpplint/cpplint.py	/^def _BackupFilters():$/;"	kind:function	line:1224
+_BlockInfo	../include/json/third_party/cpplint/cpplint.py	/^class _BlockInfo(object):$/;"	kind:class	line:2428
+_CHECK_MACROS	../include/json/third_party/cpplint/cpplint.py	/^_CHECK_MACROS = [$/;"	kind:variable	line:548
+_CHECK_REPLACEMENT	../include/json/third_party/cpplint/cpplint.py	/^_CHECK_REPLACEMENT = dict([(macro_var, {}) for macro_var in _CHECK_MACROS])$/;"	kind:variable	line:555
+_CPP_HEADERS	../include/json/third_party/cpplint/cpplint.py	/^_CPP_HEADERS = frozenset([$/;"	kind:variable	line:369
+_CPP_SECTION	../include/json/third_party/cpplint/cpplint.py	/^  _CPP_SECTION = 3$/;"	kind:variable	line:845
+_CPP_SYS_HEADER	../include/json/third_party/cpplint/cpplint.py	/^_CPP_SYS_HEADER = 2$/;"	kind:variable	line:602
+_C_SECTION	../include/json/third_party/cpplint/cpplint.py	/^  _C_SECTION = 2$/;"	kind:variable	line:844
+_C_SYS_HEADER	../include/json/third_party/cpplint/cpplint.py	/^_C_SYS_HEADER = 1$/;"	kind:variable	line:601
+_ClassInfo	../include/json/third_party/cpplint/cpplint.py	/^class _ClassInfo(_BlockInfo):$/;"	kind:class	line:2485
+_ClassifyInclude	../include/json/third_party/cpplint/cpplint.py	/^def _ClassifyInclude(fileinfo, include, is_system):$/;"	kind:function	line:4702
+_CollapseStrings	../include/json/third_party/cpplint/cpplint.py	/^  def _CollapseStrings(elided):$/;"	kind:member	line:1668
+_CppLintState	../include/json/third_party/cpplint/cpplint.py	/^class _CppLintState(object):$/;"	kind:class	line:995
+_DEFAULT_C_SUPPRESSED_CATEGORIES	../include/json/third_party/cpplint/cpplint.py	/^_DEFAULT_C_SUPPRESSED_CATEGORIES = [$/;"	kind:variable	line:355
+_DEFAULT_FILTERS	../include/json/third_party/cpplint/cpplint.py	/^_DEFAULT_FILTERS = ['-build\/include_alpha']$/;"	kind:variable	line:352
+_DEFAULT_KERNEL_SUPPRESSED_CATEGORIES	../include/json/third_party/cpplint/cpplint.py	/^_DEFAULT_KERNEL_SUPPRESSED_CATEGORIES = [$/;"	kind:variable	line:360
+_DropCommonSuffixes	../include/json/third_party/cpplint/cpplint.py	/^def _DropCommonSuffixes(filename):$/;"	kind:function	line:4672
+_EMPTY_CONDITIONAL_BODY_PATTERN	../include/json/third_party/cpplint/cpplint.py	/^_EMPTY_CONDITIONAL_BODY_PATTERN = re.compile(r'^\\s*$', re.DOTALL)$/;"	kind:variable	line:544
+_END_ASM	../include/json/third_party/cpplint/cpplint.py	/^_END_ASM = 2      # Last line of inline assembly block$/;"	kind:variable	line:610
+_ERROR_CATEGORIES	../include/json/third_party/cpplint/cpplint.py	/^_ERROR_CATEGORIES = [$/;"	kind:variable	line:270
+_ExpandDirectories	../include/json/third_party/cpplint/cpplint.py	/^def _ExpandDirectories(filenames):$/;"	kind:function	line:6519
+_ExternCInfo	../include/json/third_party/cpplint/cpplint.py	/^class _ExternCInfo(_BlockInfo):$/;"	kind:class	line:2478
+_FilterExcludedFiles	../include/json/third_party/cpplint/cpplint.py	/^def _FilterExcludedFiles(filenames):$/;"	kind:function	line:6551
+_Filters	../include/json/third_party/cpplint/cpplint.py	/^def _Filters():$/;"	kind:function	line:1195
+_FunctionState	../include/json/third_party/cpplint/cpplint.py	/^class _FunctionState(object):$/;"	kind:class	line:1232
+_GetTextInside	../include/json/third_party/cpplint/cpplint.py	/^def _GetTextInside(text, start_pattern):$/;"	kind:function	line:4847
+_HEADERS_CONTAINING_TEMPLATES	../include/json/third_party/cpplint/cpplint.py	/^_HEADERS_CONTAINING_TEMPLATES = ($/;"	kind:variable	line:5596
+_HEADERS_MAYBE_TEMPLATES	../include/json/third_party/cpplint/cpplint.py	/^_HEADERS_MAYBE_TEMPLATES = ($/;"	kind:variable	line:5637
+_INITIAL_SECTION	../include/json/third_party/cpplint/cpplint.py	/^  _INITIAL_SECTION = 0$/;"	kind:variable	line:842
+_INSIDE_ASM	../include/json/third_party/cpplint/cpplint.py	/^_INSIDE_ASM = 1   # Inside inline assembly block$/;"	kind:variable	line:609
+_IncludeError	../include/json/third_party/cpplint/cpplint.py	/^class _IncludeError(Exception):$/;"	kind:class	line:1291
+_IncludeState	../include/json/third_party/cpplint/cpplint.py	/^class _IncludeState(object):$/;"	kind:class	line:828
+_IsSourceExtension	../include/json/third_party/cpplint/cpplint.py	/^def _IsSourceExtension(s):$/;"	kind:function	line:823
+_IsType	../include/json/third_party/cpplint/cpplint.py	/^def _IsType(clean_lines, nesting_state, expr):$/;"	kind:function	line:3715
+_LEGACY_ERROR_CATEGORIES	../include/json/third_party/cpplint/cpplint.py	/^_LEGACY_ERROR_CATEGORIES = [$/;"	kind:variable	line:343
+_LIKELY_MY_HEADER	../include/json/third_party/cpplint/cpplint.py	/^_LIKELY_MY_HEADER = 3$/;"	kind:variable	line:603
+_MATCH_ASM	../include/json/third_party/cpplint/cpplint.py	/^_MATCH_ASM = re.compile(r'^\\s*(?:asm|_asm|__asm|__asm__)'$/;"	kind:variable	line:614
+_MY_H_SECTION	../include/json/third_party/cpplint/cpplint.py	/^  _MY_H_SECTION = 1$/;"	kind:variable	line:843
+_NORMAL_TRIGGER	../include/json/third_party/cpplint/cpplint.py	/^  _NORMAL_TRIGGER = 250  # for --v=0, 500 for --v=1, etc.$/;"	kind:variable	line:1235
+_NO_ASM	../include/json/third_party/cpplint/cpplint.py	/^_NO_ASM = 0       # Outside of inline assembly block$/;"	kind:variable	line:608
+_NamespaceInfo	../include/json/third_party/cpplint/cpplint.py	/^class _NamespaceInfo(_BlockInfo):$/;"	kind:class	line:2554
+_OTHER_HEADER	../include/json/third_party/cpplint/cpplint.py	/^_OTHER_HEADER = 5$/;"	kind:variable	line:605
+_OTHER_H_SECTION	../include/json/third_party/cpplint/cpplint.py	/^  _OTHER_H_SECTION = 4$/;"	kind:variable	line:846
+_OutputFormat	../include/json/third_party/cpplint/cpplint.py	/^def _OutputFormat():$/;"	kind:function	line:1162
+_POSSIBLE_MY_HEADER	../include/json/third_party/cpplint/cpplint.py	/^_POSSIBLE_MY_HEADER = 4$/;"	kind:variable	line:604
+_PreprocessorInfo	../include/json/third_party/cpplint/cpplint.py	/^class _PreprocessorInfo(object):$/;"	kind:class	line:2615
+_Quiet	../include/json/third_party/cpplint/cpplint.py	/^def _Quiet():$/;"	kind:function	line:1171
+_RE_FIRST_COMPONENT	../include/json/third_party/cpplint/cpplint.py	/^_RE_FIRST_COMPONENT = re.compile(r'^[^-_.]+')$/;"	kind:variable	line:4669
+_RE_PATTERN_CLEANSE_LINE_C_COMMENTS	../include/json/third_party/cpplint/cpplint.py	/^_RE_PATTERN_CLEANSE_LINE_C_COMMENTS = re.compile($/;"	kind:variable	line:1480
+_RE_PATTERN_CLEANSE_LINE_ESCAPES	../include/json/third_party/cpplint/cpplint.py	/^_RE_PATTERN_CLEANSE_LINE_ESCAPES = re.compile($/;"	kind:variable	line:1468
+_RE_PATTERN_CONST_REF_PARAM	../include/json/third_party/cpplint/cpplint.py	/^_RE_PATTERN_CONST_REF_PARAM = ($/;"	kind:variable	line:4924
+_RE_PATTERN_C_COMMENTS	../include/json/third_party/cpplint/cpplint.py	/^_RE_PATTERN_C_COMMENTS = r'\/\\*(?:[^*]|\\*(?!\/))*\\*\/'$/;"	kind:variable	line:1471
+_RE_PATTERN_EXPLICIT_MAKEPAIR	../include/json/third_party/cpplint/cpplint.py	/^_RE_PATTERN_EXPLICIT_MAKEPAIR = re.compile(r'\\bmake_pair\\s*<')$/;"	kind:variable	line:5852
+_RE_PATTERN_IDENT	../include/json/third_party/cpplint/cpplint.py	/^_RE_PATTERN_IDENT = r'[_a-zA-Z]\\w*'  # =~ [[:alpha:]][[:alnum:]]*$/;"	kind:variable	line:4912
+_RE_PATTERN_INCLUDE	../include/json/third_party/cpplint/cpplint.py	/^_RE_PATTERN_INCLUDE = re.compile(r'^\\s*#\\s*include\\s*([<"])([^>"]*)[>"].*$')$/;"	kind:variable	line:4663
+_RE_PATTERN_INVALID_INCREMENT	../include/json/third_party/cpplint/cpplint.py	/^_RE_PATTERN_INVALID_INCREMENT = re.compile($/;"	kind:variable	line:2388
+_RE_PATTERN_REF_PARAM	../include/json/third_party/cpplint/cpplint.py	/^_RE_PATTERN_REF_PARAM = re.compile($/;"	kind:variable	line:4919
+_RE_PATTERN_REF_STREAM_PARAM	../include/json/third_party/cpplint/cpplint.py	/^_RE_PATTERN_REF_STREAM_PARAM = ($/;"	kind:variable	line:4928
+_RE_PATTERN_STRING	../include/json/third_party/cpplint/cpplint.py	/^_RE_PATTERN_STRING = re.compile(r'\\bstring\\b')$/;"	kind:variable	line:5644
+_RE_PATTERN_TODO	../include/json/third_party/cpplint/cpplint.py	/^_RE_PATTERN_TODO = re.compile(r'^\/\/(\\s*)TODO(\\(.+?\\))?:?(\\s|$)?')$/;"	kind:variable	line:3341
+_RE_PATTERN_TYPE	../include/json/third_party/cpplint/cpplint.py	/^_RE_PATTERN_TYPE = ($/;"	kind:variable	line:4913
+_RestoreFilters	../include/json/third_party/cpplint/cpplint.py	/^def _RestoreFilters():$/;"	kind:function	line:1228
+_SEARCH_C_FILE	../include/json/third_party/cpplint/cpplint.py	/^_SEARCH_C_FILE = re.compile(r'\\b(?:LINT_C_FILE|'$/;"	kind:variable	line:619
+_SEARCH_KERNEL_FILE	../include/json/third_party/cpplint/cpplint.py	/^_SEARCH_KERNEL_FILE = re.compile(r'\\b(?:LINT_KERNEL_FILE)')$/;"	kind:variable	line:623
+_SECTION_NAMES	../include/json/third_party/cpplint/cpplint.py	/^  _SECTION_NAMES = {$/;"	kind:variable	line:855
+_SetCountingStyle	../include/json/third_party/cpplint/cpplint.py	/^def _SetCountingStyle(level):$/;"	kind:function	line:1190
+_SetFilters	../include/json/third_party/cpplint/cpplint.py	/^def _SetFilters(filters):$/;"	kind:function	line:1200
+_SetOutputFormat	../include/json/third_party/cpplint/cpplint.py	/^def _SetOutputFormat(output_format):$/;"	kind:function	line:1167
+_SetQuiet	../include/json/third_party/cpplint/cpplint.py	/^def _SetQuiet(quiet):$/;"	kind:function	line:1175
+_SetVerboseLevel	../include/json/third_party/cpplint/cpplint.py	/^def _SetVerboseLevel(level):$/;"	kind:function	line:1185
+_ShouldPrintError	../include/json/third_party/cpplint/cpplint.py	/^def _ShouldPrintError(category, confidence, linenum):$/;"	kind:function	line:1401
+_TEST_FILE_SUFFIX	../include/json/third_party/cpplint/cpplint.py	/^_TEST_FILE_SUFFIX = '(' + '|'.join(_test_suffixes) + r')$'$/;"	kind:variable	line:541
+_TEST_TRIGGER	../include/json/third_party/cpplint/cpplint.py	/^  _TEST_TRIGGER = 400    # about 50% more than _NORMAL_TRIGGER.$/;"	kind:variable	line:1236
+_THIRD_PARTY_HEADERS_PATTERN	../include/json/third_party/cpplint/cpplint.py	/^_THIRD_PARTY_HEADERS_PATTERN = re.compile($/;"	kind:variable	line:536
+_THREADING_LIST	../include/json/third_party/cpplint/cpplint.py	/^_THREADING_LIST = ($/;"	kind:variable	line:2325
+_TYPES	../include/json/third_party/cpplint/cpplint.py	/^_TYPES = re.compile($/;"	kind:variable	line:518
+_TYPE_NAMES	../include/json/third_party/cpplint/cpplint.py	/^  _TYPE_NAMES = {$/;"	kind:variable	line:848
+_UNSAFE_FUNC_PREFIX	../include/json/third_party/cpplint/cpplint.py	/^_UNSAFE_FUNC_PREFIX = r'(?:[-+*\/=%^&|(<]\\s*|>\\s+)'$/;"	kind:variable	line:2324
+_VerboseLevel	../include/json/third_party/cpplint/cpplint.py	/^def _VerboseLevel():$/;"	kind:function	line:1180
+__VERSION__	../include/json/third_party/cpplint/cpplint.py	/^__VERSION__ = '1.4.4'$/;"	kind:variable	line:62
+__all__	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/__init__.py	/^__all__ = []$/;"	kind:variable	line:8
+__author__	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/__init__.py	/^__author__ = 'Eric Fiselier'$/;"	kind:variable	line:3
+__email__	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/__init__.py	/^__email__ = 'eric@efcs.ca'$/;"	kind:variable	line:4
+__format__	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^    def __format__(self, format):$/;"	kind:member	line:16
+__init__	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^    def __init__(self, name, code):$/;"	kind:member	line:8
+__init__	../include/json/third_party/amalgamate/amalgamate.py	/^    def __init__(self, args):$/;"	kind:member	line:64
+__init__	../include/json/third_party/amalgamate/amalgamate.py	/^    def __init__(self, file_path, amalgamation, is_root):$/;"	kind:member	line:254
+__init__	../include/json/third_party/cpplint/cpplint.py	/^  def __init__(self):$/;"	kind:member	line:1238
+__init__	../include/json/third_party/cpplint/cpplint.py	/^  def __init__(self):$/;"	kind:member	line:2632
+__init__	../include/json/third_party/cpplint/cpplint.py	/^  def __init__(self):$/;"	kind:member	line:863
+__init__	../include/json/third_party/cpplint/cpplint.py	/^  def __init__(self):$/;"	kind:member	line:998
+__init__	../include/json/third_party/cpplint/cpplint.py	/^  def __init__(self, filename):$/;"	kind:member	line:1303
+__init__	../include/json/third_party/cpplint/cpplint.py	/^  def __init__(self, linenum):$/;"	kind:member	line:2481
+__init__	../include/json/third_party/cpplint/cpplint.py	/^  def __init__(self, linenum, seen_open_brace):$/;"	kind:member	line:2431
+__init__	../include/json/third_party/cpplint/cpplint.py	/^  def __init__(self, lines):$/;"	kind:member	line:1651
+__init__	../include/json/third_party/cpplint/cpplint.py	/^  def __init__(self, name, class_or_struct, clean_lines, linenum):$/;"	kind:member	line:2488
+__init__	../include/json/third_party/cpplint/cpplint.py	/^  def __init__(self, name, linenum):$/;"	kind:member	line:2557
+__init__	../include/json/third_party/cpplint/cpplint.py	/^  def __init__(self, stack_before_if):$/;"	kind:member	line:2618
+__init__.py	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/__init__.py	1;"	kind:file	line:1
+__repr__	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^    def __repr__(self):$/;"	kind:member	line:12
+__version__	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/__init__.py	/^__version__ = '.'.join(str(v) for v in __versioninfo__) + 'dev'$/;"	kind:variable	line:6
+__versioninfo__	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/__init__.py	/^__versioninfo__ = (0, 5, 0)$/;"	kind:variable	line:5
+_cpplint_state	../include/json/third_party/cpplint/cpplint.py	/^_cpplint_state = _CppLintState()$/;"	kind:variable	line:1159
+_error_suppressions	../include/json/third_party/cpplint/cpplint.py	/^_error_suppressions = {}$/;"	kind:variable	line:629
+_excludes	../include/json/third_party/cpplint/cpplint.py	/^_excludes = None$/;"	kind:variable	line:642
+_find_skippable_contexts	../include/json/third_party/amalgamate/amalgamate.py	/^    def _find_skippable_contexts(self):$/;"	kind:member	line:144
+_global_error_suppressions	../include/json/third_party/cpplint/cpplint.py	/^_global_error_suppressions = {}$/;"	kind:variable	line:685
+_hpp_headers	../include/json/third_party/cpplint/cpplint.py	/^_hpp_headers = set(['h', 'hh', 'hpp', 'hxx', 'h++', 'cuh'])$/;"	kind:variable	line:681
+_is_within	../include/json/third_party/amalgamate/amalgamate.py	/^def _is_within(match, matches):$/;"	kind:function	line:107
+_line_length	../include/json/third_party/cpplint/cpplint.py	/^_line_length = 80$/;"	kind:variable	line:649
+_num_magic_bytes	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^_num_magic_bytes = 2 if sys.platform.startswith('win') else 4$/;"	kind:variable	line:14
+_process	../include/json/third_party/amalgamate/amalgamate.py	/^    def _process(self):$/;"	kind:member	line:249
+_process_includes	../include/json/third_party/amalgamate/amalgamate.py	/^    def _process_includes(self):$/;"	kind:member	line:207
+_process_pragma_once	../include/json/third_party/amalgamate/amalgamate.py	/^    def _process_pragma_once(self):$/;"	kind:member	line:179
+_quiet	../include/json/third_party/cpplint/cpplint.py	/^_quiet = False$/;"	kind:variable	line:645
+_re_pattern_headers_maybe_templates	../include/json/third_party/cpplint/cpplint.py	/^_re_pattern_headers_maybe_templates = []$/;"	kind:variable	line:5646
+_re_pattern_templates	../include/json/third_party/cpplint/cpplint.py	/^_re_pattern_templates = []$/;"	kind:variable	line:5657
+_regexp_compile_cache	../include/json/third_party/cpplint/cpplint.py	/^_regexp_compile_cache = {}$/;"	kind:variable	line:625
+_repository	../include/json/third_party/cpplint/cpplint.py	/^_repository = None$/;"	kind:variable	line:639
+_root	../include/json/third_party/cpplint/cpplint.py	/^_root = None$/;"	kind:variable	line:633
+_root_debug	../include/json/third_party/cpplint/cpplint.py	/^_root_debug = False$/;"	kind:variable	line:634
+_search_content	../include/json/third_party/amalgamate/amalgamate.py	/^    def _search_content(self, index, pattern, contexts):$/;"	kind:member	line:136
+_test_suffixes	../include/json/third_party/cpplint/cpplint.py	/^_test_suffixes = ['_test', '_regtest', '_unittest']$/;"	kind:variable	line:540
+_valid_extensions	../include/json/third_party/cpplint/cpplint.py	/^_valid_extensions = set([])$/;"	kind:variable	line:60
+actual_path	../include/json/third_party/amalgamate/amalgamate.py	/^    def actual_path(self, file_path):$/;"	kind:member	line:46
+amalgamate.py	../include/json/third_party/amalgamate/amalgamate.py	1;"	kind:file	line:1
+argparse	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^import argparse$/;"	kind:namespace	line:4
+argparse	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^import argparse$/;"	kind:namespace	line:7
+argparse	../include/json/benchmarks/thirdparty/benchmark/tools/compare_bench.py	/^import argparse$/;"	kind:namespace	line:6
+argparse	../include/json/test/thirdparty/fastcov/fastcov.py	/^import argparse$/;"	kind:namespace	line:26
+argparse	../include/json/third_party/amalgamate/amalgamate.py	/^import argparse$/;"	kind:namespace	line:36
+args	../include/json/test/thirdparty/fastcov/fastcov.py	/^    args = parser.parse_args()$/;"	kind:variable	line:371
+c_comment_pattern	../include/json/third_party/amalgamate/amalgamate.py	/^    c_comment_pattern = re.compile(r"\/\\*.*?\\*\/", re.S)$/;"	kind:variable	line:120
+calculate_change	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^def calculate_change(old_val, new_val):$/;"	kind:function	line:60
+check_input_file	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^def check_input_file(filename):$/;"	kind:function	line:75
+check_inputs	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^def check_inputs(in1, in2, flags):$/;"	kind:function	line:15
+check_inputs	../include/json/benchmarks/thirdparty/benchmark/tools/compare_bench.py	/^def check_inputs(in1, in2, flags):$/;"	kind:function	line:13
+chunks	../include/json/test/thirdparty/fastcov/fastcov.py	/^def chunks(l, n):$/;"	kind:function	line:39
+classify_input_file	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^def classify_input_file(filename):$/;"	kind:function	line:54
+codecs	../include/json/third_party/cpplint/cpplint.py	/^import codecs$/;"	kind:namespace	line:44
+color_format	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^def color_format(use_color, fmt_str, *args, **kwargs):$/;"	kind:function	line:32
+compare.py	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	1;"	kind:file	line:1
+compare_bench.py	../include/json/benchmarks/thirdparty/benchmark/tools/compare_bench.py	1;"	kind:file	line:1
+cond_lines	../include/json/test/thirdparty/imapdl/filterbr.py	/^def cond_lines(lines):$/;"	kind:function	line:36
+cond_lines_from_file	../include/json/test/thirdparty/imapdl/filterbr.py	/^def cond_lines_from_file(filename):$/;"	kind:function	line:79
+copy	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^import copy$/;"	kind:namespace	line:5
+copy	../include/json/third_party/cpplint/cpplint.py	/^import copy$/;"	kind:namespace	line:45
+cpp_comment_pattern	../include/json/third_party/amalgamate/amalgamate.py	/^    cpp_comment_pattern = re.compile(r"\/\/.*?\\n")$/;"	kind:variable	line:117
+cpplint.py	../include/json/third_party/cpplint/cpplint.py	1;"	kind:file	line:1
+create_parser	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^def create_parser():$/;"	kind:function	line:35
+critical	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    def critical(self, *k, **kw):$/;"	kind:member	line:39
+datetime	../include/json/third_party/amalgamate/amalgamate.py	/^import datetime$/;"	kind:namespace	line:37
+debug	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    def debug(self, *k, **kw):$/;"	kind:member	line:31
+distillFunction	../include/json/test/thirdparty/fastcov/fastcov.py	/^def distillFunction(function_raw, functions):$/;"	kind:function	line:227
+distillLine	../include/json/test/thirdparty/fastcov/fastcov.py	/^def distillLine(line_raw, lines, branches):$/;"	kind:function	line:237
+distillReport	../include/json/test/thirdparty/fastcov/fastcov.py	/^def distillReport(report_raw):$/;"	kind:function	line:268
+distillSource	../include/json/test/thirdparty/fastcov/fastcov.py	/^def distillSource(source_raw, sources):$/;"	kind:function	line:253
+division	../include/json/third_party/amalgamate/amalgamate.py	/^from __future__ import division$/;"	kind:namespace	line:32
+download	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^def download(url, location, log = EmptyLogger()):$/;"	kind:function	line:125
+dumpBranchCoverageToLcovInfo	../include/json/test/thirdparty/fastcov/fastcov.py	/^def dumpBranchCoverageToLcovInfo(f, branches):$/;"	kind:function	line:146
+dumpToJson	../include/json/test/thirdparty/fastcov/fastcov.py	/^def dumpToJson(intermediate, output):$/;"	kind:function	line:278
+dumpToLcovInfo	../include/json/test/thirdparty/fastcov/fastcov.py	/^def dumpToLcovInfo(fastcov_json, output):$/;"	kind:function	line:156
+errno	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^import errno$/;"	kind:namespace	line:5
+error	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    def error(self, *k, **kw):$/;"	kind:member	line:37
+etree	../include/json/third_party/cpplint/cpplint.py	/^import xml.etree.ElementTree$/;"	kind:namespace	line:57
+exclMarkerWorker	../include/json/test/thirdparty/fastcov/fastcov.py	/^def exclMarkerWorker(fastcov_sources, chunk):$/;"	kind:function	line:180
+excludeGcda	../include/json/test/thirdparty/fastcov/fastcov.py	/^    def excludeGcda(gcda):$/;"	kind:function	line:72
+fastcov.py	../include/json/test/thirdparty/fastcov/fastcov.py	1;"	kind:file	line:1
+filter_benchmark	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^def filter_benchmark(json_orig, family, replacement=""):$/;"	kind:function	line:71
+filter_lcov_trace	../include/json/test/thirdparty/imapdl/filterbr.py	/^def filter_lcov_trace(lines):$/;"	kind:function	line:83
+filter_lcov_trace_file	../include/json/test/thirdparty/imapdl/filterbr.py	/^def filter_lcov_trace_file(s_filename, d_file):$/;"	kind:function	line:95
+filterbr.py	../include/json/test/thirdparty/imapdl/filterbr.py	1;"	kind:file	line:1
+find_7zip	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^def find_7zip(log = EmptyLogger()):$/;"	kind:function	line:99
+find_benchmark_flag	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^def find_benchmark_flag(prefix, benchmark_flags):$/;"	kind:function	line:87
+find_in_path	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^def find_in_path(file, path=None):$/;"	kind:function	line:86
+find_included_file	../include/json/third_party/amalgamate/amalgamate.py	/^    def find_included_file(self, file_path, source_dir):$/;"	kind:member	line:53
+find_longest_name	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^def find_longest_name(benchmark_list):$/;"	kind:function	line:48
+find_test	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^    def find_test(name):$/;"	kind:function	line:93
+find_used_labels	../include/json/benchmarks/thirdparty/benchmark/tools/strip_asm.py	/^def find_used_labels(asm):$/;"	kind:function	line:12
+for	../include/json/third_party/cpplint/cpplint.py	/^import math  # for log$/;"	kind:namespace	line:49
+gbench	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^import gbench$/;"	kind:namespace	line:10
+gbench	../include/json/benchmarks/thirdparty/benchmark/tools/compare_bench.py	/^import gbench$/;"	kind:namespace	line:9
+gcovWorker	../include/json/test/thirdparty/fastcov/fastcov.py	/^def gcovWorker(cwd, gcov, files, chunk, gcov_filter_options, branch_coverage):$/;"	kind:function	line:84
+generate	../include/json/third_party/amalgamate/amalgamate.py	/^    def generate(self):$/;"	kind:member	line:76
+generate_difference_report	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^def generate_difference_report(json1, json2, use_color=True):$/;"	kind:function	line:87
+getFilteredGcdaFiles	../include/json/test/thirdparty/fastcov/fastcov.py	/^def getFilteredGcdaFiles(gcda_files, exclude):$/;"	kind:function	line:71
+getGcdaFiles	../include/json/test/thirdparty/fastcov/fastcov.py	/^def getGcdaFiles(cwd, gcda_files):$/;"	kind:function	line:79
+getGcovFilterOptions	../include/json/test/thirdparty/fastcov/fastcov.py	/^def getGcovFilterOptions(args):$/;"	kind:function	line:286
+getGcovVersion	../include/json/test/thirdparty/fastcov/fastcov.py	/^def getGcovVersion(gcov):$/;"	kind:function	line:61
+get_color	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^        def get_color(res):$/;"	kind:function	line:112
+getopt	../include/json/third_party/cpplint/cpplint.py	/^import getopt$/;"	kind:namespace	line:46
+glob	../include/json/test/thirdparty/fastcov/fastcov.py	/^import glob$/;"	kind:namespace	line:23
+glob	../include/json/third_party/cpplint/cpplint.py	/^import glob$/;"	kind:namespace	line:47
+include_pattern	../include/json/third_party/amalgamate/amalgamate.py	/^    include_pattern = re.compile($/;"	kind:variable	line:128
+info	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    def info(self, *k, **kw):$/;"	kind:member	line:33
+is_executable_file	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^def is_executable_file(filename):$/;"	kind:function	line:15
+is_identifier	../include/json/benchmarks/thirdparty/benchmark/tools/strip_asm.py	/^def is_identifier(tk):$/;"	kind:function	line:52
+is_json_file	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^def is_json_file(filename):$/;"	kind:function	line:40
+iteritems	../include/json/third_party/cpplint/cpplint.py	/^  iteritems = dict.items$/;"	kind:variable	line:671
+iteritems	../include/json/third_party/cpplint/cpplint.py	/^  iteritems = dict.iteritems$/;"	kind:variable	line:667
+itertools	../include/json/third_party/cpplint/cpplint.py	/^import itertools$/;"	kind:namespace	line:48
+itervalues	../include/json/third_party/cpplint/cpplint.py	/^  itervalues = dict.itervalues$/;"	kind:variable	line:666
+itervalues	../include/json/third_party/cpplint/cpplint.py	/^  itervalues = dict.values$/;"	kind:variable	line:670
+json	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^        import json$/;"	kind:namespace	line:137
+json	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^        import json$/;"	kind:namespace	line:175
+json	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^import json$/;"	kind:namespace	line:3
+json	../include/json/test/thirdparty/fastcov/fastcov.py	/^import json$/;"	kind:namespace	line:24
+json	../include/json/third_party/amalgamate/amalgamate.py	/^import json$/;"	kind:namespace	line:38
+load_benchmark_results	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^def load_benchmark_results(fname):$/;"	kind:function	line:108
+load_result	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^    def load_result(self):$/;"	kind:member	line:174
+load_results	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^    def load_results(self):$/;"	kind:member	line:136
+log	../include/json/test/thirdparty/fastcov/fastcov.py	/^def log(line):$/;"	kind:function	line:282
+log	../include/json/third_party/cpplint/cpplint.py	/^import math  # for log$/;"	kind:namespace	line:49
+logging	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^import logging$/;"	kind:namespace	line:6
+long	../include/json/third_party/cpplint/cpplint.py	/^  long = int$/;"	kind:variable	line:661
+main	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^def main():$/;"	kind:function	line:261
+main	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^def main():$/;"	kind:function	line:137
+main	../include/json/benchmarks/thirdparty/benchmark/tools/compare_bench.py	/^def main():$/;"	kind:function	line:33
+main	../include/json/benchmarks/thirdparty/benchmark/tools/strip_asm.py	/^def main():$/;"	kind:function	line:123
+main	../include/json/test/thirdparty/fastcov/fastcov.py	/^def main(args):$/;"	kind:function	line:293
+main	../include/json/third_party/amalgamate/amalgamate.py	/^def main():$/;"	kind:function	line:270
+main	../include/json/third_party/cpplint/cpplint.py	/^def main():$/;"	kind:function	line:6558
+math	../include/json/third_party/cpplint/cpplint.py	/^import math  # for log$/;"	kind:namespace	line:49
+mingw.py	../include/json/benchmarks/thirdparty/benchmark/mingw.py	1;"	kind:file	line:1
+multiprocessing	../include/json/test/thirdparty/fastcov/fastcov.py	/^import multiprocessing$/;"	kind:namespace	line:29
+normalize_labels	../include/json/benchmarks/thirdparty/benchmark/tools/strip_asm.py	/^def normalize_labels(asm):$/;"	kind:function	line:22
+os	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^import os$/;"	kind:namespace	line:7
+os	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^import os$/;"	kind:namespace	line:3
+os	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^import os$/;"	kind:namespace	line:4
+os	../include/json/benchmarks/thirdparty/benchmark/tools/strip_asm.py	/^import os$/;"	kind:namespace	line:9
+os	../include/json/test/thirdparty/fastcov/fastcov.py	/^import os$/;"	kind:namespace	line:21
+os	../include/json/third_party/amalgamate/amalgamate.py	/^import os$/;"	kind:namespace	line:39
+os	../include/json/third_party/cpplint/cpplint.py	/^import os$/;"	kind:namespace	line:50
+parse	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    import urllib.parse as parse$/;"	kind:namespace	line:23
+parse	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    import urlparse as parse$/;"	kind:namespace	line:25
+parseVersionFromLine	../include/json/test/thirdparty/fastcov/fastcov.py	/^def parseVersionFromLine(version_str):$/;"	kind:function	line:52
+parser	../include/json/test/thirdparty/fastcov/fastcov.py	/^    parser = argparse.ArgumentParser(description='A parallel gcov wrapper for fast coverage report generation')$/;"	kind:variable	line:343
+platform	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^import platform$/;"	kind:namespace	line:8
+pragma_once_pattern	../include/json/third_party/amalgamate/amalgamate.py	/^    pragma_once_pattern = re.compile(r'#\\s*pragma\\s+once', re.S)$/;"	kind:variable	line:132
+print_function	../include/json/third_party/amalgamate/amalgamate.py	/^from __future__ import print_function$/;"	kind:namespace	line:33
+processGcdas	../include/json/test/thirdparty/fastcov/fastcov.py	/^def processGcdas(cwd, gcov, jobs, gcda_files, gcov_filter_options, branch_coverage):$/;"	kind:function	line:99
+processGcov	../include/json/test/thirdparty/fastcov/fastcov.py	/^def processGcov(cwd, gcov, files, gcov_filter_options):$/;"	kind:function	line:115
+processGcovs	../include/json/test/thirdparty/fastcov/fastcov.py	/^def processGcovs(cwd, gcov_files, gcov_filter_options):$/;"	kind:function	line:140
+process_asm	../include/json/benchmarks/thirdparty/benchmark/tools/strip_asm.py	/^def process_asm(asm):$/;"	kind:function	line:84
+process_identifiers	../include/json/benchmarks/thirdparty/benchmark/tools/strip_asm.py	/^def process_identifiers(l):$/;"	kind:function	line:64
+re	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^import re$/;"	kind:namespace	line:9
+re	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^import re$/;"	kind:namespace	line:4
+re	../include/json/benchmarks/thirdparty/benchmark/tools/strip_asm.py	/^import re$/;"	kind:namespace	line:10
+re	../include/json/test/thirdparty/fastcov/fastcov.py	/^import re$/;"	kind:namespace	line:20
+re	../include/json/third_party/amalgamate/amalgamate.py	/^import re$/;"	kind:namespace	line:40
+re	../include/json/third_party/cpplint/cpplint.py	/^import re$/;"	kind:namespace	line:51
+removeFiles	../include/json/test/thirdparty/fastcov/fastcov.py	/^def removeFiles(files):$/;"	kind:function	line:67
+remove_benchmark_flags	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^def remove_benchmark_flags(prefix, benchmark_flags):$/;"	kind:function	line:100
+report	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^from gbench import util, report$/;"	kind:namespace	line:11
+report	../include/json/benchmarks/thirdparty/benchmark/tools/compare_bench.py	/^from gbench import util, report$/;"	kind:namespace	line:10
+report.py	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	1;"	kind:file	line:1
+repository	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^def repository(urls = urls, log = EmptyLogger()):$/;"	kind:function	line:55
+request	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    import urllib as request$/;"	kind:namespace	line:21
+request	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    import urllib.request as request$/;"	kind:namespace	line:19
+root	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^def root(location = None, arch = None, version = None, threading = None,$/;"	kind:function	line:172
+run_benchmark	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^def run_benchmark(exe_name, benchmark_flags):$/;"	kind:function	line:117
+run_or_load_benchmark	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^def run_or_load_benchmark(filename, benchmark_flags):$/;"	kind:function	line:146
+scanExclusionMarkers	../include/json/test/thirdparty/fastcov/fastcov.py	/^def scanExclusionMarkers(fastcov_json, jobs):$/;"	kind:function	line:214
+setLevel	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    def setLevel(self, *k, **kw):$/;"	kind:member	line:41
+setUp	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^    def setUp(self):$/;"	kind:member	line:218
+skip_comments	../include/json/test/thirdparty/imapdl/filterbr.py	/^def skip_comments(lines):$/;"	kind:function	line:7
+sre_compile	../include/json/third_party/cpplint/cpplint.py	/^import sre_compile$/;"	kind:namespace	line:52
+stopwatch	../include/json/test/thirdparty/fastcov/fastcov.py	/^def stopwatch():$/;"	kind:function	line:44
+str2ver	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^def str2ver(string):$/;"	kind:function	line:248
+string	../include/json/third_party/cpplint/cpplint.py	/^import string$/;"	kind:namespace	line:53
+string_pattern	../include/json/third_party/amalgamate/amalgamate.py	/^    string_pattern = re.compile("[^']" r'".*?(?<=[^\\\\])"', re.S)$/;"	kind:variable	line:123
+strip_asm.py	../include/json/benchmarks/thirdparty/benchmark/tools/strip_asm.py	1;"	kind:file	line:1
+subprocess	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^import subprocess$/;"	kind:namespace	line:11
+subprocess	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^import subprocess$/;"	kind:namespace	line:6
+subprocess	../include/json/test/thirdparty/fastcov/fastcov.py	/^import subprocess$/;"	kind:namespace	line:28
+sys	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^import sys$/;"	kind:namespace	line:10
+sys	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^import sys$/;"	kind:namespace	line:9
+sys	../include/json/benchmarks/thirdparty/benchmark/tools/compare_bench.py	/^import sys$/;"	kind:namespace	line:8
+sys	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^import sys$/;"	kind:namespace	line:7
+sys	../include/json/benchmarks/thirdparty/benchmark/tools/strip_asm.py	/^import sys$/;"	kind:namespace	line:8
+sys	../include/json/test/thirdparty/fastcov/fastcov.py	/^import sys$/;"	kind:namespace	line:22
+sys	../include/json/test/thirdparty/imapdl/filterbr.py	/^import sys$/;"	kind:namespace	line:5
+sys	../include/json/third_party/cpplint/cpplint.py	/^import sys$/;"	kind:namespace	line:54
+sysconfig	../include/json/third_party/cpplint/cpplint.py	/^import sysconfig$/;"	kind:namespace	line:55
+tempfile	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^import tempfile$/;"	kind:namespace	line:12
+tempfile	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	/^import tempfile$/;"	kind:namespace	line:5
+test_basic	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^    def test_basic(self):$/;"	kind:member	line:147
+test_basic	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^    def test_basic(self):$/;"	kind:member	line:182
+test_benchmarks_basic	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^    def test_benchmarks_basic(self):$/;"	kind:member	line:228
+test_benchmarks_with_remainder	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^    def test_benchmarks_with_remainder(self):$/;"	kind:member	line:236
+test_benchmarks_with_remainder_after_doubleminus	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^    def test_benchmarks_with_remainder_after_doubleminus(self):$/;"	kind:member	line:244
+test_benchmarksfiltered_basic	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^    def test_benchmarksfiltered_basic(self):$/;"	kind:member	line:279
+test_benchmarksfiltered_with_remainder	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^    def test_benchmarksfiltered_with_remainder(self):$/;"	kind:member	line:289
+test_benchmarksfiltered_with_remainder_after_doubleminus	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^    def test_benchmarksfiltered_with_remainder_after_doubleminus(self):$/;"	kind:member	line:299
+test_filters_basic	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^    def test_filters_basic(self):$/;"	kind:member	line:252
+test_filters_with_remainder	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^    def test_filters_with_remainder(self):$/;"	kind:member	line:261
+test_filters_with_remainder_after_doubleminus	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^    def test_filters_with_remainder_after_doubleminus(self):$/;"	kind:member	line:270
+threading	../include/json/test/thirdparty/fastcov/fastcov.py	/^import threading$/;"	kind:namespace	line:27
+time	../include/json/test/thirdparty/fastcov/fastcov.py	/^import time$/;"	kind:namespace	line:25
+transform_labels	../include/json/benchmarks/thirdparty/benchmark/tools/strip_asm.py	/^def transform_labels(asm):$/;"	kind:function	line:39
+unicode_escape_decode	../include/json/third_party/cpplint/cpplint.py	/^def unicode_escape_decode(x):$/;"	kind:function	line:673
+unicode_literals	../include/json/third_party/amalgamate/amalgamate.py	/^from __future__ import unicode_literals$/;"	kind:namespace	line:34
+unicodedata	../include/json/third_party/cpplint/cpplint.py	/^import unicodedata$/;"	kind:namespace	line:56
+unittest	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^import unittest$/;"	kind:namespace	line:214
+unittest	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/report.py	/^import unittest$/;"	kind:namespace	line:133
+unpack	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^def unpack(archive, location, log = EmptyLogger()):$/;"	kind:function	line:114
+urllib	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    import urllib.parse as parse$/;"	kind:namespace	line:23
+urllib	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    import urllib.request as request$/;"	kind:namespace	line:19
+urls	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^urls = ($/;"	kind:variable	line:44
+util	../include/json/benchmarks/thirdparty/benchmark/tools/compare.py	/^from gbench import util, report$/;"	kind:namespace	line:11
+util	../include/json/benchmarks/thirdparty/benchmark/tools/compare_bench.py	/^from gbench import util, report$/;"	kind:namespace	line:10
+util.py	../include/json/benchmarks/thirdparty/benchmark/tools/gbench/util.py	1;"	kind:file	line:1
+warn	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    def warn(self, *k, **kw):$/;"	kind:member	line:35
+winreg	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    import _winreg as winreg$/;"	kind:namespace	line:17
+winreg	../include/json/benchmarks/thirdparty/benchmark/mingw.py	/^    import winreg$/;"	kind:namespace	line:15
+xml	../include/json/third_party/cpplint/cpplint.py	/^import xml.etree.ElementTree$/;"	kind:namespace	line:57
+xrange	../include/json/third_party/cpplint/cpplint.py	/^  xrange = range  # Python 3$/;"	kind:variable	line:68

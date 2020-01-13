@@ -123,7 +123,7 @@ CONTRACT Assets : public contract{
 		* @return no return value.
 		*/
 
-		ACTION newasset(name submitted_by);
+		ACTION newasset(name submitted_by, uint64_t num);
 		using newasset_action = action_wrapper< "newasset"_n, &Assets::newasset >;
 
 		/*
@@ -178,6 +178,20 @@ CONTRACT Assets : public contract{
 		using create_action = action_wrapper< "create"_n, &Assets::create >;
 
 		/*
+		* Insert Digest.
+		*
+		* This is empty action. Used by create action to log asset_id so that third party explorers can
+		* easily get new asset ids and other information.
+		*
+		* @param submitted_by	is asset's submitted_by, who will able to updated asset's mdata.
+		* @param asset_id is assets id for insert digest.
+		* @param idata is stringified json or just sha256 string with immutable assets data.
+		* @return no return value.
+		*/
+		ACTION insertdigest(name submitted_by, uint64_t asset_id, string idata);
+		using insertdigest_action = action_wrapper<"insertdigest"_n, &Assets::insertdigest >;
+
+		/*
 		* Create a new log.
 		*
 		* This is empty action. Used by create action to log asset_id so that third party explorers can
@@ -196,6 +210,20 @@ CONTRACT Assets : public contract{
 		*/
 		ACTION createlog( name submitted_by, name platform, string idata, string mdata, string commoninfo, string detailinfo, string refinfo, uint64_t asset_id );
 		using createlog_action = action_wrapper< "createlog"_n, &Assets::createlog >;
+
+		/*
+		* Create a new digest log.
+		*
+		* This is empty action. Used by re-work digest action to log asset_id so that third party explorers can
+		* easily get new asset ids and other information.
+		*
+		* @param submitted_by	is asset's submitted_by, who will able to updated asset's mdata.
+		* @param asset_id is id of the asset
+		* @param idata is stringified json or just sha256 string with immutable assets data.
+		* @return no return value.
+		*/
+		ACTION digestlog( name submitted_by,uint64_t asset_id, string idata );
+		using digestlog_action = action_wrapper< "digestlog"_n, &Assets::digestlog >;
 
 		/*
 		* Claim asset.
@@ -597,6 +625,8 @@ CONTRACT Assets : public contract{
 		* @return new asset id
 		*/
 		uint64_t getid( string type = "ASSET" );
+		uint64_t getid( uint64_t );
+		uint64_t getiddigest( uint64_t, uint64_t );
 
 		/*
 		* Get fungible token index.
@@ -618,7 +648,7 @@ CONTRACT Assets : public contract{
 		string join(const std::vector<string> &lst, const string &delim); 
 		std::vector<std::vector<string>> groupBy(std::vector<string> digest, int size);
 		std::vector<std::vector<checksum256>> getBucket(string&, string&); 
-        std::tuple<bool, std::vector<uint64_t>, std::vector<checksum256> > checkDuplicate(std::vector<std::vector<checksum256>>, string);
+        std::tuple<bool, std::vector<uint64_t>> checkDuplicate(std::vector<std::vector<checksum256>>, string);
 
 		/*
 		* Creators table. Can be used by asset markets, asset explorers, or wallets for correct asset
